@@ -26,13 +26,13 @@ class Menu
     private ?string $conditions = null;
 
     #[ORM\Column]
-    private ?int $nb_personnes_min = null;
+    private ?int $nbPersonnesMin = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $prix_base = null;
+    private ?string $prixBase = null;
 
     #[ORM\Column]
-    private ?int $stock_disponible = null;
+    private ?int $stockDisponible = null;
 
     #[ORM\Column]
     private ?bool $actif = null;
@@ -106,36 +106,36 @@ class Menu
 
     public function getNbPersonnesMin(): ?int
     {
-        return $this->nb_personnes_min;
+        return $this->nbPersonnesMin;
     }
 
-    public function setNbPersonnesMin(int $nb_personnes_min): static
+    public function setNbPersonnesMin(int $nbPersonnesMin): static
     {
-        $this->nb_personnes_min = $nb_personnes_min;
+        $this->nbPersonnesMin = $nbPersonnesMin;
 
         return $this;
     }
 
     public function getPrixBase(): ?string
     {
-        return $this->prix_base;
+        return $this->prixBase;
     }
 
-    public function setPrixBase(string $prix_base): static
+    public function setPrixBase(string $prixBase): static
     {
-        $this->prix_base = $prix_base;
+        $this->prixBase = $prixBase;
 
         return $this;
     }
 
     public function getStockDisponible(): ?int
     {
-        return $this->stock_disponible;
+        return $this->stockDisponible;
     }
 
-    public function setStockDisponible(int $stock_disponible): static
+    public function setStockDisponible(int $stockDisponible): static
     {
-        $this->stock_disponible = $stock_disponible;
+        $this->stockDisponible = $stockDisponible;
 
         return $this;
     }

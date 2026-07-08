@@ -17,10 +17,10 @@ class Horaire
     private ?string $jour = null;
 
     #[ORM\Column(length: 5, nullable: true)]
-    private ?string $heure_ouverture = null;
+    private ?string $heureOuverture = null;
 
     #[ORM\Column(length: 5, nullable: true)]
-    private ?string $heure_fermeture = null;
+    private ?string $heureFermeture = null;
 
     public function getId(): ?int
     {
@@ -41,24 +41,24 @@ class Horaire
 
     public function getHeureOuverture(): ?string
     {
-        return $this->heure_ouverture;
+        return $this->heureOuverture;
     }
 
-    public function setHeureOuverture(?string $heure_ouverture): static
+    public function setHeureOuverture(?string $heureOuverture): static
     {
-        $this->heure_ouverture = $heure_ouverture;
+        $this->heureOuverture = $heureOuverture;
 
         return $this;
     }
 
     public function getHeureFermeture(): ?string
     {
-        return $this->heure_fermeture;
+        return $this->heureFermeture;
     }
 
-    public function setHeureFermeture(?string $heure_fermeture): static
+    public function setHeureFermeture(?string $heureFermeture): static
     {
-        $this->heure_fermeture = $heure_fermeture;
+        $this->heureFermeture = $heureFermeture;
 
         return $this;
     }

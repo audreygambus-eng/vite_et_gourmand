@@ -24,7 +24,7 @@ class Avis
     private ?bool $valide = null;
 
     #[ORM\Column]
-    private ?\DateTime $date_creation = null;
+    private ?\DateTime $dateCreation = null;
 
     #[ORM\OneToOne(inversedBy: 'avis', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -73,12 +73,12 @@ class Avis
 
     public function getDateCreation(): ?\DateTime
     {
-        return $this->date_creation;
+        return $this->dateCreation;
     }
 
-    public function setDateCreation(\DateTime $date_creation): static
+    public function setDateCreation(\DateTime $dateCreation): static
     {
-        $this->date_creation = $date_creation;
+        $this->dateCreation = $dateCreation;
 
         return $this;
     }

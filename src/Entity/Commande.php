@@ -17,46 +17,46 @@ class Commande
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $numero_commande = null;
+    private ?string $numeroCommande = null;
 
     #[ORM\Column]
-    private ?\DateTime $date_commande = null;
+    private ?\DateTime $dateCommande = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $date_prestation = null;
+    private ?\DateTime $datePrestation = null;
 
     #[ORM\Column(length: 5)]
-    private ?string $heure_livraison = null;
+    private ?string $heureLivraison = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $adresse_livraison = null;
+    private ?string $adresseLivraison = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $ville_livraison = null;
+    private ?string $villeLivraison = null;
 
     #[ORM\Column]
-    private ?int $nb_personnes = null;
+    private ?int $nbPersonnes = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $prix_menu = null;
+    private ?string $prixMenu = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
-    private ?string $prix_livraison = null;
+    private ?string $prixLivraison = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
-    private ?string $prix_total = null;
+    private ?string $prixTotal = null;
 
     #[ORM\Column]
-    private ?bool $pret_materiel = null;
+    private ?bool $pretMateriel = null;
 
     #[ORM\Column(nullable: true)]
-    private ?bool $materiel_rendu = null;
+    private ?bool $materielRendu = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $motif_annulation = null;
+    private ?string $motifAnnulation = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    private ?string $mode_contact_annulation = null;
+    private ?string $modeContactAnnulation = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
@@ -87,168 +87,168 @@ class Commande
 
     public function getNumeroCommande(): ?string
     {
-        return $this->numero_commande;
+        return $this->numeroCommande;
     }
 
-    public function setNumeroCommande(string $numero_commande): static
+    public function setNumeroCommande(string $numeroCommande): static
     {
-        $this->numero_commande = $numero_commande;
+        $this->numeroCommande = $numeroCommande;
 
         return $this;
     }
 
     public function getDateCommande(): ?\DateTime
     {
-        return $this->date_commande;
+        return $this->dateCommande;
     }
 
-    public function setDateCommande(\DateTime $date_commande): static
+    public function setDateCommande(\DateTime $dateCommande): static
     {
-        $this->date_commande = $date_commande;
+        $this->dateCommande = $dateCommande;
 
         return $this;
     }
 
     public function getDatePrestation(): ?\DateTime
     {
-        return $this->date_prestation;
+        return $this->datePrestation;
     }
 
-    public function setDatePrestation(\DateTime $date_prestation): static
+    public function setDatePrestation(\DateTime $datePrestation): static
     {
-        $this->date_prestation = $date_prestation;
+        $this->datePrestation = $datePrestation;
 
         return $this;
     }
 
     public function getHeureLivraison(): ?string
     {
-        return $this->heure_livraison;
+        return $this->heureLivraison;
     }
 
-    public function setHeureLivraison(string $heure_livraison): static
+    public function setHeureLivraison(string $heureLivraison): static
     {
-        $this->heure_livraison = $heure_livraison;
+        $this->heureLivraison = $heureLivraison;
 
         return $this;
     }
 
     public function getAdresseLivraison(): ?string
     {
-        return $this->adresse_livraison;
+        return $this->adresseLivraison;
     }
 
-    public function setAdresseLivraison(string $adresse_livraison): static
+    public function setAdresseLivraison(string $adresseLivraison): static
     {
-        $this->adresse_livraison = $adresse_livraison;
+        $this->adresseLivraison = $adresseLivraison;
 
         return $this;
     }
 
     public function getVilleLivraison(): ?string
     {
-        return $this->ville_livraison;
+        return $this->villeLivraison;
     }
 
-    public function setVilleLivraison(string $ville_livraison): static
+    public function setVilleLivraison(string $villeLivraison): static
     {
-        $this->ville_livraison = $ville_livraison;
+        $this->villeLivraison = $villeLivraison;
 
         return $this;
     }
 
     public function getNbPersonnes(): ?int
     {
-        return $this->nb_personnes;
+        return $this->nbPersonnes;
     }
 
-    public function setNbPersonnes(int $nb_personnes): static
+    public function setNbPersonnes(int $nbPersonnes): static
     {
-        $this->nb_personnes = $nb_personnes;
+        $this->nbPersonnes = $nbPersonnes;
 
         return $this;
     }
 
     public function getPrixMenu(): ?string
     {
-        return $this->prix_menu;
+        return $this->prixMenu;
     }
 
-    public function setPrixMenu(string $prix_menu): static
+    public function setPrixMenu(string $prixMenu): static
     {
-        $this->prix_menu = $prix_menu;
+        $this->prixMenu = $prixMenu;
 
         return $this;
     }
 
     public function getPrixLivraison(): ?string
     {
-        return $this->prix_livraison;
+        return $this->prixLivraison;
     }
 
-    public function setPrixLivraison(?string $prix_livraison): static
+    public function setPrixLivraison(?string $prixLivraison): static
     {
-        $this->prix_livraison = $prix_livraison;
+        $this->prixLivraison = $prixLivraison;
 
         return $this;
     }
 
     public function getPrixTotal(): ?string
     {
-        return $this->prix_total;
+        return $this->prixTotal;
     }
 
-    public function setPrixTotal(string $prix_total): static
+    public function setPrixTotal(string $prixTotal): static
     {
-        $this->prix_total = $prix_total;
+        $this->prixTotal = $prixTotal;
 
         return $this;
     }
 
     public function isPretMateriel(): ?bool
     {
-        return $this->pret_materiel;
+        return $this->pretMateriel;
     }
 
-    public function setPretMateriel(bool $pret_materiel): static
+    public function setPretMateriel(bool $pretMateriel): static
     {
-        $this->pret_materiel = $pret_materiel;
+        $this->pretMateriel = $pretMateriel;
 
         return $this;
     }
 
     public function isMaterielRendu(): ?bool
     {
-        return $this->materiel_rendu;
+        return $this->materielRendu;
     }
 
-    public function setMaterielRendu(?bool $materiel_rendu): static
+    public function setMaterielRendu(?bool $materielRendu): static
     {
-        $this->materiel_rendu = $materiel_rendu;
+        $this->materielRendu = $materielRendu;
 
         return $this;
     }
 
     public function getMotifAnnulation(): ?string
     {
-        return $this->motif_annulation;
+        return $this->motifAnnulation;
     }
 
-    public function setMotifAnnulation(?string $motif_annulation): static
+    public function setMotifAnnulation(?string $motifAnnulation): static
     {
-        $this->motif_annulation = $motif_annulation;
+        $this->motifAnnulation = $motifAnnulation;
 
         return $this;
     }
 
     public function getModeContactAnnulation(): ?string
     {
-        return $this->mode_contact_annulation;
+        return $this->modeContactAnnulation;
     }
 
-    public function setModeContactAnnulation(?string $mode_contact_annulation): static
+    public function setModeContactAnnulation(?string $modeContactAnnulation): static
     {
-        $this->mode_contact_annulation = $mode_contact_annulation;
+        $this->modeContactAnnulation = $modeContactAnnulation;
 
         return $this;
     }

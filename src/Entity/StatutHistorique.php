@@ -18,7 +18,7 @@ class StatutHistorique
     private ?string $statut = null;
 
     #[ORM\Column]
-    private ?\DateTime $date_modification = null;
+    private ?\DateTime $dateModification = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $commentaire = null;
@@ -46,12 +46,12 @@ class StatutHistorique
 
     public function getDateModification(): ?\DateTime
     {
-        return $this->date_modification;
+        return $this->dateModification;
     }
 
-    public function setDateModification(\DateTime $date_modification): static
+    public function setDateModification(\DateTime $dateModification): static
     {
-        $this->date_modification = $date_modification;
+        $this->dateModification = $dateModification;
 
         return $this;
     }
