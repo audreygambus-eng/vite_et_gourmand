@@ -7,9 +7,6 @@ namespace DoctrineMigrations;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
-/**
- * Auto-generated Migration: Please modify to your needs!
- */
 final class Version20260708182617 extends AbstractMigration
 {
     public function getDescription(): string
@@ -19,7 +16,6 @@ final class Version20260708182617 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE allergene (id INT AUTO_INCREMENT NOT NULL, libelle VARCHAR(100) NOT NULL, PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('CREATE TABLE avis (id INT AUTO_INCREMENT NOT NULL, note INT NOT NULL, commentaire LONGTEXT NOT NULL, valide TINYINT NOT NULL, date_creation DATETIME NOT NULL, commande_id INT NOT NULL, UNIQUE INDEX UNIQ_8F91ABF082EA2E54 (commande_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
         $this->addSql('CREATE TABLE commande (id INT AUTO_INCREMENT NOT NULL, numero_commande VARCHAR(50) NOT NULL, date_commande DATETIME NOT NULL, date_prestation DATE NOT NULL, heure_livraison VARCHAR(5) NOT NULL, adresse_livraison VARCHAR(255) NOT NULL, ville_livraison VARCHAR(100) NOT NULL, nb_personnes INT NOT NULL, prix_menu NUMERIC(10, 2) NOT NULL, prix_livraison NUMERIC(10, 2) DEFAULT NULL, prix_total NUMERIC(10, 2) NOT NULL, pret_materiel TINYINT NOT NULL, materiel_rendu TINYINT DEFAULT NULL, motif_annulation LONGTEXT DEFAULT NULL, mode_contact_annulation VARCHAR(50) DEFAULT NULL, utilisateur_id INT NOT NULL, menu_id INT NOT NULL, INDEX IDX_6EEAA67DFB88E14F (utilisateur_id), INDEX IDX_6EEAA67DCCD7E912 (menu_id), PRIMARY KEY (id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci`');
@@ -51,7 +47,6 @@ final class Version20260708182617 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE avis DROP FOREIGN KEY FK_8F91ABF082EA2E54');
         $this->addSql('ALTER TABLE commande DROP FOREIGN KEY FK_6EEAA67DFB88E14F');
         $this->addSql('ALTER TABLE commande DROP FOREIGN KEY FK_6EEAA67DCCD7E912');

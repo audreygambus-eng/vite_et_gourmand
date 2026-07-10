@@ -197,7 +197,7 @@ class Menu
     public function removeImage(Image $image): static
     {
         if ($this->images->removeElement($image)) {
-            // set the owning side to null (unless already changed)
+            
             if ($image->getMenu() === $this) {
                 $image->setMenu(null);
             }

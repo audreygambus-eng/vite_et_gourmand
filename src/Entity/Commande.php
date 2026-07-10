@@ -298,7 +298,7 @@ class Commande
     public function removeStatutHistorique(StatutHistorique $statutHistorique): static
     {
         if ($this->statutHistoriques->removeElement($statutHistorique)) {
-            // set the owning side to null (unless already changed)
+            
             if ($statutHistorique->getCommande() === $this) {
                 $statutHistorique->setCommande(null);
             }
@@ -314,7 +314,7 @@ class Commande
 
     public function setAvis(Avis $avis): static
     {
-        // set the owning side of the relation if necessary
+        
         if ($avis->getCommande() !== $this) {
             $avis->setCommande($this);
         }

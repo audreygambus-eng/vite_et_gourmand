@@ -17,7 +17,7 @@ class MenuRepository extends ServiceEntityRepository
     }
 
        /**
-        * @return Menu[] Returns an array of Menu objects
+        * @return Menu[] Retourne les menus actifs
         */
        public function findActifs(): array
        {
@@ -28,5 +28,36 @@ class MenuRepository extends ServiceEntityRepository
                ->getQuery()
                ->getResult()
            ;
+       }
+
+       // Filtres optionnels : la condition n'est ajoutée que si le paramètre est donné
+       public function findFiltres(?string $prixMax, ?string $themeId, ?string $regimeId, ?string $nbPersonnes): array
+       {
+            $qb = $this->createQueryBuilder('m')
+                ->andWhere('m.actif = :actif')
+                ->setParameter('actif', true);
+
+            if($prixMax){
+                $qb->andWhere('m.prixBase <= :prixMax')
+                   ->setParameter('prixMax', $prixMax);
+            }
+
+            if($themeId){
+                $qb->andWhere('m.theme = :themeId')
+                   ->setParameter('themeId', $themeId);
+            }
+            if($regimeId){
+                $qb->andWhere('m.regime = :regimeId')
+                   ->setParameter('regimeId', $regimeId);
+            }
+
+            if($nbPersonnes){
+                $qb->andWhere('m.nbPersonnesMin >= :nbPersonnes')
+                   ->setParameter('nbPersonnes', $nbPersonnes);
+            }
+
+            return $qb->orderBy('m.titre','ASC')
+                ->getQuery()
+                ->getResult();
        }
 }

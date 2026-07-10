@@ -5,29 +5,164 @@
 {% block body %}
     <h1 class="mb-4">Nos menus</h1>
 
-    {% if menus is empty %}
-        <p class="text-muted">Aucun menu disponible pour le moment.</p>
-    {% else %}
-        <div class="row">
-            {% for menu in menus %}
-                <div class="col-md-4 mb-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ menu.titre }}</h5>
-                            <p class="card-text">{{ menu.description }}</p>
-                            <p class="card-text">
-                                <small class="text-muted">
-                                    À partir de {{ menu.nbPersonnesMin }} personnes
-                                </small>
-                            </p>
-                            <p class="card-text fw-bold">
-                                {{ menu.prixBase }} € / personne
-                            </p>
-                            <a href="#" class="btn btn-primary">Voir le détail</a>
+    {# Formulaire de filtres sur lesquels vont s'appliquer les requêtes AJAX pour éviter les rechargements de page #}
+    <form id= "filtres-menus" class= "row g-3 mb-4">
+        <div class= "col-md-3">
+            <label for="prixMax" class="form-label">Prix maximum</label>
+            <input type="number" class="form-control" id="prixMax" name="prixMax" step="0.01">
+        </div>
+
+        <div class="col-md-3">
+            <label for="theme" class="form-label">Thème</label>
+            <select class="form-select" id="theme" name="theme">
+                <option value="">Tous les thèmes</option>
+                {% for theme in themes %}
+                    <option value="{{ theme.id }}">{{ theme.libelle }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="regime" class="form-label">Régime</label>
+            <select class="form-select" id="regime" name="regime">
+                <option value="">Tous les régimes</option>
+                {% for regime in regimes %}
+                    <option value="{{ regime.id }}">{{ regime.libelle }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="nbPersonnes" class="form-label">Nombre de personnes minimum</label>
+            <input type="number" class="form-control" id="nbPersonnes" name="nbPersonnes">
+        </div>
+    </form>
+        {#Ici, les menus filtrés sont injectés dynamiquement par JS#}
+        <div id= "liste-menus" class="row">
+            {% if menus is empty %}
+                <p class="text-muted">Aucun menu disponible pour le moment.</p>
+            {% else %}
+                {% for menu in menus %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ menu.titre }}</h5>
+                                <p class="card-text">{{ menu.description }}</p>
+                                <p class="card-text">
+                                    <small class="text-muted">
+                                        À partir de {{ menu.nbPersonnesMin }} personnes
+                                    </small>
+                                </p>
+                                <p class="card-text fw-bold">
+                                    {{ menu.prixBase }} € / personne
+                                </p>
+                                <a href="#" class="btn btn-primary">Voir le détail</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div> 
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const formulaireFiltres = document.getElementById('filtres-menus');
+            const listeMenus = document.getElementById('liste-menus');
+            let timeoutId; 
+
+            // Debounce
+            function actualiserMenusAvecDelai() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(actualiserMenus, 300);
+            }
+
+            // On récupère les valeurs des filtres et on va interroger l'API Symfony
+            function actualiserMenus(){
+                const prixMax = document.getElementById('prixMax').value;
+                const theme = document.getElementById('theme').value;
+                const regime = document.getElementById('regime').value;
+                const nbPersonnes = document.getElementById('nbPersonnes').value;
+
+                // Seuls les filtres renseignés sont transmis
+                const params = new URLSearchParams();
+                if (prixMax) params.append('prixMax', prixMax);
+                if (theme) params.append('theme', theme);
+                if (regime) params.append('regime', regime);
+                if (nbPersonnes) params.append('nbPersonnes', nbPersonnes);
+
+                // Message de chargement pendant la requête 
+                listeMenus.innerHTML = '<p class="text-muted">Chargement des menus...</p>';
+
+                // Appel à la route API pour retour Json
+                fetch('{{ path('app_menu_filter')}}?' + params.toString())
+                    .then(response => response.json())
+                    .then(menus => {
+
+                        // Liste vidée avant d'être reconstruite
+                        listeMenus.innerHTML = '';
+
+                        if (menus.length === 0){
+                            listeMenus.innerHTML = '<p class="text-muted">Aucun menu ne correspond à ces critères.</p>';
+                            return;
+                        }
+
+                        // Reconstruction manuelle des cartes depuis le JSON reçu
+                        menus.forEach(menu => {
+                            const carte = document.createElement('div');
+                            carte.className = 'col-md-4 mb-4';
+
+                            const card = document.createElement('div');
+                            card.className = 'card h-100';
+
+                            const cardBody = document.createElement('div');
+                            cardBody.className = 'card-body';
+
+                            const titre = document.createElement('h5');
+                            titre.className = 'card-title';
+                            titre.textContent = menu.titre;
+
+                            const description = document.createElement('p');
+                            description.className = 'card-text';
+                            description.textContent = menu.description;
+
+                            const nbPersonnesP = document.createElement('p');
+                            nbPersonnesP.className = 'card-text';
+                            const nbPersonnesSmall = document.createElement('small');
+                            nbPersonnesSmall.className = 'text-muted';
+                            nbPersonnesSmall.textContent = `À partir de ${menu.nbPersonnesMin} personnes`;
+                            nbPersonnesP.appendChild(nbPersonnesSmall);
+
+                            const prix = document.createElement('p');
+                            prix.className = 'card-text fw-bold';
+                            prix.textContent = `${menu.prixBase} € / personne`;
+
+                            const bouton = document.createElement('a');
+                            bouton.href = '#';
+                            bouton.className = 'btn btn-primary';
+                            bouton.textContent = 'Voir le détail';
+
+                            cardBody.appendChild(titre);
+                            cardBody.appendChild(description);
+                            cardBody.appendChild(nbPersonnesP);
+                            cardBody.appendChild(prix);
+                            cardBody.appendChild(bouton);
+                            card.appendChild(cardBody);
+                            carte.appendChild(card);
+
+                            listeMenus.appendChild(carte);
+                        });
+
+                    })
+                    .catch(error => {
+                        // Utilisateur informé en cas d'échec
+                        listeMenus.innerHTML = '<p class="text-danger">Une erreur est survenue, veuillez réessayer.</p>';
+                        console.error('Erreur lors du filtrage :', error);
+                });
+            }
+
+            // Déclenche le filtre à chaque saisie ou sélection
+            formulaireFiltres.addEventListener('input', actualiserMenusAvecDelai);
+        });
+    </script>
 {% endblock %}
