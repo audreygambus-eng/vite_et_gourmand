@@ -6,10 +6,13 @@ use App\Entity\Utilisateur;
 use App\Form\RegistrationFormType;
 use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address; // Affichage du nom de l'expéditeur
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\RoleRepository; // Récupération du rôle utilisateur en base
@@ -18,7 +21,7 @@ use App\Repository\RoleRepository; // Récupération du rôle utilisateur en bas
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, RoleRepository $roleRepository): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, RoleRepository $roleRepository, MailerInterface $mailer): Response
     {
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -40,6 +43,16 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
+
+            $email = (new TemplatedEmail())
+            ->from(new Address('contact@vite-et-gourmand.com', 'Vite & Gourmand'))
+            ->to((string) $user->getEmail())
+            ->subject('Bienvenue chez Vite & Gourmand !')
+            ->htmlTemplate('emails/bienvenue.html.twig')
+            ->context([
+                'prenom' => $user->getPrenom(),
+            ]);
+            $mailer->send($email);
 
             return $security->login($user, LoginFormAuthenticator::class, 'main');
         }
