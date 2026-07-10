@@ -54,7 +54,7 @@
                                 <p class="card-text fw-bold">
                                     {{ menu.prixBase }} € / personne
                                 </p>
-                                <a href="#" class="btn btn-primary">Voir le détail</a>
+                                <a href="{{ path('app_menu_detail', {id: menu.id}) }}" class="btn btn-primary">Voir le détail</a>
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,7 @@
                             prix.textContent = `${menu.prixBase} € / personne`;
 
                             const bouton = document.createElement('a');
-                            bouton.href = '#';
+                            bouton.href = `/menu/${menu.id}`;
                             bouton.className = 'btn btn-primary';
                             bouton.textContent = 'Voir le détail';
 

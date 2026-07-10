@@ -64,4 +64,18 @@ class MenuController extends AbstractController
         return new JsonResponse($data);
     
     }
+
+    #[Route('/menu/{id}', name: 'app_menu_detail')]
+    public function detail(int $id, MenuRepository $menuRepository): Response
+    {
+        $menu = $menuRepository->find($id);
+
+            if (!$menu) {
+            throw $this->createNotFoundException('Ce menu n\'existe pas.');
+        }
+
+        return $this->render('menu/detail.html.twig', [
+            'menu' => $menu,
+        ]);
+    }
 }
