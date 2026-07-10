@@ -4,6 +4,10 @@
 
 {% block body %}
     <h1>Créer un compte</h1>
+    
+    {% for message in app.flashes('error') %}
+    <div class="alert alert-danger">{{ message }}</div>
+    {% endfor %}
 
     {{ form_errors(registrationForm) }}
 

@@ -42,8 +42,15 @@ class RegistrationController extends AbstractController
             // Lien avec l'utilisateur
             $user->setRole($roleUser);
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            // Sauvegarde en base isolée en cas d'échec de l'inscription avec information de l'utilisateur
+            try {
+                $entityManager->persist($user);
+                $entityManager->flush();
+            } catch (\Exception $e) {
+                $logger->error('Erreur création compte utilisateur : ' . $e->getMessage());
+                $this->addFlash('error', 'Une erreur est survenue lors de la création de votre compte. Veuillez réessayer.');
+                return $this->redirectToRoute('app_register');
+            }
 
             // Envoi du mail isolé pour ne pas bloquer l'inscription si Mailtrap échoue
             try{
