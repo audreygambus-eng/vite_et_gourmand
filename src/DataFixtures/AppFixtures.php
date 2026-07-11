@@ -86,12 +86,21 @@ class AppFixtures extends Fixture
         }
 
         // Création des horaires
-        $jours = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
-        foreach ($jours as $jour) {
+        $horairesData = [
+            'Lundi' => ['09:00', '19:00'],
+            'Mardi' => ['09:00', '19:00'],
+            'Mercredi' => ['09:00', '19:00'],
+            'Jeudi' => ['09:00', '19:00'],
+            'Vendredi' => ['09:00', '20:00'],
+            'Samedi' => ['10:00', '20:00'],
+            'Dimanche' => ['10:00', '14:00'],
+        ];
+
+        foreach ($horairesData as $jour => $heures) {
             $horaire = new Horaire();
             $horaire->setJour($jour);
-            $horaire->setHeureOuverture('09:00');
-            $horaire->setHeureFermeture('19:00');
+            $horaire->setHeureOuverture($heures[0]);
+            $horaire->setHeureFermeture($heures[1]);
             $manager->persist($horaire);
         }
 
