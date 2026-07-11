@@ -57,6 +57,9 @@ class Menu
     #[ORM\ManyToMany(targetEntity: Plat::class, mappedBy: 'menus')]
     private Collection $plats;
 
+    #[ORM\Column]
+    private ?int $delaiMinimumJours = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -229,6 +232,18 @@ class Menu
         if ($this->plats->removeElement($plat)) {
             $plat->removeMenu($this);
         }
+
+        return $this;
+    }
+
+    public function getDelaiMinimumJours(): ?int
+    {
+        return $this->delaiMinimumJours;
+    }
+
+    public function setDelaiMinimumJours(int $delaiMinimumJours): static
+    {
+        $this->delaiMinimumJours = $delaiMinimumJours;
 
         return $this;
     }

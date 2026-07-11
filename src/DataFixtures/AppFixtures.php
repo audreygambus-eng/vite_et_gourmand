@@ -149,6 +149,7 @@ class AppFixtures extends Fixture
         $menu1->setTitre('Menu Noël Tradition');
         $menu1->setDescription('Un menu chaleureux et familial pour célébrer Noël autour de plats traditionnels français.');
         $menu1->setConditions('Commande à effectuer 5 jours avant la prestation.');
+        $menu1->setDelaiMinimumJours(5);
         $menu1->setNbPersonnesMin(6);
         $menu1->setPrixBase('30.00');
         $menu1->setStockDisponible(10);
@@ -161,6 +162,7 @@ class AppFixtures extends Fixture
         $menu2->setTitre('Menu Végétarien de Pâques');
         $menu2->setDescription('Pour les végés qui veulent se régaler.');
         $menu2->setConditions('Commande à effectuer 3 jours avant la prestation.');
+        $menu2->setDelaiMinimumJours(3);
         $menu2->setNbPersonnesMin(4);
         $menu2->setPrixBase('38.00');
         $menu2->setStockDisponible(8);
@@ -173,6 +175,7 @@ class AppFixtures extends Fixture
         $menu3->setTitre('Menu Table élégante');
         $menu3->setDescription('Un menu raffiné pour un repas assis, disponible toute l\'année.');
         $menu3->setConditions('Commande à effectuer 2 jours avant la prestation.');
+        $menu3->setDelaiMinimumJours(2);
         $menu3->setNbPersonnesMin(2);
         $menu3->setPrixBase('32.00');
         $menu3->setStockDisponible(15);

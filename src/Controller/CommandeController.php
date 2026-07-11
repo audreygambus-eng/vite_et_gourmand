@@ -6,6 +6,7 @@ use App\Entity\Commande;
 use App\Entity\StatutHistorique;
 use App\Form\CommandeFormType;
 use App\Repository\MenuRepository;
+use App\Repository\HoraireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class CommandeController extends AbstractController
 {
     #[Route('/commande/nouvelle/{menuId}', name: 'app_commande_nouvelle')]
-    public function nouvelle(int $menuId, MenuRepository $menuRepository, Request $request): Response
+    public function nouvelle(int $menuId, MenuRepository $menuRepository, Request $request, HoraireRepository $horaireRepository): Response
     {
         // Vérification de la connexion utilisateur avec information et redirection vers la page de connexion, le cas échéant
         if (!$this->getUser()) {
@@ -54,6 +55,35 @@ class CommandeController extends AbstractController
                 $this->addFlash('error', 'Ce menu n\'est pas disponible pour le moment.');
 
                 return $this->redirectToRoute('app_menu_detail', ['id' => $menuId]);
+            }
+
+            // Le délai minimum de commande doit être respecté
+            $dateLimite = new \DateTime();
+            $dateLimite->modify('+' . $menu->getDelaiMinimumJours() . ' days');
+
+            if ($commande->getDatePrestation() < $dateLimite) {
+                $this->addFlash('error', sprintf(
+                    'Ce menu doit être commandé au moins %d jours avant la date de prestation.',
+                    $menu->getDelaiMinimumJours()
+                ));
+
+                return $this->redirectToRoute('app_commande_nouvelle', ['menuId' => $menuId]);
+            }
+
+            // L'heure de livraison doit être comprise dans les horaires d'ouverture du traiteur
+            $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+            $jourSemaine = $joursSemaine[$commande->getDatePrestation()->format('N') - 1];
+            $horaire = $horaireRepository->findOneBy(['jour' => $jourSemaine]);
+
+            if ($horaire && ($commande->getHeureLivraison() < $horaire->getHeureOuverture() || $commande->getHeureLivraison() > $horaire->getHeureFermeture())) {
+                $this->addFlash('error', sprintf(
+                    'L\'heure de livraison doit être comprise entre %s et %s le %s.',
+                    $horaire->getHeureOuverture(),
+                    $horaire->getHeureFermeture(),
+                    $jourSemaine
+                ));
+
+                return $this->redirectToRoute('app_commande_nouvelle', ['menuId' => $menuId]);
             }
 
             // Données saisies stockées temporairement en session, le temps de la confirmation
@@ -119,7 +149,7 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/commande/confirmer', name: 'app_commande_confirmer', methods: ['POST'])]
-    public function confirmer(Request $request, MenuRepository $menuRepository, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    public function confirmer(Request $request, MenuRepository $menuRepository, EntityManagerInterface $entityManager, MailerInterface $mailer, HoraireRepository $horaireRepository): Response
     {
         $donnees = $request->getSession()->get('commande_en_cours');
 
@@ -131,6 +161,36 @@ class CommandeController extends AbstractController
 
         if (!$menu || $menu->getStockDisponible() <= 0) {
             $this->addFlash('error', 'Ce menu n\'est malheureusement plus disponible.');
+            return $this->redirectToRoute('app_menu');
+        }
+
+        // Recalcul de la date limite
+        $dateLimite = new \DateTime();
+        $dateLimite->modify('+' . $menu->getDelaiMinimumJours() . ' days');
+        $datePrestation = new \DateTime($donnees['datePrestation']);
+
+        if ($datePrestation < $dateLimite) {
+            $this->addFlash('error', sprintf(
+                'Ce menu doit être commandé au moins %d jours avant la date de prestation.',
+                $menu->getDelaiMinimumJours()
+        ));
+
+            return $this->redirectToRoute('app_menu');
+        }
+
+        // L'heure de livraison doit être comprise dans les horaires d'ouverture du traiteur
+        $joursSemaine = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+        $jourSemaine = $joursSemaine[$datePrestation->format('N') - 1];
+        $horaire = $horaireRepository->findOneBy(['jour' => $jourSemaine]);
+
+        if ($horaire && ($donnees['heureLivraison'] < $horaire->getHeureOuverture() || $donnees['heureLivraison'] > $horaire->getHeureFermeture())) {
+            $this->addFlash('error', sprintf(
+                'L\'heure de livraison doit être comprise entre %s et %s le %s.',
+                $horaire->getHeureOuverture(),
+                $horaire->getHeureFermeture(),
+                $jourSemaine
+            ));
+
             return $this->redirectToRoute('app_menu');
         }
 
