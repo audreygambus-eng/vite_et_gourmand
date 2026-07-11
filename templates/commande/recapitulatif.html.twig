@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Récapitulatif de votre commande - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <h1>Récapitulatif de votre commande</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>{{ menu.titre }}</h2>
+            <p>{{ donnees.nbPersonnes }} personnes</p>
+            <p>Date de prestation : {{ donnees.datePrestation }}</p>
+            <p>Heure de livraison : {{ donnees.heureLivraison }}</p>
+            <p>Adresse : {{ donnees.adresseLivraison }}, {{ donnees.villeLivraison }}</p>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Détail du prix</h3>
+
+                    <p>
+                        Prix menu ({{ menu.prixBase }} € × {{ donnees.nbPersonnes }} personnes)
+                        {% if reductionAppliquee %}
+                            <br><span class="text-success">Réduction de 10% appliquée</span>
+                        {% endif %}
+                        <br><strong>{{ prixMenu }} €</strong>
+                    </p>
+
+                    <p>
+                        Frais de livraison
+                        {% if prixLivraison == 0 %}
+                            <br><span class="text-muted">Gratuit (Bordeaux)</span>
+                        {% endif %}
+                        <br><strong>{{ prixLivraison }} €</strong>
+                    </p>
+
+                    <hr>
+
+                    <p class="fs-4 fw-bold">
+                        Total : {{ prixTotal }} €
+                    </p>
+
+                    <form method="post" action="{{ path('app_commande_confirmer') }}">
+                        <button type="submit" class="btn btn-primary btn-lg w-100">Confirmer la commande</button>
+                    </form>
+
+                    <a href="{{ path('app_menu_detail', {id: menu.id}) }}" class="btn btn-outline-secondary w-100 mt-2">Annuler et revenir au menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

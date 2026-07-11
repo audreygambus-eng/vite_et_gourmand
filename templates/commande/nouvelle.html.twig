@@ -1,8 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Commander - Vite & Gourmand{% endblock %}
+{% block title %}Commander {{ menu.titre }} - Vite & Gourmand{% endblock %}
 
 {% block body %}
-    <h1>Commander {{ menu.titre }}</h1>
-    <p>Prix : {{ menu.prixBase }} € / personne</p>
+    <h1>Commander : {{ menu.titre }}</h1>
+    <p class="text-muted">{{ menu.prixBase }} € / personne — Minimum {{ menu.nbPersonnesMin }} personnes</p>
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form) }}
+        {{ form_row(form.datePrestation) }}
+        {{ form_row(form.heureLivraison) }}
+        {{ form_row(form.adresseLivraison) }}
+        {{ form_row(form.villeLivraison) }}
+        {{ form_row(form.nbPersonnes) }}
+
+        <button type="submit" class="btn btn-primary mt-3">Valider la commande</button>
+    {{ form_end(form) }}
 {% endblock %}
