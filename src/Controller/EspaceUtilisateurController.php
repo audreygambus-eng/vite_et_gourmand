@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Form\ProfilFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -181,5 +182,27 @@ class EspaceUtilisateurController extends AbstractController
 
         $this->addFlash('success', 'Votre commande a bien été annulée.');
         return $this->redirectToRoute('app_espace_utilisateur');
+    }
+
+    #[Route('/espace/utilisateur/profil', name: 'app_espace_utilisateur_profil')]
+    #[IsGranted('ROLE_USER')]
+
+    public function profil(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $utilisateur = $this->getUser();
+
+        $form = $this->createForm(ProfilFormType::class, $utilisateur);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Vos informations ont bien été mises à jour.');
+            return $this->redirectToRoute('app_espace_utilisateur_profil');
+        }
+
+        return $this->render('espace_utilisateur/profil.html.twig', [
+            'form' => $form
+        ]);
     }
 }
