@@ -18,6 +18,18 @@
             <p><strong>Prix menu :</strong> {{ commande.prixMenu }} €</p>
             <p><strong>Frais de livraison :</strong> {{ commande.prixLivraison }} €</p>
             <p><strong>Total :</strong> {{ commande.prixTotal }} €</p>
+
+            {% if commande.estModifiable %}
+                <div class="mt-3">
+                    <a href="{{ path('app_espace_utilisateur_commande_modifier', {id: commande.id})}}" class="btn btn-primary">Modifier</a>
+
+                    <form method="post" action="{{ path('app_espace_utilisateur_commande_annuler', {id: commande.id}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûre de vouloir annuler cette commande ?');">
+                        <button type="submit" class="btn btn-danger">Annuler la commande</button>
+                    </form>
+                </div>
+            {% else %}
+                <p class="text-muted mt-3">Cette commande a été acceptée et ne peut donc plus être modifiée ni annulée.</p>
+            {% endif %}
         </div>
 
         <div class="col-md-6">

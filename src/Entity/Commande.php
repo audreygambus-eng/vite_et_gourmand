@@ -323,4 +323,15 @@ class Commande
 
         return $this;
     }
+
+    public function estModifiable() : bool
+    {
+        foreach ($this->statutHistoriques as $statutHistorique) {
+            if ($statutHistorique->getStatut() === 'acceptée') {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
