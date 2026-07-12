@@ -66,6 +66,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+        const cheminBaseDetail = "{{ path('app_menu_detail', {id: 0}) }}".replace('/0', '');
         document.addEventListener('DOMContentLoaded', function() {
             const formulaireFiltres = document.getElementById('filtres-menus');
             const listeMenus = document.getElementById('liste-menus');
@@ -138,7 +139,7 @@
                             prix.textContent = `${menu.prixBase} € / personne`;
 
                             const bouton = document.createElement('a');
-                            bouton.href = `/menu/${menu.id}`;
+                            bouton.href = `${cheminBaseDetail}/${menu.id}`;
                             bouton.className = 'btn btn-primary';
                             bouton.textContent = 'Voir le détail';
 
