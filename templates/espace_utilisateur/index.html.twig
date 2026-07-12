@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <h1>Mes commandes</h1>
+
+    {% if commandes is empty %}
+        <p class="text-muted">Aucune commande enregistrée.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Numéro</th>
+                        <th>Menu</th>
+                        <th>Date de prestation</th>
+                        <th>Nombre de personnes</th>
+                        <th>Prix total</th>
+                        <th>Statut</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commande in commandes %}
+                        <tr>
+                            <td>{{ commande.numeroCommande }}</td>
+                            <td>{{ commande.menu.titre }}</td>
+                            <td>{{ commande.datePrestation|date('d/m/Y') }}</td>
+                            <td>{{ commande.nbPersonnes }}</td>
+                            <td>{{ commande.prixTotal }} €</td>
+                            <td>
+                                {% if commande.statutHistoriques is not empty %}
+                                    <span class="badge bg-info">{{ commande.statutHistoriques|last.statut }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('app_espace_utilisateur_commande_detail', {id: commande.id}) }}" class="btn btn-sm btn-outline-primary">Détail</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

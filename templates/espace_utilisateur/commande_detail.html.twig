@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande {{ commande.numeroCommande }} - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_utilisateur')}}" class ="btn btn-outline-secondary mb-4">← Retour à mes commandes</a>
+
+    <h1>Commande {{ commande.numeroCommande}}</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Détails</h2>
+            <p><strong>Menu :</strong> {{ commande.menu.titre }}</p>
+            <p><strong>Nombre de personnes :</strong> {{ commande.nbPersonnes }}</p>
+            <p><strong>Date de prestation :</strong> {{ commande.datePrestation|date('d/m/Y') }}</p>
+            <p><strong>Heure de livraison :</strong> {{ commande.heureLivraison }}</p>
+            <p><strong>Adresse :</strong> {{ commande.adresseLivraison }}, {{ commande.villeLivraison }}</p>
+            <p><strong>Prix menu :</strong> {{ commande.prixMenu }} €</p>
+            <p><strong>Frais de livraison :</strong> {{ commande.prixLivraison }} €</p>
+            <p><strong>Total :</strong> {{ commande.prixTotal }} €</p>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Suivi de la commande</h2>
+            {% if commande.statutHistoriques is empty %}
+                <p class="text-muted">Aucun historique n'est disponible.</p>
+            {% else %}
+                <ul class="list-group">
+                    {% for statut in commande.statutHistoriques %}
+                        <li class="list-group-item">
+                            <span class="badge bg-info">{{statut.statut}}</span>
+                            <br>
+                            <small class="text-muted">{{statut.dateModification|date('d/m/Y H:i')}}</small>
+                            {% if statut.commentaire %}
+                                <br><small>{{statut.commentaire}}</small>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
