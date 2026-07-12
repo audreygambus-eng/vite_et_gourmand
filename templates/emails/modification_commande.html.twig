@@ -1,0 +1,19 @@
+<p>Bonjour,</p>
+
+<p>Votre commande a bien été modifiée !</p>
+
+<p>Voici votre nouveau récapitulatif complet :</p>
+
+<p><strong>Numéro de commande :</strong> {{ commande.numeroCommande }}</p>
+
+<p><strong>Menu :</strong> {{ menu.titre }}</p>
+<p><strong>Nombre de personnes :</strong> {{ commande.nbPersonnes }}</p>
+<p><strong>Date de prestation :</strong> {{ commande.datePrestation|date('d/m/Y') }}</p>
+<p><strong>Heure de livraison :</strong> {{ commande.heureLivraison }}</p>
+<p><strong>Adresse de livraison :</strong> {{ commande.adresseLivraison }}, {{ commande.villeLivraison }}</p>
+
+<p><strong>Prix menu :</strong> {{ commande.prixMenu }} €</p>
+<p><strong>Frais de livraison :</strong> {{ commande.prixLivraison }} €</p>
+<p><strong>Total :</strong> {{ commande.prixTotal }} €</p>
+
+<p>À bientôt,<br> L'équipe Vite & Gourmand</p>

@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use App\Repository\HoraireRepository;
 use App\Entity\StatutHistorique;
 use App\Form\CommandeFormType;
@@ -47,7 +50,7 @@ class EspaceUtilisateurController extends AbstractController
     #[Route('/espace/utilisateur/commande/{id}/modifier', name: 'app_espace_utilisateur_commande_modifier')]
     #[IsGranted('ROLE_USER')]
 
-    public function commandeModifier(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager,HoraireRepository $horaireRepository): Response
+    public function commandeModifier(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager,HoraireRepository $horaireRepository, MailerInterface $mailer): Response
     {
         $commande = $commandeRepository->find($id);
 
@@ -119,6 +122,20 @@ class EspaceUtilisateurController extends AbstractController
             $commande->setPrixTotal((string) ($prixMenu + $prixLivraison));
             
             $entityManager->flush();
+
+            try {
+                $email = (new TemplatedEmail())
+                    ->from(new Address('contact@vite-et-gourmand.com', 'Vite & Gourmand'))
+                    ->to((string) $this->getUser()->getEmail())
+                    ->subject('Confirmation de modification de votre commande')
+                    ->htmlTemplate('emails/modification_commande.html.twig')
+                    ->context([
+                        'commande' => $commande,
+                        'menu' => $menu,
+                    ]);
+                $mailer->send($email);
+                } catch (\Exception $e) {
+                }
 
             $this->addFlash('success', 'Votre commande a bien été modifiée');
             return $this->redirectToRoute('app_espace_utilisateur_commande_detail', ['id' => $id]);
