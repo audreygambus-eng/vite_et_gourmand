@@ -30,4 +30,13 @@ class AvisRepository extends ServiceEntityRepository
                ->getResult()
            ;
        }
+
+       public function existePourCommande(int $commandeId): bool
+       {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.commande = :commandeId')
+                ->setParameter('commandeId', $commandeId)
+                ->getQuery()
+                ->getOneOrNullResult () !== null;
+       }
 }

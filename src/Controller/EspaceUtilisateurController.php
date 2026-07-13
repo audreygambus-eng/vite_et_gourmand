@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Avis;
+use App\Form\AvisFormType;
+use App\Repository\AvisRepository;
 use App\Form\ProfilFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
@@ -182,6 +185,56 @@ class EspaceUtilisateurController extends AbstractController
 
         $this->addFlash('success', 'Votre commande a bien été annulée.');
         return $this->redirectToRoute('app_espace_utilisateur');
+    }
+
+    #[Route('/espace/utilisateur/commande/{id}/avis', name: 'app_espace_utilisateur_avis')]
+    #[IsGranted('ROLE_USER')]
+
+    public function laisserAvis(int $id, Request $request, CommandeRepository $commandeRepository, AvisRepository $avisRepository, EntityManagerInterface $entityManager): Response
+    {
+        $commande = $commandeRepository->find($id);
+
+        if(!$commande) {
+            throw $this->createNotFoundException('Cette commande n\'existe pas.');
+        }
+
+        // L'accès aux commandes d'autres utilisateurs doit être protégé
+        if($commande->getUtilisateur() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+
+        // Un avis ne peut être laissé que si la commande est terminée
+        if(!$commande->estTerminee()){
+            $this->addFlash('error', 'Vous ne pouvez laisser un avis que sur une commande terminée.');
+            return $this->redirectToRoute('app_espace_utilisateur_commande_detail', ['id' => $id]);
+        }
+
+        // Il ne peut pas y avoir plusieurs avis par commande
+        if ($avisRepository->existePourCommande($id)) {
+        $this->addFlash('error', 'Vous avez déjà laissé un avis pour cette commande.');
+        return $this->redirectToRoute('app_espace_utilisateur_commande_detail', ['id' => $id]);
+        }
+
+        $avis = new Avis();
+        $form = $this->createForm(AvisFormType::class, $avis);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $avis->setValide(false);
+            $avis->setDateCreation(new \DateTime());
+            $avis->setCommande($commande);
+
+            $entityManager->persist($avis);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Merci pour votre avis ! Il sera visible après validation par notre équipe');
+            return $this->redirectToRoute('app_espace_utilisateur_commande_detail', ['id' => $id]);
+        }
+
+        return $this->render('espace_utilisateur/avis.html.twig', [
+            'commande' => $commande,
+            'form' => $form
+        ]);
     }
 
     #[Route('/espace/utilisateur/profil', name: 'app_espace_utilisateur_profil')]

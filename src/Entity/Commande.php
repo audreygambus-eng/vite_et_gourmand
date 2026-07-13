@@ -324,14 +324,26 @@ class Commande
         return $this;
     }
 
-    public function estModifiable() : bool
+    public function estModifiable(): bool
+    {
+    $statutsNonModifiables = ['acceptée', 'en préparation', 'en cours de livraison', 'livrée', 'en attente du retour de matériel', 'terminée', 'annulée'];
+
+    foreach ($this->statutHistoriques as $statutHistorique) {
+        if (in_array($statutHistorique->getStatut(), $statutsNonModifiables)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+    public function estTerminee(): bool
     {
         foreach ($this->statutHistoriques as $statutHistorique) {
-            if ($statutHistorique->getStatut() === 'acceptée') {
-                return false;
+            if ($statutHistorique->getStatut() === 'terminée') {
+                return true;
             }
         }
-
-        return true;
+        return false;
     }
 }

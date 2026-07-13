@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Laisser un avis - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_utilisateur_commande_detail', {id: commande.id}) }}" class="btn btn-outline-secondary mb-4">← Retour à la commande</a>
+
+    <h1> Laisser un avis - Vite & Gourmand </h1>
+    <p classe="text-muted">Menu : {{ commande.menu.titre }}</p>
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form) }}
+        {{ form_row(form.note) }}
+        {{ form_row(form.commentaire) }}
+
+        <button type="submit" class="btn btn-primary mt-3">Envoyer mon avis</button>
+    {{ form_end(form) }}
+{% endblock %}
