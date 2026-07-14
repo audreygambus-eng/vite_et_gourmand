@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ menu.titre }} - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_employe_menus') }}" class="btn btn-outline-secondary mb-4">← Retour aux menus</a>
+
+    <h1>Modifier le menu</h1>
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form) }}
+        {{ form_row(form.titre) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.conditions) }}
+        {{ form_row(form.nbPersonnesMin) }}
+        {{ form_row(form.prixBase) }}
+        {{ form_row(form.stockDisponible) }}
+        {{ form_row(form.delaiMinimumJours) }}
+        {{ form_row(form.theme) }}
+        {{ form_row(form.regime) }}
+        {{ form_row(form.plats) }}
+        {{ form_row(form.actif) }}
+
+        <button type="submit" class="btn btn-primary mt-3">Enregistrer les modifications</button>
+    {{ form_end(form) }}
+{% endblock %}

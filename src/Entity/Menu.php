@@ -54,7 +54,7 @@ class Menu
     /**
      * @var Collection<int, Plat>
      */
-    #[ORM\ManyToMany(targetEntity: Plat::class, mappedBy: 'menus')]
+    #[ORM\ManyToMany(targetEntity: Plat::class, inversedBy: 'menus')]
     private Collection $plats;
 
     #[ORM\Column]
