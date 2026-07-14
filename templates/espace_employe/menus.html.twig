@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des menus - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <h1>Gestion des menus</h1>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Titre</th>
+                    <th>Thème</th>
+                    <th>Régime</th>
+                    <th>Prix</th>
+                    <th>Stock</th>
+                    <th>Statut</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for menu in menus %}
+                    <tr>
+                        <td>{{ menu.titre }}</td>
+                        <td>{{ menu.theme.libelle }}</td>
+                        <td>{{ menu.regime.libelle }}</td>
+                        <td>{{ menu.prixBase }} €</td>
+                        <td>{{ menu.stockDisponible }}</td>
+                        <td>
+                            {% if menu.actif %}
+                                <span class="badge bg-success">Actif</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Inactif</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Modifier</a>
+                            <a href="#" class="btn btn-sm btn-outline-danger">Supprimer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+                        
