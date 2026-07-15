@@ -36,7 +36,7 @@
                         <td>
                             <a href="{{ path('app_espace_employe_menu_modifier', {id: menu.id}) }}" class="btn btn-sm btn-outline-primary">Modifier</a>
                             <form method="post" action="{{ path('app_espace_employe_menu_supprimer', {id:menu.id})}}" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment désactiver ce menu ?');">
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Désactiver</button>
                             </form>
                         </td>
                     </tr>

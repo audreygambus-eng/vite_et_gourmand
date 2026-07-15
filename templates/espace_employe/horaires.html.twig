@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des horaires - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <h1>Gestion des horaires</h1>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Jour</th>
+                    <th>Ouverture</th>
+                    <th>Fermeture</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for horaire in horaires %}
+                    <tr>
+                        <td>{{ horaire.jour }}</td>
+                        <td>{{ horaire.heureOuverture }}</td>
+                        <td>{{ horaire.heureFermeture }}</td>
+                        <td>
+                            <a href="{{ path('app_espace_employe_horaire_modifier', {id: horaire.id}) }}" class="btn btn-sm btn-outline-primary">Modifier</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

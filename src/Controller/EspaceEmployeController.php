@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Form\HoraireFormType;
+use App\Repository\HoraireRepository;
 use App\Form\PlatFormType;
 use App\Repository\PlatRepository;
 use App\Form\MenuFormType;
@@ -126,5 +128,40 @@ class EspaceEmployeController extends AbstractController
 
         $this->addFlash('success', 'Le plat a bien été supprimé.');
         return $this->redirectToRoute('app_espace_employe_plats');
+    }
+
+    #[Route('/espace/employe/horaires', name: 'app_espace_employe_horaires')]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function horaires(HoraireRepository $horaireRepository): Response
+    {
+        return $this->render('espace_employe/horaires.html.twig', [
+            'horaires' => $horaireRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/espace/employe/horaires/{id}/modifier', name: 'app_espace_employe_horaire_modifier')]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function horaireModifier(int $id, Request $request, HoraireRepository $horaireRepository, EntityManagerInterface $entityManager): Response
+    {
+    $horaire = $horaireRepository->find($id);
+
+    if (!$horaire){
+        throw $this->createNotFoundException('Cet horaire n\'existe pas.');
+    }
+
+    $form = $this->createForm(HoraireFormType::class, $horaire);
+    $form->handleRequest($request);
+
+    if($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Les horaires ont bien été modifiés');
+        return $this->redirectToRoute('app_espace_employe_horaires');
+    }
+
+    return $this->render('espace_employe/horaire_modifier.html.twig', [
+        'horaire' => $horaire,
+        'form' => $form
+    ]);
     }
 }
