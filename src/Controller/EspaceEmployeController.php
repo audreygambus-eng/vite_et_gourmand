@@ -57,6 +57,25 @@ class EspaceEmployeController extends AbstractController
             ]);
     }
 
+    #[Route('/espace/employe/menus/{id}/supprimer', name: 'app_espace_employe_menu_supprimer', methods: ['POST'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function menuSupprimer(int $id, MenuRepository $menuRepository, EntityManagerInterface $entityManager): Response
+    {
+        $menu = $menuRepository->find($id);
+
+        if (!$menu){
+            throw $this->createNotFoundException('Ce menu n\'existe pas.');
+        }
+
+        // Supression du catalogue uniquement, pour que le menu reste accessible en base et réactivable, si besoin
+        $menu->setActif(false);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le menu a bien été désactivé.');
+        return $this->redirectToRoute('app_espace_employe_menus');
+
+    }
+
     #[Route('/espace/employe/plats', name: 'app_espace_employe_plats')]
     #[IsGranted('ROLE_EMPLOYE')]
     public function plats(PlatRepository $platRepository): Response
