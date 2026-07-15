@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des commandes - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_employe') }}" class="btn btn-outline-secondary mb-4">← Retour à votre espace</a>
+
+    <h1>Gestion des commandes</h1>
+
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label for="statut" class="form-label">Filtrer par statut</label>
+            <select name="statut" id="statut" class="form-select">
+                <option value="">Tous les statuts</option>
+                <option value="reçue" {% if statutSelectionne == 'reçue' %}selected{% endif %}>Reçue</option>
+                <option value="acceptée"{% if statutSelectionne == 'acceptée' %}selected{% endif %}>Acceptée</option>
+                <option value="en préparation" {% if statutSelectionne == 'en préparation' %}selected{% endif %}>En préparation</option>
+                <option value="en cours de livraison" {% if statutSelectionne == 'en cours de livraison' %}selected{% endif %}>En cours de livraison</option>
+                <option value="livrée" {% if statutSelectionne == 'livrée' %}selected{% endif %}>Livrée</option>
+                <option value="terminée" {% if statutSelectionne == 'terminée' %}selected{% endif %}>Terminée</option>
+                <option value="annulée" {% if statutSelectionne == 'annulée' %}selected{% endif %}>Annulée</option>
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label for="client" class="form-label">Rechercher un client</label>
+            <input type="text" name="client" id="client" class="form-control" value="{{ clientRecherche }}" placeholder="Nom ou Prénom">
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Filtrer</button> 
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Numéro</th>
+                    <th>Client</th>
+                    <th>Menu</th>
+                    <th>Date prestation</th>
+                    <th>Statut actuel</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for commande in commandes %}
+                    <tr>
+                        <td>{{ commande.numeroCommande }}</td>
+                        <td>{{ commande.utilisateur.prenom }} {{ commande.utilisateur.nom }}</td>
+                        <td>{{ commande.menu.titre }}</td>
+                        <td>{{ commande.datePrestation|date('d/m/Y') }}</td>
+                        <td>
+                            {% if commande.statutHistoriques is not empty %}
+                                <span class="badge bg-info">{{ commande.statutHistoriques|last.statut }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-outline-primary">Gérer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

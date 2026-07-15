@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CommandeRepository;
 use App\Form\HoraireFormType;
 use App\Repository\HoraireRepository;
 use App\Form\PlatFormType;
@@ -164,4 +165,19 @@ class EspaceEmployeController extends AbstractController
         'form' => $form
     ]);
     }
+
+    #[Route('/espace/employe/commandes', name: 'app_espace_employe_commandes')]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function commandes(Request $request, CommandeRepository $commandeRepository): Response
+    {
+        $statut = $request->query->get('statut');
+        $client = $request->query->get('client');
+
+        return $this->render('espace_employe/commandes.html.twig',[
+            'commandes' => $commandeRepository->findFiltrees($statut, $client),
+            'statutSelectionne' => $statut,
+            'clientRecherche' => $client
+        ]);
+    }
+
 }

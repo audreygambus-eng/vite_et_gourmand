@@ -30,4 +30,27 @@ class CommandeRepository extends ServiceEntityRepository
                ->getResult()
            ;
        }
+
+       /**
+        * @return Commande[]
+        */
+
+       public function findFiltrees(?string $statut, ?string $client): array
+       {
+            $qb = $this->createQueryBuilder('c')
+                ->leftJoin('c.utilisateur', 'u')
+                ->leftJoin('c.statutHistoriques', 's')
+                ->orderBy('c.dateCommande', 'DESC');
+
+            if ($statut) {
+                $qb->andWhere('s.statut = :statut')
+                   ->setParameter('statut', $statut);
+            }
+            if ($client) {
+                $qb->andWhere('u.nom LIKE :client OR u.prenom LIKE :client')
+                   ->setParameter('client', '%' . $client . '%');
+            }
+
+            return $qb->getQuery()->getResult();
+       }
 }
