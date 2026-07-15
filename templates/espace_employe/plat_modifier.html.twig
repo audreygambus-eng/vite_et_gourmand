@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier {{ plat.titre }} - Vite & Gourmand{% endblock %}
+
+{% block body %}
+
+    <a href="{{ path('app_espace_employe_plats') }}" class="btn btn-outline-secondary mb-4">← Retour aux plats</a>
+
+    <h1>Modifier le plat</h1>
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form) }}
+        {{ form_row(form.titre) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.menus) }}
+        {{ form_row(form.allergenes) }}
+
+        <button type="submit" class="btn btn-primary mt-3">Enregistrer les modifications</button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Form\PlatFormType;
+use App\Repository\PlatRepository;
 use App\Form\MenuFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -53,5 +55,57 @@ class EspaceEmployeController extends AbstractController
             'menu' => $menu,
             'form' => $form
             ]);
+    }
+
+    #[Route('/espace/employe/plats', name: 'app_espace_employe_plats')]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function plats(PlatRepository $platRepository): Response
+    {
+        return $this->render('espace_employe/plats.html.twig', [
+            'plats' => $platRepository->findAll(),
+        ]);
+    }
+
+    #[Route('/espace/employe/plats/{id}/modifier', name: 'app_espace_employe_plat_modifier')]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function platModifier(int $id, Request $request, PlatRepository $platRepository, EntityManagerInterface $entityManager): Response
+    {
+        $plat = $platRepository->find($id);
+
+        if (!$plat){
+            throw $this->createNotFoundException('Ce plat n\'existe pas.');
+        }
+
+        $form = $this->createForm(PlatFormType::class, $plat);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Le plat a bien été modifié.');
+            return $this->redirectToRoute('app_espace_employe_plats');
+        }
+
+        return $this->render('espace_employe/plat_modifier.html.twig',[
+            'plat' => $plat,
+            'form' => $form
+        ]);
+    }
+
+    #[Route('/espace/employe/plats/{id}/supprimer', name: 'app_espace_employe_plat_supprimer', methods: ['POST'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function platSupprimer(int $id, PlatRepository $platRepository, EntityManagerInterface $entityManager): Response
+    {
+        $plat = $platRepository->find($id);
+
+        if(!$plat){
+            throw $this->createNotFoundException('Ce plat n\'existe pas.');
+        }
+
+        $entityManager->remove($plat);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le plat a bien été supprimé.');
+        return $this->redirectToRoute('app_espace_employe_plats');
     }
 }
