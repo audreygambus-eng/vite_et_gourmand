@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des avis - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_employe') }}" class="btn btn-outline-secondary mb-4">← Retour à votre espace</a>
+
+    <h1>Avis en attente de validation</h1>
+
+    {% if avisEnAttente is empty %}
+        <p class="text-muted">Aucun avis en attente pour le moment.</p>
+    {% else %}
+        <div class="row">
+            {% for avis in avisEnAttente %}
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p>
+                                {% for i in 1..5 %}
+                                    {% if i <= avis.note %}★{% else %}☆{% endif %}
+                                {% endfor %}
+                            </p>
+                            <p class="card-text">{{ avis.commentaire }}</p>
+                            <p class="text-muted small">
+                                Commande : {{ avis.commande.numeroCommande }} —
+                                Client : {{ avis.commande.utilisateur.prenom }} {{ avis.commande.utilisateur.nom }}
+                            </p>
+
+                            <form method="post" action="{{ path('app_espace_employe_avis_valider', {id: avis.id}) }}" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-success">Valider</button>
+                            </form>
+                            <form method="post" action="{{ path('app_espace_employe_avis_refuser', {id: avis.id}) }}" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment refuser cet avis ?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Refuser</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

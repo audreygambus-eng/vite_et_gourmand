@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\AvisRepository;
 use App\Entity\StatutHistorique;
 use App\Repository\CommandeRepository;
 use App\Form\HoraireFormType;
@@ -259,5 +260,48 @@ class EspaceEmployeController extends AbstractController
 
     $this->addFlash('success', 'La commande a bien été annulée.');
     return $this->redirectToRoute('app_espace_employe_commandes');
+    }
+
+    #[Route('/espace/employe/avis', name: 'app_espace_employe_avis')]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function avis(AvisRepository $avisRepository): Response
+    {
+        return $this->render('espace_employe/avis.html.twig', [
+            'avisEnAttente' => $avisRepository->findEnAttente(),
+        ]);
+    }
+
+    #[Route('/espace/employe/avis/{id}/valider', name: 'app_espace_employe_avis_valider', methods: ['POST'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function avisValider(int $id, AvisRepository $avisRepository, EntityManagerInterface $entityManager): Response
+    {
+        $avis = $avisRepository->find($id);
+
+        if (!$avis){
+            throw $this->createNotFoundException('Cet avis n\'existe pas.');
+        }
+
+        $avis->setValide(true);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'L\'avis a bien été validé.');
+        return $this->redirectToRoute('app_espace_employe_avis');
+    }
+
+    #[Route('/espace/employe/avis/{id}/refuser', name: 'app_espace_employe_avis_refuser', methods: ['POST'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function avisRefuser(int $id, AvisRepository $avisRepository, EntityManagerInterface $entityManager): Response
+    {
+        $avis = $avisRepository->find($id);
+
+        if (!$avis){
+            throw $this->createNotFoundException('Cet avis n\'existe pas.');
+        }
+
+        $entityManager->remove($avis);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'L\'avis a bien été refusé.');
+        return $this->redirectToRoute('app_espace_employe_avis');
     }
 }

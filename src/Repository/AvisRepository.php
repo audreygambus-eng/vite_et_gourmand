@@ -17,6 +17,20 @@ class AvisRepository extends ServiceEntityRepository
     }
 
        /**
+        * @return Avis[] Returns an array of Avis objects (avis en attente de validation)
+        */
+       public function findEnAttente(): array
+       {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.valide = :valide')
+                ->setParameter('valide', false)
+                ->orderBy('a.dateCreation', 'DESC')
+                ->getQuery()
+                ->getResult()
+            ;
+       }
+       
+       /**
         * @return Avis[] Returns an array of Avis objects (avis validés, antéchronologiques)
         */
        public function findValides(): array
