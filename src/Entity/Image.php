@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
+#[Vich\Uploadable]
 class Image
 {
     #[ORM\Id]
@@ -22,6 +25,12 @@ class Image
     #[ORM\ManyToOne(inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Menu $menu = null;
+
+    #[Vich\UploadableField(mapping: 'menu_images', fileNameProperty: 'url')]
+    private ?File $fichier = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     public function getId(): ?int
     {
@@ -62,5 +71,23 @@ class Image
         $this->menu = $menu;
 
         return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+    return $this->updatedAt;
+    }
+
+    public function setFichier(?File $fichier = null): void
+    {
+        $this->fichier = $fichier;
+
+        if (null !== $fichier) {
+            $this->updateAt = new \DateTimeImmutable();
+        }
+    }
+    public function getFichier(): ?File
+    {
+        return $this->fichier;
     }
 }

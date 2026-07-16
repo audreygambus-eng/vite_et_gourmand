@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
+use App\Form\ImageFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
@@ -338,5 +340,36 @@ class EspaceEmployeController extends AbstractController
 
         $this->addFlash('success', 'La réponse pour le prêt de matériel a bien été enregistrée.');
         return $this->redirectToRoute('app_espace_employe_commande_gerer', ['id' => $id]);
+    }
+
+    #[Route('/espace/employe/menus/{id}/images/ajouter', name: 'app_espace_employe_menu_image_ajouter')]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function menuImageAjouter(int $id, Request $request, MenuRepository $menuRepository, EntityManagerInterface $entityManager): Response
+    {
+        $menu = $menuRepository->find($id);
+
+        if (!$menu){
+            throw $this->createNotFoundException('Ce menu n\'existe pas.');
+        }
+
+        $image = new Image();
+        $image->setMenu($menu);
+
+        $form = $this->createForm(ImageFormType::class, $image);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            $entityManager->persist($image);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'L\'image a bien été ajoutée.');
+            return $this->redirectToRoute('app_espace_employe_menu_modifier', ['id' => $id]);
+
+        }
+
+        return $this->render('espace_employe/menu_image_ajouter.html.twig', [
+            'menu' => $menu,
+            'form'=> $form,
+        ]);
     }
 }

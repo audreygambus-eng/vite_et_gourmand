@@ -206,13 +206,6 @@ class AppFixtures extends Fixture
         $plat3->addMenu($menu1);
         $manager->persist($plat3);
 
-        // Ajout d'une image test
-        $image1 = new Image();
-        $image1->setUrl('/images/menu-noel.jpg');
-        $image1->setOrdre(1);
-        $image1->setMenu($menu1);
-        $manager->persist($image1);
-
         $manager->flush(); // ID
 
         // Ajout commande de test
