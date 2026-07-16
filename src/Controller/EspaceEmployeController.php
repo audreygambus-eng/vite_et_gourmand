@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ImageRepository;
 use App\Entity\Image;
 use App\Form\ImageFormType;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -372,4 +373,24 @@ class EspaceEmployeController extends AbstractController
             'form'=> $form,
         ]);
     }
+
+    #[Route('/espace/employe/images/{id}/supprimer', name: 'app_espace_employe_image_supprimer', methods: ['POST'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function imageSupprimer(int $id, ImageRepository $imageRepository, EntityManagerInterface $entityManager): Response
+    {
+        $image = $imageRepository->find($id);
+
+        if (!$image) {
+        throw $this->createNotFoundException('Cette image n\'existe pas.');
+        }
+
+        $menuId = $image->getMenu()->getId();
+
+        $entityManager->remove($image);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'L\'image a bien été supprimée.');
+        return $this->redirectToRoute('app_espace_employe_menu_modifier', ['id' => $menuId]);
+    }
+    
 }

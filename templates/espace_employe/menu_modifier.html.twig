@@ -27,4 +27,20 @@
 
     <hr class="my-4">
     <a href="{{ path('app_espace_employe_menu_image_ajouter', {id: menu.id}) }}" class="btn btn-outline-primary">Ajouter une image</a>
+
+    <h3 class="mt-4">Images associées à ce menu</h3>
+    {% if menu.images is empty %}
+        <p class="text-muted">Ce menu ne contient aucune image pour le moment.</p>
+    {% else %}
+        <div class="row">
+            {% for image in menu.images %}
+                <div class="col-md-3 mb-3">
+                    <img src="{{ asset('uploads/menus/' ~ image.url) }}" class="img-fluid rounded mb-2" alt="Visuel du menu {{ menu.titre }}">
+                    <form method="post" action="{{ path('app_espace_employe_image_supprimer', {id: image.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette image ?');">
+                        <button type="submit" class="btn btn-sm btn-danger w-100">Supprimer</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
 {% endblock %}
