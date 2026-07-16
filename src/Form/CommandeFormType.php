@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Commande;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -43,6 +44,10 @@ class CommandeFormType extends AbstractType
                     new NotBlank(message: 'Veuillez renseigner le nombre de personnes concernées par la commande.'),
                     new GreaterThanOrEqual(value: 1, message: 'Le nombre de personnes minimum requis pour une commande est de 1'),
                 ],
+            ])
+            ->add('pretMateriel', CheckboxType::class, [
+                'label' => 'Je souhaite faire une demande de prêt de matériel',
+                'required' => false,
             ])
         ;
     }

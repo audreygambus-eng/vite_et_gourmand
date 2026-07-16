@@ -17,6 +17,27 @@
             <p><strong>Heure de livraison :</strong> {{ commande.heureLivraison }}</p>
             <p><strong>Adresse :</strong> {{ commande.adresseLivraison }}, {{ commande.villeLivraison }}</p>
             <p><strong>Total :</strong> {{ commande.prixTotal }} €</p>
+            <p>
+                <strong>Prêt de matériel :</strong>
+                {% if commande.pretMateriel %}
+                    <span class="badge bg-warning">Oui</span>
+                {% else %}
+                    <span class="badge bg-secondary">Non</span>
+                {% endif %}
+                {% if commande.pretMateriel %}
+                <div class="mt-3">
+                    <h3>Gérer la demande de prêt de matériel</h3>
+                    <form method="post" action="{{ path('app_espace_employe_commande_materiel', {id: commande.id}) }}">
+                        <label for="materielAccorde-select" class="form-label">Décision</label>
+                        <select name="materielAccorde" id="materielAccorde-select" class="form-select mb-2">
+                            <option value="1" {% if commande.materielAccorde == true %}selected{% endif %}>Accordé</option>
+                            <option value="0" {% if commande.materielAccorde == false %}selected{% endif %}>Refusé ou ne peut pas être fourni</option>
+                        </select>
+                        <button type="submit" class="btn btn-secondary">Enregistrer la décision</button>
+                    </form>
+                </div>
+                {% endif %}
+            </p>
 
             <h2>Historique</h2>
             <ul class="list-group mb-4">

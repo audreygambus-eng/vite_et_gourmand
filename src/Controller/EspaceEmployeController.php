@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use App\Repository\AvisRepository;
 use App\Entity\StatutHistorique;
 use App\Repository\CommandeRepository;
@@ -200,7 +203,7 @@ class EspaceEmployeController extends AbstractController
 
     #[Route('/espace/employe/commandes/{id}/statut', name: 'app_espace_employe_commande_statut', methods: ['POST'])]
     #[IsGranted('ROLE_EMPLOYE')]
-    public function commandeStatut(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
+    public function commandeStatut(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $commande = $commandeRepository->find($id);
 
@@ -218,6 +221,20 @@ class EspaceEmployeController extends AbstractController
         $statutHistorique->setCommande($commande);
         $entityManager->persist($statutHistorique);
         $entityManager->flush();
+
+        if ($nouveauStatut === 'en attente du retour de matériel'){
+            try {
+                $email = (new TemplatedEmail())
+                    ->from(new Address('contact@vite-et-gourmand.com', 'Vite & Gourmand'))
+                    ->to((string) $commande->getUtilisateur()->getEmail())
+                    ->subject('Restitution du matériel mis à votre disposition')
+                    ->htmlTemplate('emails/retour_materiel.html.twig')
+                    ->context([
+                        'commande' => $commande,
+                    ]);
+                $mailer->send($email);
+            } catch (\Exception $e){}
+        }
 
         $this->addFlash('success', 'Le statut de la commande a bien été mis à jour.');
         return $this->redirectToRoute('app_espace_employe_commande_gerer', ['id' => $id]);
@@ -303,5 +320,23 @@ class EspaceEmployeController extends AbstractController
 
         $this->addFlash('success', 'L\'avis a bien été refusé.');
         return $this->redirectToRoute('app_espace_employe_avis');
+    }
+
+    #[Route('/espace/employe/commandes/{id}/materiel', name: 'app_espace_employe_commande_materiel', methods: ['POST'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function commandeMateriel(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
+    {
+        $commande = $commandeRepository->find($id);
+
+        if (!$commande) {
+        throw $this->createNotFoundException('Cette commande n\'existe pas.');
+        }
+
+        $materielAccorde = $request->request->get('materielAccorde') === '1';
+        $commande->setMaterielAccorde($materielAccorde);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'La réponse pour le prêt de matériel a bien été enregistrée.');
+        return $this->redirectToRoute('app_espace_employe_commande_gerer', ['id' => $id]);
     }
 }

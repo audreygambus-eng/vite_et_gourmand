@@ -94,6 +94,7 @@ class CommandeController extends AbstractController
                 'adresseLivraison' => $commande->getAdresseLivraison(),
                 'villeLivraison' => $commande->getVilleLivraison(),
                 'nbPersonnes' => $commande->getNbPersonnes(),
+                'pretMateriel' => $commande->isPretMateriel(),
             ]);
 
             return $this->redirectToRoute('app_commande_recapitulatif');
@@ -218,7 +219,7 @@ class CommandeController extends AbstractController
         $commande->setPrixMenu((string) $prixMenu);
         $commande->setPrixLivraison((string) $prixLivraison);
         $commande->setPrixTotal((string) $prixTotal);
-        $commande->setPretMateriel(false);
+        $commande->setPretMateriel($donnees['pretMateriel']);
         $commande->setUtilisateur($this->getUser());
         $commande->setMenu($menu);
 

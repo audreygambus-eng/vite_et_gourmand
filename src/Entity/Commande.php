@@ -75,6 +75,9 @@ class Commande
     #[ORM\OneToOne(mappedBy: 'commande', cascade: ['persist', 'remove'])]
     private ?Avis $avis = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $materielAccorde = null;
+
     public function __construct()
     {
         $this->statutHistoriques = new ArrayCollection();
@@ -345,5 +348,17 @@ class Commande
             }
         }
         return false;
+    }
+
+    public function isMaterielAccorde(): ?bool
+    {
+        return $this->materielAccorde;
+    }
+
+    public function setMaterielAccorde(?bool $materielAccorde): static
+    {
+        $this->materielAccorde = $materielAccorde;
+
+        return $this;
     }
 }
