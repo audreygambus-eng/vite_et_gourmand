@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gérer la commande {{ commande.numeroCommande }} - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_employe_commandes') }}" class="btn btn-outline-secondary mb-4">← Retour aux commandes</a>
+
+    <h1>Commande {{ commande.numeroCommande }}</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Détails</h2>
+            <p><strong>Client :</strong> {{ commande.utilisateur.prenom }} {{ commande.utilisateur.nom }}</p>
+            <p><strong>Menu :</strong> {{ commande.menu.titre }}</p>
+            <p><strong>Nombre de personnes :</strong> {{ commande.nbPersonnes }}</p>
+            <p><strong>Date de prestation :</strong> {{ commande.datePrestation|date('d/m/Y') }}</p>
+            <p><strong>Heure de livraison :</strong> {{ commande.heureLivraison }}</p>
+            <p><strong>Adresse :</strong> {{ commande.adresseLivraison }}, {{ commande.villeLivraison }}</p>
+            <p><strong>Total :</strong> {{ commande.prixTotal }} €</p>
+
+            <h2>Historique</h2>
+            <ul class="list-group mb-4">
+                {% for statut in commande.statutHistoriques %}
+                    <li class="list-group-item">
+                        <span class="badge bg-info">{{ statut.statut }}</span>
+                        <small class="text-muted">{{ statut.dateModification|date('d/m/Y H:i') }}</small>
+                        {% if statut.commentaire %}
+                            <br><small>{{ statut.commentaire }}</small>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="col-md-6">
+            <h2>Mettre à jour le statut</h2>
+            <form method="post" action="{{ path('app_espace_employe_commande_statut', {id: commande.id}) }}">
+                <label for="statut-select" class="form-label">Nouveau statut</label>
+                {% set dernierStatut = commande.statutHistoriques is not empty ? commande.statutHistoriques|last.statut : null %}
+                <select name="statut" class="form-select mb-3">
+                    <option value="reçue" {% if dernierStatut == 'reçue' %}selected{% endif %}>Reçue</option>
+                    <option value="acceptée" {% if dernierStatut == 'acceptée' %}selected{% endif %}>Acceptée</option>
+                    <option value="en préparation" {% if dernierStatut == 'en préparation' %}selected{% endif %}>En préparation</option>
+                    <option value="en cours de livraison" {% if dernierStatut == 'en cours de livraison' %}selected{% endif %}>En cours de livraison</option>
+                    <option value="livrée" {% if dernierStatut == 'livrée' %}selected{% endif %}>Livrée</option>
+                    <option value="en attente du retour de matériel" {% if dernierStatut == 'en attente du retour de matériel' %}selected{% endif %}>En attente du retour de matériel</option>
+                    <option value="terminée" {% if dernierStatut == 'terminée' %}selected{% endif %}>Terminée</option>
+                </select>
+                <button type="submit" class="btn btn-primary">Mettre à jour</button>
+            </form>
+
+            <hr class="my-4">
+
+            <h2>Annuler la commande</h2>
+            <form method="post" action="{{ path('app_espace_employe_commande_annuler', {id: commande.id}) }}">
+                <div class="mb-3">
+                    <label for="modeContact" class="form-label">Mode de contact utilisé</label>
+                    <select name="modeContact" id="modeContact" class="form-select">
+                        <option value="téléphone">Téléphone</option>
+                        <option value="mail">Mail</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="motif" class="form-label">Motif de l'annulation</label>
+                    <textarea name="motif" id="motif" class="form-control" maxlength="500" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Confirmer l\'annulation de cette commande ?');">Annuler la commande</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

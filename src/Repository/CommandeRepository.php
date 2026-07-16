@@ -32,7 +32,7 @@ class CommandeRepository extends ServiceEntityRepository
        }
 
        /**
-        * @return Commande[]
+        * @return Commande[] retourne les commandes filtrées par statut et/ou nom de client
         */
 
        public function findFiltrees(?string $statut, ?string $client): array

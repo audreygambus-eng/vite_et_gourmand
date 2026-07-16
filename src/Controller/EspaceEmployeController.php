@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\StatutHistorique;
 use App\Repository\CommandeRepository;
 use App\Form\HoraireFormType;
 use App\Repository\HoraireRepository;
@@ -168,6 +169,7 @@ class EspaceEmployeController extends AbstractController
 
     #[Route('/espace/employe/commandes', name: 'app_espace_employe_commandes')]
     #[IsGranted('ROLE_EMPLOYE')]
+    // Filtres transmis en GET : pas d'exigence de non rechargement de page pour l'espace employé
     public function commandes(Request $request, CommandeRepository $commandeRepository): Response
     {
         $statut = $request->query->get('statut');
@@ -180,4 +182,82 @@ class EspaceEmployeController extends AbstractController
         ]);
     }
 
+    #[Route('/espace/employe/commandes/{id}', name: 'app_espace_employe_commande_gerer')]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function commanderGerer(int $id, CommandeRepository $commandeRepository): Response
+    {
+        $commande = $commandeRepository->find($id);
+
+        if (!$commande) {
+            throw $this->createNotFoundException('Cette commande n\'existe pas.');
+        }
+
+        return $this->render('espace_employe/commande_gerer.html.twig', [
+            'commande' => $commande,
+        ]);
+    }
+
+    #[Route('/espace/employe/commandes/{id}/statut', name: 'app_espace_employe_commande_statut', methods: ['POST'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function commandeStatut(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
+    {
+        $commande = $commandeRepository->find($id);
+
+        if(!$commande) {
+            throw $this->createNotFoundException('Cette commande n\'existe pas.');
+        }
+
+        $nouveauStatut = $request->request->get('statut');
+
+        // Statut existant non modifié : chaque changement crée une nouvelle entrée
+        // Historique complet conservé et consultable
+        $statutHistorique = new StatutHistorique();
+        $statutHistorique->setStatut($nouveauStatut);
+        $statutHistorique->setDateModification(new \DateTime());
+        $statutHistorique->setCommande($commande);
+        $entityManager->persist($statutHistorique);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Le statut de la commande a bien été mis à jour.');
+        return $this->redirectToRoute('app_espace_employe_commande_gerer', ['id' => $id]);
+
+    }
+
+    #[Route('/espace/employe/commandes/{id}/annuler', name: 'app_espace_employe_commande_annuler', methods: ['POST'])]
+    #[IsGranted('ROLE_EMPLOYE')]
+    public function commandeAnnuler(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
+    {
+        $commande = $commandeRepository->find($id);
+
+    if (!$commande) {
+        throw $this->createNotFoundException('Cette commande n\'existe pas.');
+    }
+
+    $motif = $request->request->get('motif');
+    $modeContact = $request->request->get('modeContact');
+
+    //  Protection contre un texte trop long
+    if (strlen($motif) > 500) {
+        $motif = substr($motif, 0, 500);
+    }
+    // Le motif et le mode de contact sont obligatoires pour toute annulation par un employé
+    $statutHistorique = new StatutHistorique();
+    $statutHistorique->setStatut('annulée');
+    $statutHistorique->setDateModification(new \DateTime());
+    $statutHistorique->setCommande($commande);
+    $statutHistorique->setCommentaire(sprintf(
+        'motif : %s (Contact : %s)',
+        $motif,
+        $modeContact
+    ));
+    $entityManager->persist($statutHistorique);
+
+    // Stock réincrémenté, même procédé que pour l'annulation par l'utilisateur
+    $menu = $commande->getMenu();
+    $menu->setStockDisponible($menu->getStockDisponible() + 1);
+    $entityManager->flush();
+
+    $this->addFlash('success', 'La commande a bien été annulée.');
+    return $this->redirectToRoute('app_espace_employe_commandes');
+    }
 }

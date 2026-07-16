@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Avis;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -33,6 +34,7 @@ class AvisFormType extends AbstractType
             ->add('commentaire', TextareaType::class, [
                 'constraints' => [
                     new NotBlank(message: 'Veuillez laisser un commentaire'),
+                    new Length(max: 1000, maxMessage: 'Votre commentaire ne doit pas dépasser {{ limit }} caractères'),
                 ]
             ])
         ;

@@ -57,7 +57,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a href="#" class="btn btn-sm btn-outline-primary">Gérer</a>
+                            <a href="{{ path('app_espace_employe_commande_gerer', {id: commande.id}) }}" class="btn btn-sm btn-outline-primary">Gérer</a>
                         </td>
                     </tr>
                 {% endfor %}
