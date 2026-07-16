@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class ImageFormType extends AbstractType
 {
@@ -17,7 +18,7 @@ class ImageFormType extends AbstractType
             ->add('fichier', FileType::class,[
                 'label' => 'Image',
                 'mapped' => true,
-                'required' => false,
+                'required' => true,
                 'constraints' =>[
                     new File(
                         maxSize: '2M',
@@ -27,6 +28,7 @@ class ImageFormType extends AbstractType
                         ],
                         mimeTypesMessage: 'Seules les images aux formats JPEG ou PNG sont acceptées',
                     ),
+                    new NotBlank(message: 'Veuillez sélectionner une image à télécharger'),
                 ],
             ])
         ;
