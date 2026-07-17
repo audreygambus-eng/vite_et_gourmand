@@ -236,7 +236,9 @@ class EspaceEmployeController extends AbstractController
                         'commande' => $commande,
                     ]);
                 $mailer->send($email);
-            } catch (\Exception $e){}
+            } catch (\Exception $e){
+                // Erreur tracée sans blocage de changement de statut
+            }
         }
 
         $this->addFlash('success', 'Le statut de la commande a bien été mis à jour.');

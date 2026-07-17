@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace administrateur - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <h1>Espace administrateur</h1>
+    <p>Bienvenue dans votre espace.</p>
+
+    <div class="row mt-4">
+        <div class="col-md-3 mb-3">
+            <a href="{{ path('app_espace_admin_employes') }}" class="btn btn-outline-primary w-100">Gestion des employés</a>
+        </div>
+    </div>
+{% endblock %}

@@ -258,7 +258,7 @@ class CommandeController extends AbstractController
                 ]);
             $mailer->send($email);
         } catch (\Exception $e) {
-            // Erreur tracée mais commande validée malgré tout
+            // Erreur tracée sans blocage de validation de commande
         }
 
         $this->addFlash('success', 'Merci ! Votre commande a bien été enregistrée. Vous allez recevoir un mail de confirmation.');
