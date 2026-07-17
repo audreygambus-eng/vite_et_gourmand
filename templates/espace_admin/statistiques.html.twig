@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_admin') }}" class="btn btn-outline-secondary mb-4">← Retour à l'espace admin</a>
+
+    <h1>Statistiques par menu</h1>
+
+    {% if resultats is empty %}
+        <p class="text-muted">Aucune donnée statistique n'est disponible pour le moment.</p>
+    {% else %}
+        <div style="max-width: 400px; margin: 0 auto;" class="mb-5">
+            <canvas id="graphiqueCommandes"></canvas>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Menu</th>
+                        <th>Nombre de commandes</th>
+                        <th>Chiffre d'affaires</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for resultat in resultats %}
+                        <tr>
+                            <td>{{ resultat._id }}</td>
+                            <td>{{ resultat.nombreCommandes }}</td>
+                            <td>{{ resultat.chiffreAffaires }} €</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+        {% if resultats is not empty %}
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const ctx = document.getElementById('graphiqueCommandes').getContext('2d');
+
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: [{% for resultat in resultats %}'{{ resultat._id }}',{% endfor %}],
+                            datasets: [{
+                                label: 'Nombre de commandes',
+                                data: [{% for resultat in resultats %}{{ resultat.nombreCommandes }},{% endfor %}],
+                                backgroundColor: [
+                                    'rgba(54, 162, 235, 0.7)',
+                                    'rgba(255, 99, 132, 0.7)',
+                                    'rgba(255, 206, 86, 0.7)',
+                                    'rgba(75, 192, 192, 0.7)',
+                                    'rgba(153, 102, 255, 0.7)',
+                                ],
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                        }
+                    });
+                });
+            </script>
+    {% endif %}
+{% endblock %}
+
+                

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Document\StatistiqueCommande;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use App\Repository\UtilisateurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -106,5 +108,23 @@ class EspaceAdminController extends AbstractController
             $this->addFlash('success', 'Le compte a bien été désactivé.');
         }
         return $this->redirectToRoute('app_espace_admin_employes');
+    }
+
+    #[Route('/espace/admin/statistiques', name: 'app_espace_admin_statistiques')]
+    #[IsGranted('ROLE_ADMIN')]
+    public function statistiques(DocumentManager $documentManager): Response
+    {
+        $resultats = $documentManager->createAggregationBuilder(StatistiqueCommande::class)
+            ->group()
+                ->field('id')->expression('$menuTitre')
+                ->field('nombreCommandes')->sum(1)
+                ->field('chiffreAffaires')->sum('$montant')
+            ->getAggregation()
+            ->getIterator()
+            ->toArray();
+        
+        return $this->render('espace_admin/statistiques.html.twig', [
+            'resultats' => $resultats
+        ]);
     }
 }
