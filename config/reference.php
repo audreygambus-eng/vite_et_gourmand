@@ -1106,6 +1106,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             filter?: scalar|Param|null, // Default: "({uid_key}={user_identifier})"
  *             password_attribute?: scalar|Param|null, // Default: null
  *         },
+ *         mongodb?: array{
+ *             class?: scalar|Param|null, // The full entity class name of your user class.
+ *             property?: scalar|Param|null, // Default: null
+ *             manager_name?: scalar|Param|null, // Default: null
+ *         },
  *     }>,
  *     firewalls?: array<string, array{ // Default: []
  *         pattern?: scalar|Param|null,
@@ -1555,6 +1560,105 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         db_driver?: scalar|Param|null, // Default: null
  *     }>,
  * }
+ * @psalm-type DoctrineMongodbConfig = array{
+ *     document_managers?: array<string, array{ // Default: []
+ *         connection?: scalar|Param|null,
+ *         database?: scalar|Param|null,
+ *         logging?: bool|Param, // Default: "%kernel.debug%"
+ *         profiler?: bool|array{
+ *             enabled?: bool|Param, // Default: "%kernel.debug%"
+ *             pretty?: bool|Param, // Default: "%kernel.debug%"
+ *         },
+ *         default_document_repository_class?: scalar|Param|null, // Default: "Doctrine\\ODM\\MongoDB\\Repository\\DocumentRepository"
+ *         default_gridfs_repository_class?: scalar|Param|null, // Default: "Doctrine\\ODM\\MongoDB\\Repository\\DefaultGridFSRepository"
+ *         repository_factory?: scalar|Param|null, // Default: "doctrine_mongodb.odm.container_repository_factory"
+ *         persistent_collection_factory?: scalar|Param|null, // Default: null
+ *         auto_mapping?: bool|Param, // Default: false
+ *         filters?: array<string, string|array{ // Default: []
+ *             class?: scalar|Param|null,
+ *             enabled?: bool|Param, // Default: false
+ *             parameters?: array<string, mixed>,
+ *         }>,
+ *         metadata_cache_driver?: string|array{
+ *             type?: scalar|Param|null, // Default: "array"
+ *             class?: scalar|Param|null,
+ *             host?: scalar|Param|null,
+ *             port?: int|Param,
+ *             instance_class?: scalar|Param|null,
+ *             id?: scalar|Param|null,
+ *             namespace?: scalar|Param|null,
+ *         },
+ *         use_transactional_flush?: bool|Param, // Default: false
+ *         mappings?: array<string, bool|string|array{ // Default: []
+ *             mapping?: scalar|Param|null, // Default: true
+ *             type?: scalar|Param|null,
+ *             dir?: scalar|Param|null,
+ *             prefix?: scalar|Param|null,
+ *             alias?: scalar|Param|null,
+ *             is_bundle?: bool|Param,
+ *         }>,
+ *     }>,
+ *     connections?: array<string, array{ // Default: []
+ *         server?: scalar|Param|null,
+ *         options?: array{
+ *             authMechanism?: "SCRAM-SHA-1"|"SCRAM-SHA-256"|"MONGODB-CR"|"MONGODB-X509"|"PLAIN"|"GSSAPI"|Param,
+ *             connectTimeoutMS?: int|Param,
+ *             db?: scalar|Param|null,
+ *             authSource?: scalar|Param|null,
+ *             journal?: bool|Param,
+ *             password?: scalar|Param|null,
+ *             readPreference?: "primary"|"primaryPreferred"|"secondary"|"secondaryPreferred"|"nearest"|Param,
+ *             readPreferenceTags?: list<array<string, scalar|Param|null>>,
+ *             replicaSet?: scalar|Param|null,
+ *             socketTimeoutMS?: int|Param,
+ *             ssl?: bool|Param,
+ *             tls?: bool|Param,
+ *             tlsAllowInvalidCertificates?: bool|Param,
+ *             tlsAllowInvalidHostnames?: bool|Param,
+ *             tlsCAFile?: scalar|Param|null,
+ *             tlsCertificateKeyFile?: scalar|Param|null,
+ *             tlsCertificateKeyFilePassword?: scalar|Param|null,
+ *             tlsDisableCertificateRevocationCheck?: bool|Param,
+ *             tlsDisableOCSPEndpointCheck?: bool|Param,
+ *             tlsInsecure?: bool|Param,
+ *             username?: scalar|Param|null,
+ *             retryReads?: bool|Param,
+ *             retryWrites?: bool|Param,
+ *             w?: scalar|Param|null,
+ *             wTimeoutMS?: int|Param,
+ *         },
+ *         driver_options?: array{
+ *             context?: scalar|Param|null, // Default: null
+ *         },
+ *     }>,
+ *     resolve_target_documents?: array<string, scalar|Param|null>,
+ *     types?: array<string, string|array{ // Default: []
+ *         class?: scalar|Param|null,
+ *     }>,
+ *     proxy_namespace?: scalar|Param|null, // Default: "MongoDBODMProxies"
+ *     proxy_dir?: scalar|Param|null, // Default: "%kernel.cache_dir%/doctrine/odm/mongodb/Proxies"
+ *     enable_lazy_ghost_objects?: bool|Param, // Default: true
+ *     auto_generate_proxy_classes?: scalar|Param|null, // Default: 3
+ *     hydrator_namespace?: scalar|Param|null, // Default: "Hydrators"
+ *     hydrator_dir?: scalar|Param|null, // Default: "%kernel.cache_dir%/doctrine/odm/mongodb/Hydrators"
+ *     auto_generate_hydrator_classes?: scalar|Param|null, // Default: 0
+ *     persistent_collection_namespace?: scalar|Param|null, // Default: "PersistentCollections"
+ *     persistent_collection_dir?: scalar|Param|null, // Default: "%kernel.cache_dir%/doctrine/odm/mongodb/PersistentCollections"
+ *     auto_generate_persistent_collection_classes?: scalar|Param|null, // Default: 0
+ *     default_document_manager?: scalar|Param|null,
+ *     default_connection?: scalar|Param|null,
+ *     default_database?: scalar|Param|null, // Default: "default"
+ *     default_commit_options?: array{
+ *         j?: bool|Param,
+ *         timeout?: int|Param,
+ *         w?: scalar|Param|null,
+ *         wtimeout?: int|Param,
+ *     },
+ *     controller_resolver?: bool|array{
+ *         enabled?: bool|Param, // Default: true
+ *         auto_mapping?: bool|Param, // Set to false to disable using route placeholders as lookup criteria when the object id doesn't match the argument name // Default: true
+ *     },
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1570,6 +1674,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     monolog?: MonologConfig,
  *     symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *     vich_uploader?: VichUploaderConfig,
+ *     doctrine_mongodb?: DoctrineMongodbConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1588,6 +1693,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         maker?: MakerConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *         vich_uploader?: VichUploaderConfig,
+ *         doctrine_mongodb?: DoctrineMongodbConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1604,6 +1710,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         monolog?: MonologConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *         vich_uploader?: VichUploaderConfig,
+ *         doctrine_mongodb?: DoctrineMongodbConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1621,6 +1728,7 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         monolog?: MonologConfig,
  *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
  *         vich_uploader?: VichUploaderConfig,
+ *         doctrine_mongodb?: DoctrineMongodbConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

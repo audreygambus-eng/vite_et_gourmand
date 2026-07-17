@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Document\StatistiqueCommande;
+use Doctrine\ODM\MongoDB\DocumentManager;
 
 class CommandeController extends AbstractController
 {
@@ -150,7 +152,7 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/commande/confirmer', name: 'app_commande_confirmer', methods: ['POST'])]
-    public function confirmer(Request $request, MenuRepository $menuRepository, EntityManagerInterface $entityManager, MailerInterface $mailer, HoraireRepository $horaireRepository): Response
+    public function confirmer(Request $request, MenuRepository $menuRepository, EntityManagerInterface $entityManager, MailerInterface $mailer, HoraireRepository $horaireRepository, DocumentManager $documentManager): Response
     {
         $donnees = $request->getSession()->get('commande_en_cours');
 
@@ -237,6 +239,21 @@ class CommandeController extends AbstractController
             $entityManager->persist($statutHistorique);
 
             $entityManager->flush();
+
+        // Enregistrement de la statistique dans MongoDB pour les rapports admin
+        try {
+            $statistique = new StatistiqueCommande();
+            $statistique->setMenuId($menu->getId());
+            $statistique->setMenuTitre($menu->getTitre());
+            $statistique->setDateCommande(new \DateTime());
+            $statistique->setMontant((float) $prixTotal);
+
+            $documentManager->persist($statistique);
+            $documentManager->flush();
+
+        } catch (\Exception $e) {
+            // Erreur tracée sans blocage de la validation de commande, statistiques non bloquantes
+        }
         } catch (\Exception $e) {
             $this->addFlash('error', 'Une erreur est survenue lors de la commande.');
             return $this->redirectToRoute('app_commande_recapitulatif');
