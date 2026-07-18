@@ -112,9 +112,20 @@ class EspaceAdminController extends AbstractController
 
     #[Route('/espace/admin/statistiques', name: 'app_espace_admin_statistiques')]
     #[IsGranted('ROLE_ADMIN')]
-    public function statistiques(DocumentManager $documentManager): Response
+    public function statistiques(Request $request, DocumentManager $documentManager): Response
     {
-        $resultats = $documentManager->createAggregationBuilder(StatistiqueCommande::class)
+        $dateDebut = $request->query->get('dateDebut');
+        $dateFin = $request->query->get('dateFin');
+
+        $aggregationBuilder = $documentManager->createAggregationBuilder(StatistiqueCommande::class);
+        if ($dateDebut && $dateFin) {
+            $aggregationBuilder->match()
+                ->field('dateCommande')
+                ->gte(new \DateTime($dateDebut))
+                ->lte(new \DateTime($dateFin . ' 23:59:59'));
+        }
+
+        $resultats = $aggregationBuilder
             ->group()
                 ->field('id')->expression('$menuTitre')
                 ->field('nombreCommandes')->sum(1)
@@ -122,9 +133,18 @@ class EspaceAdminController extends AbstractController
             ->getAggregation()
             ->getIterator()
             ->toArray();
+
+        // Calcul du chiffre d'affaires global, toutes ventes confondues sur la période filtrée
+        $caTotal = 0;
+        foreach ($resultats as $resultat) {
+            $caTotal += $resultat['chiffreAffaires'];
+        }
         
         return $this->render('espace_admin/statistiques.html.twig', [
-            'resultats' => $resultats
+            'resultats' => $resultats,
+            'dateDebut' => $dateDebut,
+            'dateFin' => $dateFin,
+            'caTotal' => $caTotal,
         ]);
     }
 }

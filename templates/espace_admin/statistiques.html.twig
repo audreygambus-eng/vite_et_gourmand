@@ -7,13 +7,27 @@
 
     <h1>Statistiques par menu</h1>
 
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <label for="dateDebut" class="form-label">Date de début</label>
+            <input type="date" name="dateDebut" id="dateDebut" class="form-control" value="{{ dateDebut }}">
+        </div>
+        <div class="col-md-4">
+            <label for="dateFin" class="form-label">Date de fin</label>
+            <input type="date" name="dateFin" id="dateFin" class="form-control" value="{{ dateFin }}">
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </div>
+    </form>
+
     {% if resultats is empty %}
         <p class="text-muted">Aucune donnée statistique n'est disponible pour le moment.</p>
     {% else %}
+        <p class="fs-4 fw-bold">Chiffre d'affaires total : {{ caTotal }} €</p>
         <div style="max-width: 400px; margin: 0 auto;" class="mb-5">
             <canvas id="graphiqueCommandes"></canvas>
         </div>
-
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>
