@@ -10,7 +10,7 @@
 
     <div class="row mt-4">
         <div class="col-md-6">
-            <div class="carte-plat">
+            <div class="carte-contenu">
                 <h3 class="card-title-dark mb-3">Détails</h3>
                 <p><strong>Menu :</strong> {{ commande.menu.titre }}</p>
                 <p><strong>Nombre de personnes :</strong> {{ commande.nbPersonnes }}</p>
@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-md-6" style="padding-left: var(--spacing-lg);">
-            <div class="carte-plat">
+            <div class="carte-contenu">
                 <h3 class="card-title-dark mb-3">Suivi de la commande</h3>
                 {% if commande.statutHistoriques is empty %}
                     <p style="color: var(--text-secondary);">Aucun historique n'est disponible.</p>

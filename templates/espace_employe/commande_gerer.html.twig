@@ -10,7 +10,7 @@
 
     <div class="row mt-4">
         <div class="col-md-6">
-            <div class="carte-plat mb-4">
+            <div class="carte-contenu mb-4">
                 <h3 class="card-title-dark mb-3">Détails</h3>
                 <p><strong>Client :</strong> {{ commande.utilisateur.prenom }} {{ commande.utilisateur.nom }}</p>
                 <p><strong>Menu :</strong> {{ commande.menu.titre }}</p>
@@ -43,7 +43,7 @@
                 {% endif %}
             </div>
 
-            <div class="carte-plat">
+            <div class="carte-contenu">
                 <h3 class="card-title-dark mb-3">Historique</h3>
                 {% for statut in commande.statutHistoriques %}
                     <div class="mb-3 pb-3" style="border-bottom: 1px solid var(--border-soft);">
@@ -58,7 +58,7 @@
         </div>
 
         <div class="col-md-6" style="padding-left: var(--spacing-lg);">
-            <div class="carte-plat mb-4">
+            <div class="carte-contenu mb-4">
                 <h3 class="card-title-dark mb-3">Mettre à jour le statut</h3>
                 <form method="post" action="{{ path('app_espace_employe_commande_statut', {id: commande.id}) }}">
                     <label for="statut-select" class="form-label">Nouveau statut</label>
@@ -76,7 +76,7 @@
                 </form>
             </div>
 
-            <div class="carte-plat">
+            <div class="carte-contenu">
                 <h3 class="card-title-dark mb-3" style="color: var(--status-danger);">Annuler la commande</h3>
                 <form method="post" action="{{ path('app_espace_employe_commande_annuler', {id: commande.id}) }}">
                     <div class="mb-3">

@@ -547,3 +547,10 @@ h3, .card-title {
     color: var(--text-primary);
 }
 
+.carte-contenu {
+    background-color: var(--background-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-card-avis);
+    padding: var(--spacing-md);
+}
+
