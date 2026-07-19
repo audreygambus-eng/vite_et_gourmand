@@ -124,7 +124,7 @@ h3, .card-title {
     line-height: 1.4;
     letter-spacing: 2.2px;
     text-transform: uppercase;
-    color: var(--primary-brand);
+    color: var(--primary-brand-hover);
 }
 
 /* Caption/Meta - Métadonnées */
