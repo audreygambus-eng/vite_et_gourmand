@@ -507,13 +507,13 @@ h3, .card-title {
     transform: translateY(-2px);
 }
 .btn-outline-primary {
-    color: var(--primary-brand);
-    border-color: var(--primary-brand);
+    color: var(--primary-brand-hover);
+    border-color: var(--primary-brand-hover);
 }
 
 .btn-outline-primary:hover {
-    background-color: var(--primary-brand);
-    border-color: var(--primary-brand);
+    background-color: var(--primary-brand-hover);
+    border-color: var(--primary-brand-hover);
     color: white;
 }
 
@@ -553,4 +553,15 @@ h3, .card-title {
     border-radius: var(--radius-card-avis);
     padding: var(--spacing-md);
 }
+.btn-outline-warning {
+    color: #856404;
+    border-color: var(--status-warning);
+}
+
+.btn-outline-warning:hover {
+    background-color: var(--status-warning);
+    border-color: var(--status-warning);
+    color: white;
+}
+
 
