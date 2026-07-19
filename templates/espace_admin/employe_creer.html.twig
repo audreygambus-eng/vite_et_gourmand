@@ -16,6 +16,9 @@
         {{ form_row(form.email) }}
         {{ form_row(form.telephone) }}
         {{ form_row(form.plainPassword) }}
+        <p class="caption-meta mb-3">
+            Votre mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial
+        </p>
 
         <button type="submit" class="btn btn-primary w-100 mt-3">Créer le compte</button>
     {{ form_end(form) }}
