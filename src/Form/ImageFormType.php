@@ -25,6 +25,7 @@ class ImageFormType extends AbstractType
                         mimeTypes: [
                             'image/jpeg',
                             'image/png',
+                            'image/webp',
                         ],
                         mimeTypesMessage: 'Seules les images aux formats JPEG ou PNG sont acceptées',
                     ),

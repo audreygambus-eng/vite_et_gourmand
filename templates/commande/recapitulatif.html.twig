@@ -3,50 +3,51 @@
 {% block title %}Récapitulatif de votre commande - Vite & Gourmand{% endblock %}
 
 {% block body %}
-    <h1>Récapitulatif de votre commande</h1>
+    <p class="label-eyebrow">VOTRE COMMANDE</p>
+    <h1>Récapitulatif</h1>
 
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-6">
-            <h2>{{ menu.titre }}</h2>
-            <p>{{ donnees.nbPersonnes }} personnes</p>
-            <p>Date de prestation : {{ donnees.datePrestation }}</p>
-            <p>Heure de livraison : {{ donnees.heureLivraison }}</p>
-            <p>Adresse : {{ donnees.adresseLivraison }}, {{ donnees.villeLivraison }}</p>
+            <div class="carte-plat">
+                <h3 class="card-title-dark">{{ menu.titre }}</h3>
+                <p style="color: var(--text-secondary);">{{ donnees.nbPersonnes }} personnes</p>
+                <p style="color: var(--text-secondary);">Date de prestation : {{ donnees.datePrestation }}</p>
+                <p style="color: var(--text-secondary);">Heure de livraison : {{ donnees.heureLivraison }}</p>
+                <p style="color: var(--text-secondary);">Adresse : {{ donnees.adresseLivraison }}, {{ donnees.villeLivraison }}</p>
+            </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h3 class="card-title">Détail du prix</h3>
+        <div class="col-md-6" style="padding-left: var(--spacing-lg);">
+            <div class="carte-plat">
+                <h3 class="card-title-dark mb-3">Détail du prix</h3>
 
-                    <p>
-                        Prix menu ({{ menu.prixBase }} € × {{ donnees.nbPersonnes }} personnes)
-                        {% if reductionAppliquee %}
-                            <br><span class="text-success">Réduction de 10% appliquée</span>
-                        {% endif %}
-                        <br><strong>{{ prixMenu }} €</strong>
-                    </p>
+                <p style="color: var(--text-secondary);">
+                    Prix menu ({{ menu.prixBase }} € × {{ donnees.nbPersonnes }} personnes)
+                    {% if reductionAppliquee %}
+                        <br><span style="color: var(--status-success); font-weight: 500;">Réduction de 10% appliquée</span>
+                    {% endif %}
+                    <br><strong style="color: var(--text-primary);">{{ prixMenu }} €</strong>
+                </p>
 
-                    <p>
-                        Frais de livraison
-                        {% if prixLivraison == 0 %}
-                            <br><span class="text-muted">Gratuit (Bordeaux)</span>
-                        {% endif %}
-                        <br><strong>{{ prixLivraison }} €</strong>
-                    </p>
+                <p style="color: var(--text-secondary);">
+                    Frais de livraison
+                    {% if prixLivraison == 0 %}
+                        <br><span class="caption-meta">Gratuit (Bordeaux)</span>
+                    {% endif %}
+                    <br><strong style="color: var(--text-primary);">{{ prixLivraison }} €</strong>
+                </p>
 
-                    <hr>
+                <hr style="border-color: var(--border-soft);">
 
-                    <p class="fs-4 fw-bold">
-                        Total : {{ prixTotal }} €
-                    </p>
+                <p style="font-size: 24px; font-weight: 700;">
+                    Total : <span style="color: var(--primary-brand);">{{ prixTotal }} €</span>
+                </p>
 
-                    <form method="post" action="{{ path('app_commande_confirmer') }}">
-                        <button type="submit" class="btn btn-primary btn-lg w-100">Confirmer la commande</button>
-                    </form>
+                <form method="post" action="{{ path('app_commande_confirmer') }}">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Confirmer la commande</button>
+                </form>
 
-                    <a href="{{ path('app_menu_detail', {id: menu.id}) }}" class="btn btn-outline-secondary w-100 mt-2">Annuler et revenir au menu</a>
-                </div>
+                <a href="{{ path('app_menu_detail', {id: menu.id}) }}" class="btn btn-outline-secondary w-100 mt-2">Annuler et revenir au menu</a>
             </div>
         </div>
     </div>

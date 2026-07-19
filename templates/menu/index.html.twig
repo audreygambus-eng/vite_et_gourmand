@@ -3,11 +3,14 @@
 {% block title %}Nos menus - Vite & Gourmand{% endblock %}
 
 {% block body %}
-    <h1 class="mb-4">Nos menus</h1>
+    <div class="mb-5">
+        <p class="label-eyebrow text-start">NOS MENUS</p>
+        <h1 class="text-start">Des menus pensés pour <span style="color: var(--primary-brand);">chaque occasion</span></h1>
+        <p class="text-start">Des créations de saison, élaborées avec des produits frais et locaux, </br> pour sublimer tous vos événements privés et professionnels à Bordeaux et ses alentours</p>
+    </div>
 
-    {# Formulaire de filtres sur lesquels vont s'appliquer les requêtes AJAX pour éviter les rechargements de page #}
-    <form id= "filtres-menus" class= "row g-3 mb-4">
-        <div class= "col-md-3">
+    <form id="filtres-menus" class="row g-3 mb-5 bloc-filtres">
+        <div class="col-md-3">
             <label for="prixMax" class="form-label">Prix maximum</label>
             <input type="number" class="form-control" id="prixMax" name="prixMax" step="0.01">
         </div>
@@ -35,32 +38,34 @@
             <input type="number" class="form-control" id="nbPersonnes" name="nbPersonnes">
         </div>
     </form>
-        {#Ici, les menus filtrés sont injectés dynamiquement par JS#}
-        <div id= "liste-menus" class="row">
-            {% if menus is empty %}
-                <p class="text-muted">Aucun menu disponible pour le moment.</p>
-            {% else %}
-                {% for menu in menus %}
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ menu.titre }}</h5>
-                                <p class="card-text">{{ menu.description }}</p>
-                                <p class="card-text">
-                                    <small class="text-muted">
-                                        À partir de {{ menu.nbPersonnesMin }} personnes
-                                    </small>
-                                </p>
-                                <p class="card-text fw-bold">
-                                    {{ menu.prixBase }} € / personne
+
+    <div id="liste-menus" class="row">
+        {% if menus is empty %}
+            <p class="text-center" style="color: var(--text-secondary);">Aucun menu disponible pour le moment.</p>
+        {% else %}
+            {% for menu in menus %}
+                <div class="col-md-4 mb-4">
+                        <div class="carte-menu h-100">
+                            {% if menu.images is not empty %}
+                                <img src="{{ asset('uploads/menus/' ~ menu.images|first.url) }}" class="carte-menu-image" alt="{{ menu.titre }}">
+                            {% else %}
+                                <div class="carte-menu-image carte-menu-image-placeholder"></div>
+                            {% endif %}
+                            <div class="carte-menu-body">
+                                <h3 class="card-title-dark">{{ menu.titre }}</h3>
+                                <p class="description-menu" style="color: var(--text-secondary);">{{ menu.description }}</p>
+                                <p class="caption-meta">À partir de {{ menu.nbPersonnesMin }} personnes</p>
+                                <p style="font-weight: 700; font-size: 19px;">
+                                    <span style="color: var(--primary-brand);">{{ menu.prixBase }} €</span>
+                                    <span style="color: var(--text-primary);"> / personne</span>
                                 </p>
                                 <a href="{{ path('app_menu_detail', {id: menu.id}) }}" class="btn btn-primary">Voir le détail</a>
                             </div>
                         </div>
                     </div>
-                {% endfor %}
-            {% endif %}
-        </div> 
+            {% endfor %}
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -93,7 +98,7 @@
                 if (nbPersonnes) params.append('nbPersonnes', nbPersonnes);
 
                 // Message de chargement pendant la requête 
-                listeMenus.innerHTML = '<p class="text-muted">Chargement des menus...</p>';
+                listeMenus.innerHTML = '<p class="text-center" style="color: var(--text-secondary);">Chargement des menus...</p>';
 
                 // Appel à la route API pour retour Json
                 fetch('{{ path('app_menu_filter')}}?' + params.toString())
@@ -104,7 +109,7 @@
                         listeMenus.innerHTML = '';
 
                         if (menus.length === 0){
-                            listeMenus.innerHTML = '<p class="text-muted">Aucun menu ne correspond à ces critères.</p>';
+                            listeMenus.innerHTML = '<p class="text-center" style="color: var(--text-secondary);">Aucun menu ne correspond à ces critères.</p>';
                             return;
                         }
 
@@ -114,29 +119,39 @@
                             carte.className = 'col-md-4 mb-4';
 
                             const card = document.createElement('div');
-                            card.className = 'card h-100';
+                            card.className = 'carte-menu h-100';
 
                             const cardBody = document.createElement('div');
-                            cardBody.className = 'card-body';
+                            cardBody.className = 'carte-menu-body';
 
-                            const titre = document.createElement('h5');
-                            titre.className = 'card-title';
+                            const titre = document.createElement('h3');
+                            titre.className = 'card-title-dark';
                             titre.textContent = menu.titre;
 
                             const description = document.createElement('p');
-                            description.className = 'card-text';
+                            description.className = 'description-menu';
+                            description.style.color = 'var(--text-secondary)';
+                            description.style.color = 'var(--text-secondary)';
                             description.textContent = menu.description;
 
                             const nbPersonnesP = document.createElement('p');
-                            nbPersonnesP.className = 'card-text';
-                            const nbPersonnesSmall = document.createElement('small');
-                            nbPersonnesSmall.className = 'text-muted';
-                            nbPersonnesSmall.textContent = `À partir de ${menu.nbPersonnesMin} personnes`;
-                            nbPersonnesP.appendChild(nbPersonnesSmall);
+                            nbPersonnesP.className = 'caption-meta';
+                            nbPersonnesP.textContent = `À partir de ${menu.nbPersonnesMin} personnes`;
 
                             const prix = document.createElement('p');
-                            prix.className = 'card-text fw-bold';
-                            prix.textContent = `${menu.prixBase} € / personne`;
+                            prix.style.fontWeight = '700';
+                            prix.style.fontSize = '19px';
+
+                            const prixMontant = document.createElement('span');
+                            prixMontant.style.color = 'var(--primary-brand)';
+                            prixMontant.textContent = `${menu.prixBase} €`;
+
+                            const prixLabel = document.createElement('span');
+                            prixLabel.style.color = 'var(--text-primary)';
+                            prixLabel.textContent = ' / personne';
+
+                            prix.appendChild(prixMontant);
+                            prix.appendChild(prixLabel);
 
                             const bouton = document.createElement('a');
                             bouton.href = `${cheminBaseDetail}/${menu.id}`;
@@ -157,7 +172,7 @@
                     })
                     .catch(error => {
                         // Utilisateur informé en cas d'échec
-                        listeMenus.innerHTML = '<p class="text-danger">Une erreur est survenue, veuillez réessayer.</p>';
+                        listeMenus.innerHTML = '<p class="text-center" style="color: var(--status-danger);">Une erreur est survenue, veuillez réessayer.</p>'
                         console.error('Erreur lors du filtrage :', error);
                 });
             }

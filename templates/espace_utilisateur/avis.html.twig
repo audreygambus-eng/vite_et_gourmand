@@ -5,15 +5,16 @@
 {% block body %}
     <a href="{{ path('app_espace_utilisateur_commande_detail', {id: commande.id}) }}" class="btn btn-outline-secondary mb-4">← Retour à la commande</a>
 
-    <h1> Laisser un avis - Vite & Gourmand </h1>
-    <p classe="text-muted">Menu : {{ commande.menu.titre }}</p>
+    <p class="label-eyebrow">VOTRE AVIS</p>
+    <h1>Laisser un avis</h1>
+    <p class="caption-meta mb-4">Menu : {{ commande.menu.titre }}</p>
 
     {{ form_errors(form) }}
 
-    {{ form_start(form) }}
+    {{ form_start(form, {attr: {class: 'formulaire-espace'}}) }}
         {{ form_row(form.note) }}
         {{ form_row(form.commentaire) }}
 
-        <button type="submit" class="btn btn-primary mt-3">Envoyer mon avis</button>
+        <button type="submit" class="btn btn-primary w-100 mt-3">Envoyer mon avis</button>
     {{ form_end(form) }}
 {% endblock %}

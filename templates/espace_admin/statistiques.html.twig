@@ -5,9 +5,10 @@
 {% block body %}
     <a href="{{ path('app_espace_admin') }}" class="btn btn-outline-secondary mb-4">← Retour à l'espace admin</a>
 
-    <h1>Statistiques par menu</h1>
+    <p class="label-eyebrow">STATISTIQUES</p>
+    <h1>Résultats par <span style="color: var(--primary-brand);">menu</span></h1>
 
-    <form method="get" class="row g-3 mb-4">
+    <form method="get" class="row g-3 mb-4 mt-3 bloc-filtres">
         <div class="col-md-4">
             <label for="dateDebut" class="form-label">Date de début</label>
             <input type="date" name="dateDebut" id="dateDebut" class="form-control" value="{{ dateDebut }}">
@@ -22,27 +23,32 @@
     </form>
 
     {% if resultats is empty %}
-        <p class="text-muted">Aucune donnée statistique n'est disponible pour le moment.</p>
+        <p style="color: var(--text-secondary);">Aucune donnée statistique n'est disponible pour le moment.</p>
     {% else %}
-        <p class="fs-4 fw-bold">Chiffre d'affaires total : {{ caTotal }} €</p>
+        <div class="carte-plat mb-4 text-center">
+            <p class="caption-meta">Chiffre d'affaires total</p>
+            <p style="font-size: 32px; font-weight: 700; color: var(--primary-brand);">{{ caTotal }} €</p>
+        </div>
+
         <div style="max-width: 400px; margin: 0 auto;" class="mb-5">
             <canvas id="graphiqueCommandes"></canvas>
         </div>
-        <div class="table-responsive">
+
+        <div class="table-responsive" style="background-color: var(--background-card); border-radius: var(--radius-card-avis); border: 1px solid var(--border-soft); padding: var(--spacing-md);">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Menu</th>
-                        <th>Nombre de commandes</th>
-                        <th>Chiffre d'affaires</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Menu</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Nombre de commandes</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Chiffre d'affaires</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for resultat in resultats %}
                         <tr>
-                            <td>{{ resultat._id }}</td>
-                            <td>{{ resultat.nombreCommandes }}</td>
-                            <td>{{ resultat.chiffreAffaires }} €</td>
+                            <td style="font-weight: 500;">{{ resultat._id }}</td>
+                            <td style="color: var(--text-secondary);">{{ resultat.nombreCommandes }}</td>
+                            <td style="color: var(--primary-brand); font-weight: 700;">{{ resultat.chiffreAffaires }} €</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -66,11 +72,11 @@
                                 label: 'Nombre de commandes',
                                 data: [{% for resultat in resultats %}{{ resultat.nombreCommandes }},{% endfor %}],
                                 backgroundColor: [
-                                    'rgba(54, 162, 235, 0.7)',
-                                    'rgba(255, 99, 132, 0.7)',
-                                    'rgba(255, 206, 86, 0.7)',
-                                    'rgba(75, 192, 192, 0.7)',
-                                    'rgba(153, 102, 255, 0.7)',
+                                    '#C94E1A',
+                                    '#E8784A',
+                                    '#7A5A40',
+                                    '#FCBF1C',
+                                    '#3A6A2A',
                                 ],
                             }]
                         },
@@ -82,5 +88,3 @@
             </script>
     {% endif %}
 {% endblock %}
-
-                
