@@ -27,18 +27,23 @@ class ProfilFormType extends AbstractType
             ])
             ->add('telephone', TelType::class,[
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : 06 11 93 66 17'],
             ])
             ->add('adresse', TextType::class,[
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : 10 rue du Bon Traiteur'],
             ])
             ->add('ville', TextType::class,[
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : Bordeaux'],
             ])
             ->add('codePostal', TextType::class,[
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : 33000'],
             ])
             ->add('pays', TextType::class,[
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : France'],
             ])
             
         ;

@@ -12,6 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -28,25 +29,30 @@ class RegistrationFormType extends AbstractType
                     new NotBlank(message: 'Veuillez entrer votre prénom'),
                 ],
             ])
-            ->add('email')
+            ->add('email', EmailType::class, [
+                'attr' => ['placeholder' => 'exemple@email.com'],
+                ])
             ->add('telephone', TelType::class, [
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : 06 11 93 66 17'],
             ])
             ->add('adresse', TextType::class, [
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : 10 rue du Bon Traiteur'],
             ])
             ->add('ville', TextType::class, [
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : Bordeaux'],
             ])
             ->add('codePostal', TextType::class, [
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : 33000'],
             ])
             ->add('pays', TextType::class, [
                 'required' => false,
+                'attr' => ['placeholder' => 'exemple : France'],
             ])
             ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
                 'mapped' => false,
                 'attr' => ['autocomplete' => 'new-password'],
                 'constraints' => [
