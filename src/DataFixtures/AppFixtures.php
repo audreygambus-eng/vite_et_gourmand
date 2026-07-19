@@ -159,8 +159,8 @@ class AppFixtures extends Fixture
         $manager->persist($menu1);
 
         $menu2 = new Menu();
-        $menu2->setTitre('Menu Végétarien de Pâques');
-        $menu2->setDescription('Pour les végés qui veulent se régaler.');
+        $menu2->setTitre('Menu Pâques Agneau');
+        $menu2->setDescription('Menu printanier autour de l\'agneau, plat traditionnel de Pâques.');
         $menu2->setConditions('Commande à effectuer 3 jours avant la prestation.');
         $menu2->setDelaiMinimumJours(3);
         $menu2->setNbPersonnesMin(4);
@@ -168,7 +168,7 @@ class AppFixtures extends Fixture
         $menu2->setStockDisponible(8);
         $menu2->setActif(true);
         $menu2->setTheme($themePaques);
-        $menu2->setRegime($regimeVege);
+        $menu2->setRegime($regimeClassique);
         $manager->persist($menu2);
 
         $menu3 = new Menu();
@@ -183,6 +183,47 @@ class AppFixtures extends Fixture
         $menu3->setTheme($themeClassique);
         $menu3->setRegime($regimeClassique);
         $manager->persist($menu3);
+
+        $menu4 = new Menu();
+        $menu4->setTitre('Menu Vegan');
+        $menu4->setDescription('Un menu Un menu que tout le monde pourra manger.');
+        $menu4->setConditions('Commande à effectuer 3 jours avant la prestation.');
+        $menu4->setDelaiMinimumJours(3);
+        $menu4->setNbPersonnesMin(6);
+        $menu4->setPrixBase('36.00');
+        $menu4->setStockDisponible(10);
+        $menu4->setActif(true);
+        $menu4->setTheme($themeClassique);
+        $menu4->setRegime($regimeVegan);
+        $manager->persist($menu4);
+
+        $menu5 = new Menu();
+        $menu5->setTitre('Menu Cocktail Business');
+        $menu5->setDescription('Formule cocktail dînatoire idéale pour vos réceptions d\'entreprise.');
+        $menu5->setConditions('Commande à effectuer 7 jours avant la prestation.');
+        $menu5->setDelaiMinimumJours(7);
+        $menu5->setNbPersonnesMin(10);
+        $menu5->setPrixBase('45.00');
+        $menu5->setStockDisponible(8);
+        $menu5->setActif(true);
+        $menu5->setTheme($themeEvenement);
+        $menu5->setRegime($regimeClassique);
+        $manager->persist($menu5);
+
+        $menu6 = new Menu();
+        $menu6->setTitre('Menu Végétarien');
+        $menu6->setDescription('Pour les végés qui veulent se régaler.');
+        $menu6->setConditions('Commande à effectuer 2 jours avant la prestation.');
+        $menu6->setDelaiMinimumJours(2);
+        $menu6->setNbPersonnesMin(4);
+        $menu6->setPrixBase('30.00');
+        $menu6->setStockDisponible(10);
+        $menu6->setActif(true);
+        $menu6->setTheme($themeClassique);
+        $menu6->setRegime($regimeVege);
+        $manager->persist($menu6);
+
+
 
         // Création des plats de test
         $plat1 = new Plat();
@@ -205,6 +246,111 @@ class AppFixtures extends Fixture
         $plat3->setDescription('Bûche pâtissière chocolat noisette.');
         $plat3->addMenu($menu1);
         $manager->persist($plat3);
+
+        $plat4 = new Plat();
+        $plat4->setTitre('Terrine de campagne');
+        $plat4->setType('entrée');
+        $plat4->setDescription('Belle terrine accompagnée de pickles et de pain toasté.');
+        $plat4->addMenu($menu2);
+        $manager->persist($plat4);
+
+        $plat5 = new Plat();
+        $plat5->setTitre('Gigot d\'agneau confit aux herbes et gratin dauphinois');
+        $plat5->setType('plat');
+        $plat5->setDescription('Pièce de viande fondante, avec herbes de Provence, et gratin onctueux.');
+        $plat5->addMenu($menu2);
+        $manager->persist($plat5);
+
+        $plat6 = new Plat();
+        $plat6->setTitre('Fraisier');
+        $plat6->setType('dessert');
+        $plat6->setDescription('Fraisier traditionnel.');
+        $plat6->addMenu($menu2);
+        $manager->persist($plat6);
+
+        $plat7 = new Plat();
+        $plat7->setTitre('Foie gras maison');
+        $plat7->setType('entrée');
+        $plat7->setDescription('Foie gras mi-cuit accompagné de chutney de figues.');
+        $plat7->addMenu($menu3);
+        $manager->persist($plat7);
+
+        $plat8 = new Plat();
+        $plat8->setTitre('Suprême de pintade');
+        $plat8->setType('plat');
+        $plat8->setDescription('Volaille fermière et sa sauce aux morilles.');
+        $plat8->addMenu($menu3);
+        $manager->persist($plat8);
+
+        $plat9 = new Plat();
+        $plat9->setTitre('Tiramisu');
+        $plat9->setType('dessert');
+        $plat9->setDescription('Tiramisu au café et poudre de cacao.');
+        $plat9->addMenu($menu3);
+        $manager->persist($plat9);
+
+        $plat10 = new Plat();
+        $plat10->setTitre('Terrine de légumes');
+        $plat10->setType('entrée');
+        $plat10->setDescription('Terrine de légumes grillés et tofu mariné.');
+        $plat10->addMenu($menu4);
+        $manager->persist($plat10);
+
+        $plat11 = new Plat();
+        $plat11->setTitre('Ragoût de lentilles');
+        $plat11->setType('plat');
+        $plat11->setDescription('Lentilles vertes et légumes racines.');
+        $plat11->addMenu($menu4);
+        $manager->persist($plat11);
+
+        $plat12 = new Plat();
+        $plat12->setTitre('Panna cotta');
+        $plat12->setType('dessert');
+        $plat12->setDescription('Panna cotta de tradition avec coulis de fruits rouges.');
+        $plat12->addMenu($menu4);
+        $manager->persist($plat12);
+
+        $plat13 = new Plat();
+        $plat13->setTitre('Feuilletés de la mer');
+        $plat13->setType('entrée');
+        $plat13->setDescription('Feuilletés croustillants garnis de crevettes.');
+        $plat13->addMenu($menu5);
+        $manager->persist($plat13);
+
+        $plat14 = new Plat();
+        $plat14->setTitre('Délicieux saumon');
+        $plat14->setType('plat');
+        $plat14->setDescription('Pavé de saumon frais, beurre blanc.');
+        $plat14->addMenu($menu5);
+        $manager->persist($plat14);
+
+        $plat15 = new Plat();
+        $plat15->setTitre('Entremet gourmand');
+        $plat15->setType('dessert');
+        $plat15->setDescription('Entremet trois chocolats.');
+        $plat15->addMenu($menu5);
+        $manager->persist($plat15);
+
+        $plat16 = new Plat();
+        $plat16->setTitre('Curry de légume');
+        $plat16->setType('entrée');
+        $plat16->setDescription('Curry de légumes et lait de coco.');
+        $plat16->addMenu($menu6);
+        $manager->persist($plat16);
+
+        $plat17 = new Plat();
+        $plat17->setTitre('Risotto');
+        $plat17->setType('plat');
+        $plat17->setDescription('Risotto aux champignons et parmesan.');
+        $plat17->addMenu($menu6);
+        $manager->persist($plat17);
+
+        $plat18 = new Plat();
+        $plat18->setTitre('Salade de fruits');
+        $plat18->setType('dessert');
+        $plat18->setDescription('Salade fraîcheur et ses fruits du marché.');
+        $plat18->addMenu($menu6);
+        $manager->persist($plat18);
 
         $manager->flush(); // ID
 
