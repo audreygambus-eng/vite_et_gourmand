@@ -55,6 +55,7 @@ class MenuFormType extends AbstractType
                 'class' => Plat::class,
                 'choice_label' => 'titre',
                 'multiple' => true,
+                'expanded' => true,
                 'required' => false
             ])
         ;

@@ -37,12 +37,14 @@ class PlatFormType extends AbstractType
                 'class' => Menu::class,
                 'choice_label' => 'titre',
                 'multiple' => true,
+                'expanded' => true,
                 'required' => false,
             ])
             ->add('allergenes', EntityType::class, [
                 'class' => Allergene::class,
                 'choice_label' => 'libelle',
                 'multiple' => true,
+                'expanded' => true,
                 'required' => false,
             ])
         ;
