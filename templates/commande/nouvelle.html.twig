@@ -7,6 +7,15 @@
     <h1>{{ menu.titre }}</h1>
     <p class="caption-meta mb-4">{{ menu.prixBase }} € / personne — Minimum {{ menu.nbPersonnesMin }} personnes</p>
 
+    <div class="carte-contenu mb-4">
+        <h2 class="card-title-dark mb-2">Vos informations</h2>
+        <p style="color : var(--text-secondary);">
+            {{ app.user.prenom }} {{ app.user.nom }}<br>
+            {{ app.user.email }}<br>
+            {{ app.user.telephone ?: 'Aucun numéro renseigné dans votre profil' }}
+        </p>
+    </div>
+    
     {{ form_errors(form) }}
 
     {{ form_start(form, {attr: {class: 'formulaire-espace'}}) }}

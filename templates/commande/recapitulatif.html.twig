@@ -3,8 +3,8 @@
 {% block title %}Récapitulatif de votre commande - Vite & Gourmand{% endblock %}
 
 {% block body %}
-    <p class="label-eyebrow">VOTRE COMMANDE</p>
-    <h1>Récapitulatif</h1>
+    <h1 class="label-eyebrow">VOTRE COMMANDE</h1>
+    <h2>Récapitulatif</h2>
 
     <div class="row mt-4">
         <div class="col-md-6">
@@ -41,7 +41,9 @@
 
                 <p style="font-size: 24px; font-weight: 700;">
                     Total : <span style="color: var(--primary-brand);">{{ prixTotal }} €</span>
-                </p>
+                <p><strong style="color: var(--text-primary);">Attention : toute commande, une fois acceptée par notre équipe, ne peut plus être modifiée, ni annulée.</strong></p>
+
+                <p>
 
                 <form method="post" action="{{ path('app_commande_confirmer') }}">
                     <button type="submit" class="btn btn-primary btn-lg w-100">Confirmer la commande</button>

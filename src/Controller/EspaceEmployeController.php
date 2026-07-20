@@ -235,8 +235,26 @@ class EspaceEmployeController extends AbstractController
                     ->context([
                         'commande' => $commande,
                     ]);
+
                 $mailer->send($email);
             } catch (\Exception $e){
+                // Erreur tracée sans blocage de changement de statut
+            }
+        }
+
+        if ($nouveauStatut === 'terminée'){
+            try {
+                $email = (new TemplatedEmail())
+                    ->from(new Address('contact@vite-et-gourmand.com', 'Vite & Gourmand'))
+                    ->to((string) $commande->getUtilisateur()->getEmail())
+                    ->subject('Votre commande est terminée. Venez nous donner votre avis !')
+                    ->htmlTemplate('emails/commande_terminee.html.twig')
+                    ->context([
+                        'commande' => $commande,
+                    ]);
+                
+                $mailer->send($email);
+            } catch(\Exception $e) {
                 // Erreur tracée sans blocage de changement de statut
             }
         }
