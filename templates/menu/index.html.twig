@@ -1,0 +1,184 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos menus - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <div class="mb-5">
+        <p class="label-eyebrow text-start">NOS MENUS</p>
+        <h1 class="text-start">Des menus pensés pour <span style="color: var(--primary-brand);">chaque occasion</span></h1>
+        <p class="text-start">Des créations de saison, élaborées avec des produits frais et locaux, </br> pour sublimer tous vos événements privés et professionnels à Bordeaux et ses alentours</p>
+    </div>
+
+    <form id="filtres-menus" class="row g-3 mb-5 bloc-filtres">
+        <div class="col-md-3">
+            <label for="prixMax" class="form-label">Prix maximum</label>
+            <input type="number" class="form-control" id="prixMax" name="prixMax" step="0.01">
+        </div>
+
+        <div class="col-md-3">
+            <label for="theme" class="form-label">Thème</label>
+            <select class="form-select" id="theme" name="theme">
+                <option value="">Tous les thèmes</option>
+                {% for theme in themes %}
+                    <option value="{{ theme.id }}">{{ theme.libelle }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="regime" class="form-label">Régime</label>
+            <select class="form-select" id="regime" name="regime">
+                <option value="">Tous les régimes</option>
+                {% for regime in regimes %}
+                    <option value="{{ regime.id }}">{{ regime.libelle }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="nbPersonnes" class="form-label">Nombre de personnes minimum</label>
+            <input type="number" class="form-control" id="nbPersonnes" name="nbPersonnes">
+        </div>
+    </form>
+
+    <div id="liste-menus" class="row">
+        {% if menus is empty %}
+            <p class="text-center" style="color: var(--text-secondary);">Aucun menu disponible pour le moment.</p>
+        {% else %}
+            {% for menu in menus %}
+                <div class="col-md-4 mb-4">
+                        <div class="carte-menu h-100">
+                            {% if menu.images is not empty %}
+                                <img src="{{ vich_uploader_asset(menu.images|first, 'fichier') }}" class="carte-menu-image" alt="{{ menu.titre }}">
+                            {% else %}
+                                <div class="carte-menu-image carte-menu-image-placeholder"></div>
+                            {% endif %}
+                            <div class="carte-menu-body">
+                                <h2 class="card-title-dark">{{ menu.titre }}</h2>
+                                <p class="description-menu" style="color: var(--text-secondary);">{{ menu.description }}</p>
+                                <p class="caption-meta">À partir de {{ menu.nbPersonnesMin }} personnes</p>
+                                <p style="font-weight: 700; font-size: 19px;">
+                                    <span style="color: var(--primary-brand);">{{ menu.prixBase }} €</span>
+                                    <span style="color: var(--text-primary);"> / personne</span>
+                                </p>
+                                <a href="{{ path('app_menu_detail', {id: menu.id}) }}" class="btn btn-primary">Voir le détail</a>
+                            </div>
+                        </div>
+                    </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        const cheminBaseDetail = "{{ path('app_menu_detail', {id: 0}) }}".replace('/0', '');
+        document.addEventListener('DOMContentLoaded', function() {
+            const formulaireFiltres = document.getElementById('filtres-menus');
+            const listeMenus = document.getElementById('liste-menus');
+            let timeoutId; 
+
+            // Debounce
+            function actualiserMenusAvecDelai() {
+            clearTimeout(timeoutId);
+            timeoutId = setTimeout(actualiserMenus, 300);
+            }
+
+            // On récupère les valeurs des filtres et on va interroger l'API Symfony
+            function actualiserMenus(){
+                const prixMax = document.getElementById('prixMax').value;
+                const theme = document.getElementById('theme').value;
+                const regime = document.getElementById('regime').value;
+                const nbPersonnes = document.getElementById('nbPersonnes').value;
+
+                // Seuls les filtres renseignés sont transmis
+                const params = new URLSearchParams();
+                if (prixMax) params.append('prixMax', prixMax);
+                if (theme) params.append('theme', theme);
+                if (regime) params.append('regime', regime);
+                if (nbPersonnes) params.append('nbPersonnes', nbPersonnes);
+
+                // Message de chargement pendant la requête 
+                listeMenus.innerHTML = '<p class="text-center" style="color: var(--text-secondary);">Chargement des menus...</p>';
+
+                // Appel à la route API pour retour Json
+                fetch('{{ path('app_menu_filter')}}?' + params.toString())
+                    .then(response => response.json())
+                    .then(menus => {
+
+                        // Liste vidée avant d'être reconstruite
+                        listeMenus.innerHTML = '';
+
+                        if (menus.length === 0){
+                            listeMenus.innerHTML = '<p class="text-center" style="color: var(--text-secondary);">Aucun menu ne correspond à ces critères.</p>';
+                            return;
+                        }
+
+                        // Reconstruction manuelle des cartes depuis le JSON reçu
+                        menus.forEach(menu => {
+                            const carte = document.createElement('div');
+                            carte.className = 'col-md-4 mb-4';
+
+                            const card = document.createElement('div');
+                            card.className = 'carte-menu h-100';
+
+                            const cardBody = document.createElement('div');
+                            cardBody.className = 'carte-menu-body';
+
+                            const titre = document.createElement('h3');
+                            titre.className = 'card-title-dark';
+                            titre.textContent = menu.titre;
+
+                            const description = document.createElement('p');
+                            description.className = 'description-menu';
+                            description.style.color = 'var(--text-secondary)';
+                            description.style.color = 'var(--text-secondary)';
+                            description.textContent = menu.description;
+
+                            const nbPersonnesP = document.createElement('p');
+                            nbPersonnesP.className = 'caption-meta';
+                            nbPersonnesP.textContent = `À partir de ${menu.nbPersonnesMin} personnes`;
+
+                            const prix = document.createElement('p');
+                            prix.style.fontWeight = '700';
+                            prix.style.fontSize = '19px';
+
+                            const prixMontant = document.createElement('span');
+                            prixMontant.style.color = 'var(--primary-brand)';
+                            prixMontant.textContent = `${menu.prixBase} €`;
+
+                            const prixLabel = document.createElement('span');
+                            prixLabel.style.color = 'var(--text-primary)';
+                            prixLabel.textContent = ' / personne';
+
+                            prix.appendChild(prixMontant);
+                            prix.appendChild(prixLabel);
+
+                            const bouton = document.createElement('a');
+                            bouton.href = `${cheminBaseDetail}/${menu.id}`;
+                            bouton.className = 'btn btn-primary';
+                            bouton.textContent = 'Voir le détail';
+
+                            cardBody.appendChild(titre);
+                            cardBody.appendChild(description);
+                            cardBody.appendChild(nbPersonnesP);
+                            cardBody.appendChild(prix);
+                            cardBody.appendChild(bouton);
+                            card.appendChild(cardBody);
+                            carte.appendChild(card);
+
+                            listeMenus.appendChild(carte);
+                        });
+
+                    })
+                    .catch(error => {
+                        // Utilisateur informé en cas d'échec
+                        listeMenus.innerHTML = '<p class="text-center" style="color: var(--status-danger);">Une erreur est survenue, veuillez réessayer.</p>'
+                        console.error('Erreur lors du filtrage :', error);
+                });
+            }
+
+            // Déclenche le filtre à chaque saisie ou sélection
+            formulaireFiltres.addEventListener('input', actualiserMenusAvecDelai);
+        });
+    </script>
+{% endblock %}

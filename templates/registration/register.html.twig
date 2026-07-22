@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-8">
+            <p class="label-eyebrow text-center">REJOIGNEZ-NOUS</p>
+            <h1 class="text-center mb-4">Créer un compte</h1>
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+
+            {{ form_errors(registrationForm) }}
+
+            {{ form_start(registrationForm, {attr: {class: 'formulaire-espace'}}) }}
+                {{ form_row(registrationForm.nom) }}
+                {{ form_row(registrationForm.prenom) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.telephone) }}
+                {{ form_row(registrationForm.adresse) }}
+                {{ form_row(registrationForm.ville) }}
+                {{ form_row(registrationForm.codePostal) }}
+                {{ form_row(registrationForm.pays) }}
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Mot de passe'
+                }) }}
+                <p class="caption-meta mb-3">
+                    Votre mot de passe doit contenir au moins 10 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial
+                </p>
+
+                <button type="submit" class="btn btn-primary w-100 mt-3">S'inscrire</button>
+            {{ form_end(registrationForm) }}
+        </div>
+    </div>
+{% endblock %}

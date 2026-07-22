@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier ma commande - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_utilisateur_commande_detail', {id: commande.id})}}" class="btn btn-outline-primary mb-4">← Retour à la commande</a>
+
+    <p class="label-eyebrow">MODIFICATION</p>
+    <h1>Commande {{ commande.numeroCommande }}</h1>
+    <p class="caption-meta mb-4">Menu : {{ commande.menu.titre }} (non modifiable)</p>
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form, {attr: {class: 'formulaire-espace'}}) }}
+        {{ form_row(form.datePrestation) }}
+        {{ form_row(form.heureLivraison) }}
+        {{ form_row(form.adresseLivraison) }}
+        {{ form_row(form.villeLivraison) }}
+        {{ form_row(form.nbPersonnes) }}
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">Enregistrer les modifications</button>
+    {{ form_end(form) }}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace employé - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <p class="label-eyebrow">ESPACE EMPLOYÉ</p>
+    <h1>Bienvenue dans votre <span style="color: var(--primary-brand);">espace</span></h1>
+    <p style="color: var(--text-secondary);">Gérez les menus, plats, horaires, commandes et avis de Vite & Gourmand.</p>
+
+    <div class="row mt-5 g-4">
+        <div class="col-md-4">
+            <a href="{{ path('app_espace_employe_menus') }}" class="carte-dashboard" style="padding: var(--spacing-lg); min-height: 180px; display: flex; flex-direction: column; justify-content: center;">
+                <div style="width: 48px; height: 48px; background-color: var(--background-soft); border-radius: var(--radius-input); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-sm);">
+                    <i class="bi bi-menu-button-wide" style="font-size: 22px; color: var(--primary-brand);"></i>
+                </div>
+                <h2 class="card-title-dark">Menus</h2>
+                <p class="caption-meta">Gérer le catalogue</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('app_espace_employe_plats') }}" class="carte-dashboard" style="padding: var(--spacing-lg); min-height: 180px; display: flex; flex-direction: column; justify-content: center;">
+                <div style="width: 48px; height: 48px; background-color: var(--background-soft); border-radius: var(--radius-input); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-sm);">
+                    <i class="bi bi-egg-fried" style="font-size: 22px; color: var(--primary-brand);"></i>
+                </div>
+                <h3 class="card-title-dark">Plats</h3>
+                <p class="caption-meta">Gérer les plats et allergènes</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('app_espace_employe_horaires') }}" class="carte-dashboard" style="padding: var(--spacing-lg); min-height: 180px; display: flex; flex-direction: column; justify-content: center;">
+                <div style="width: 48px; height: 48px; background-color: var(--background-soft); border-radius: var(--radius-input); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-sm);">
+                    <i class="bi bi-clock" style="font-size: 22px; color: var(--primary-brand);"></i>
+                </div>
+                <h3 class="card-title-dark">Horaires</h3>
+                <p class="caption-meta">Modifier les horaires d'ouverture</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('app_espace_employe_commandes') }}" class="carte-dashboard" style="padding: var(--spacing-lg); min-height: 180px; display: flex; flex-direction: column; justify-content: center;">
+                <div style="width: 48px; height: 48px; background-color: var(--background-soft); border-radius: var(--radius-input); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-sm);">
+                    <i class="bi bi-box-seam" style="font-size: 22px; color: var(--primary-brand);"></i>
+                </div>
+                <h3 class="card-title-dark">Commandes</h3>
+                <p class="caption-meta">Suivre et gérer les commandes</p>
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ path('app_espace_employe_avis') }}" class="carte-dashboard" style="padding: var(--spacing-lg); min-height: 180px; display: flex; flex-direction: column; justify-content: center;">
+                <div style="width: 48px; height: 48px; background-color: var(--background-soft); border-radius: var(--radius-input); display: flex; align-items: center; justify-content: center; margin-bottom: var(--spacing-sm);">
+                    <i class="bi bi-star" style="font-size: 22px; color: var(--primary-brand);"></i>
+                </div>
+                <h3 class="card-title-dark">Avis</h3>
+                <p class="caption-meta">Valider les avis clients</p>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des plats - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_employe') }}" class="btn btn-outline-primary mb-4">← Retour à votre espace</a>
+
+    <p class="label-eyebrow">GESTION</p>
+    <h1>Nos <span style="color: var(--primary-brand);">plats</span></h1>
+
+    <div class="table-responsive mt-4" style="background-color: var(--background-card); border-radius: var(--radius-card-avis); border: 1px solid var(--border-soft); padding: var(--spacing-md);">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="caption-meta" style="text-transform: uppercase;">Titre</th>
+                    <th class="caption-meta" style="text-transform: uppercase;">Type</th>
+                    <th class="caption-meta" style="text-transform: uppercase;">Description</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plat in plats %}
+                    <tr>
+                        <td style="font-weight: 500;">{{ plat.titre }}</td>
+                        <td style="color: var(--text-secondary); text-transform: capitalize;">{{ plat.type }}</td>
+                        <td style="color: var(--text-secondary);">{{ plat.description }}</td>
+                        <td>
+                            <a href="{{ path('app_espace_employe_plat_modifier', {id: plat.id}) }}" class="btn btn-sm btn-outline-primary">Modifier</a>
+                            <form method="post" action="{{ path('app_espace_employe_plat_supprimer', {id: plat.id}) }}" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment supprimer ce plat ?');">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

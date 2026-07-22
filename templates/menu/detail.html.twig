@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ menu.titre }} - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_menu') }}" class="btn btn-outline-primary mb-4">← Retour aux menus</a>
+
+    <div class="row">
+        <div class="col-md-6">
+            <p class="label-eyebrow">{{ menu.theme.libelle }} — {{ menu.regime.libelle }}</p>
+            <h1>{{ menu.titre }}</h1>
+
+            <p style="color: var(--text-secondary);">{{ menu.description }}</p>
+
+            <p style="font-weight: 700; font-size: 28px;">
+                <span style="color: var(--primary-brand);">{{ menu.prixBase }} €</span>
+                <span style="color: var(--text-primary);"> / personne</span>
+            </p>
+
+            <p class="caption-meta">À partir de {{ menu.nbPersonnesMin }} personnes</p>
+
+            {% if menu.conditions %}
+                <div class="mb-3" style="background-color: var(--background-soft); border: 1px solid var(--border-soft); border-radius: var(--radius-input); padding: var(--spacing-sm);">
+                    <strong style="color: var(--text-primary);">Conditions :</strong>
+                    <span style="color: var(--text-secondary);">{{ menu.conditions }}</span>
+                </div>
+            {% endif %}
+
+            <p>
+                {% if menu.stockDisponible > 0 %}
+                    <span class="badge-verifie">{{ menu.stockDisponible }} commandes possibles</span>
+                {% else %}
+                    <span style="background-color: #fdeaea; color: var(--status-danger); border-radius: 999px; padding: 2px 8px; font-size: 11px;">Stock épuisé</span>
+                {% endif %}
+            </p>
+
+            <a href="{{ path('app_commande_nouvelle', {menuId: menu.id}) }}" class="btn btn-primary btn-lg">Commander</a>
+        </div>
+
+        <div class="col-md-6 colonne-composition-menu">
+            <h2 style="font-size: 28px;">Composition du menu</h2>
+            {% if menu.plats is empty %}
+                <p style="color: var(--text-secondary);">Aucun plat renseigné pour ce menu.</p>
+            {% else %}
+                {% for plat in menu.plats %}
+                    <div class="carte-plat mb-3">
+                        <h3 class="card-title-dark">{{ plat.titre }}</h3>
+                        <p class="caption-meta" style="text-transform: uppercase;">{{ plat.type }}</p>
+                        <p style="color: var(--text-secondary);">{{ plat.description }}</p>
+
+                        {% if plat.allergenes is not empty %}
+                            <p class="caption-meta" style="color: var(--status-danger);">
+                                Allergènes :
+                                {% for allergene in plat.allergenes %}
+                                    {{ allergene.libelle }}{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+    {% if menu.images is not empty %}
+        <h2 class="mt-5" style="font-size: 28px;">Galerie</h2>
+        <div id="carouselMenu" class="carousel slide mb-4" data-bs-ride="carousel" style="border-radius: var(--radius-card-avis); overflow: hidden;">
+            <div class="carousel-inner">
+                {% for image in menu.images %}
+                    <div class="carousel-item {% if loop.first %}active{% endif %}">
+                        <img src="{{ vich_uploader_asset(image, 'fichier') }}" class="d-block w-100" alt="{{ menu.titre }}">
+                    </div>
+                {% endfor %}
+            </div>
+            {% if menu.images|length > 1 %}
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselMenu" data-bs-slide="prev" aria-label="Image précédente">
+                    <span class="carousel-control-prev-icon"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselMenu" data-bs-slide="next" aria-label="Image suivante">
+                    <span class="carousel-control-next-icon"></span>
+                </button>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

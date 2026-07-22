@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <p class="label-eyebrow">MON ESPACE</p>
+    <h1>Mes <span style="color: var(--primary-brand);">commandes</span></h1>
+
+    {% if commandes is empty %}
+        <p style="color: var(--text-secondary);" class="mt-4">Aucune commande enregistrée.</p>
+    {% else %}
+        <div class="table-responsive mt-4" style="background-color: var(--background-card); border-radius: var(--radius-card-avis); border: 1px solid var(--border-soft); padding: var(--spacing-md);">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="caption-meta" style="text-transform: uppercase;">Numéro</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Menu</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Date de prestation</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Nb personnes</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Prix total</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Statut</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commande in commandes %}
+                        <tr>
+                            <td style="font-weight: 500;">{{ commande.numeroCommande }}</td>
+                            <td style="color: var(--text-secondary);">{{ commande.menu.titre }}</td>
+                            <td style="color: var(--text-secondary);">{{ commande.datePrestation|date('d/m/Y') }}</td>
+                            <td style="color: var(--text-secondary);">{{ commande.nbPersonnes }}</td>
+                            <td style="color: var(--primary-brand); font-weight: 700;">{{ commande.prixTotal }} €</td>
+                            <td>
+                                {% if commande.statutHistoriques is not empty %}
+                                    <span class="badge-verifie">{{ commande.statutHistoriques|last.statut }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('app_espace_utilisateur_commande_detail', {id: commande.id}) }}" class="btn btn-sm btn-outline-primary">Détail</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

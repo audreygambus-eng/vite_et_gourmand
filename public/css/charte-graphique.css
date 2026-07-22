@@ -1,0 +1,567 @@
+
+:root {
+    /* Couleurs de marque */
+    --primary-brand: #C94E1A;
+    --primary-brand-hover: #A83C12;
+    --accent: #E8784A;
+
+    /* Couleurs de texte */
+    --text-primary: #2A1A0E;
+    --text-secondary: #7A5A40;
+
+    /* Couleurs de fond */
+    --background-base: #FFF9F2;
+    --background-soft: #FEF6EC;
+    --background-card: #FFFFFF;
+
+    /* Couleurs utilitaires */
+    --border-soft: #F0E4D0;
+    --star: #FCBF1C;
+    --check-bg: #EDFAF1;
+    --check-text: #3A6A2A;
+
+    /* Couleurs de statuts */
+    --status-success: #28A745;
+    --status-danger: #DC3545;
+    --status-info: #17A2B8;
+    --status-warning: #FFC107;
+
+    /* Polices */
+    --font-logo: 'Fraunces', serif;
+    --font-headings: 'Playfair Display', serif;
+    --font-body: 'Inter', sans-serif;
+
+    /* Échelle d'espacement */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+    --spacing-2xl: 60px;
+    --spacing-3xl: 80px;
+
+    /* Arrondis */
+    --radius-input: 8px;
+    --radius-button: 10px;
+    --radius-card-avis: 12px;
+    --radius-card-kpi: 20px;
+    --radius-pill: 999px;
+}
+
+/* === TYPOGRAPHIE DE BASE === */
+html, body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--background-base);
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+main {
+    flex: 1;
+}
+
+/* Hero H1 - Titres principaux */
+.hero-title {
+    font-family: var(--font-headings);
+    font-weight: 700;
+    font-size: 54px;
+    line-height: 1.1;
+}
+
+/* Section H2 - Sous-titres */
+h2, .section-title {
+    font-family: var(--font-headings);
+    font-weight: 400;
+    font-size: 45px;
+    line-height: 1;
+}
+
+/* Card H3 Dark - Titres de cartes (Fraunces) */
+.card-title-dark {
+    font-family: var(--font-logo);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.3;
+}
+
+/* Card H3 - Titres secondaires (Inter) */
+h3, .card-title {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.3;
+}
+
+/* Nav/Link + Button/Secondary */
+.navbar-nav .nav-link,
+.btn-secondary-style {
+    font-family: var(--font-body);
+    font-weight: 500;
+    font-size: 15px;
+    line-height: 1;
+}
+
+/* Button/Primary */
+.btn-primary-style {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1;
+}
+
+/* Label/Eyebrow - Étiquettes */
+.label-eyebrow {
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    color: var(--primary-brand-hover);
+}
+
+/* Caption/Meta - Métadonnées */
+.caption-meta {
+    font-family: var(--font-body);
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--text-secondary);
+}
+
+/* === COMPOSANTS === */
+
+/* Navbar */
+.navbar {
+    background-color: var(--background-card);
+    border-bottom: 1px solid var(--border-soft);
+}
+.navbar-nav {
+    align-items: center;
+}
+
+.navbar .container {
+    align-items: center;
+}
+
+.navbar-brand {
+    font-family: var(--font-logo);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.navbar-nav .nav-link {
+    color: var(--text-primary) !important;
+}
+
+.navbar-nav .nav-link.nav-link-accueil {
+    color: var(--accent) !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: var(--primary-brand-hover) !important;
+    transition: color 0.2s ease;
+}
+.navbar-nav .nav-item {
+    display: flex;
+    align-items: center;
+    margin-right: var(--spacing-sm);
+}
+
+.navbar-nav .nav-item:last-child {
+    margin-right: 0;
+}
+
+/* Boutons primaires */
+.btn-primary {
+    background-color: var(--primary-brand);
+    border-color: var(--primary-brand);
+    border-radius: var(--radius-button);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.btn-primary-regular {
+    font-weight: 400 !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-brand-hover);
+    border-color: var(--primary-brand-hover);
+}
+
+/* Champs de formulaire */
+.form-control,
+.form-select {
+    border-radius: var(--radius-input);
+    border-color: var(--border-soft);
+    padding: 12px 16px;
+}
+
+/* Cartes avis */
+.card-avis {
+    border-radius: var(--radius-card-avis);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.1);
+    background-color: var(--background-card);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Cartes KPI (admin) */
+.card-kpi {
+    border-radius: var(--radius-card-kpi);
+    background-color: var(--background-card);
+}
+
+/* Badge Vérifié */
+.badge-verifie {
+    background-color: var(--check-bg);
+    color: var(--check-text);
+    border-radius: var(--radius-pill);
+}
+
+/* Badges de statut commande */
+.badge-confirme {
+    background-color: var(--check-bg);
+    color: var(--check-text);
+    border-radius: var(--radius-pill);
+}
+
+.badge-annule {
+    background-color: #fdeaea;
+    color: var(--status-danger);
+    border-radius: var(--radius-pill);
+}
+
+.badge-en-cours {
+    background-color: #fff8e1;
+    color: var(--status-warning);
+    border-radius: var(--radius-pill);
+}
+
+/* Étoiles avis */
+.star-rating {
+    color: var(--star);
+}
+
+/* === COMPOSANTS PAGE ACCUEIL === */
+
+.hero-section {
+    background-color: var(--background-base);
+    padding: var(--spacing-3xl) var(--spacing-md);
+    margin: 0 -12px;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-3xl) var(--spacing-md);
+    background-color: var(--text-primary);
+}
+
+.image-container {
+    display: flex;
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 105%;
+    height: 105%;
+    object-fit: cover;
+    transform: translateX(-2%);
+}
+
+.hero-cta {
+    background-color: var(--primary-brand);
+    color: white;
+    border-radius: var(--radius-button);
+    padding: 12px 24px;
+    width: fit-content;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.hero-cta:hover {
+    background-color: var(--primary-brand-hover);
+    color: white;
+}
+
+.section-entreprise {
+    padding: var(--spacing-3xl) var(--spacing-md);
+    margin: 0 -12px;
+}
+
+.section-entreprise-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    padding: var(--spacing-md);
+}
+
+.fondateur-card {
+    display: flex;
+    align-items: center;
+    background-color: var(--background-soft);
+    border: 1px solid var(--text-secondary);
+    border-radius: var(--radius-button);
+    padding: var(--spacing-md);
+    gap: var(--spacing-sm);
+}
+
+.fondateur-avatars {
+    display: flex;
+    margin-right: -14px;
+}
+
+.avatar-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    border-radius: 999px;
+    width: 40px;
+    height: 40px;
+    font-weight: 600;
+    font-family: var(--font-logo);
+}
+
+.avatar-circle-primary {
+    background-color: var(--primary-brand);
+}
+
+.avatar-circle-dark {
+    background-color: var(--text-primary);
+    border: 1px solid white;
+}
+
+.section-expertise {
+    padding: var(--spacing-3xl) 0;
+    margin: 0 -12px;
+}
+
+.expertise-fond-sombre {
+    background-color: var(--text-primary);
+    padding: var(--spacing-3xl) var(--spacing-lg);
+}
+
+.expertise-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--background-card);
+    border-radius: var(--radius-card-avis);
+    padding: var(--spacing-md);
+    height: 100%;
+}
+
+.expertise-card-text {
+    color: var(--text-secondary);
+    flex-grow: 1;
+}
+
+.expertise-badge {
+    background-color: var(--background-soft);
+    border: 1px solid var(--border-soft);
+    border-radius: 999px;
+    padding: 5px 10px;
+    align-self: flex-start;
+}
+
+.section-avis {
+    padding: var(--spacing-3xl) var(--spacing-md);
+}
+
+.avis-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.avis-utilisateur {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.avis-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary-brand);
+    color: white;
+    border-radius: 999px;
+    width: 36px;
+    height: 36px;
+    font-weight: 700;
+}
+
+.avis-badge-verifie {
+    background-color: var(--check-bg);
+    color: var(--check-text);
+    border-radius: 999px;
+    padding: 2px 8px;
+    font-size: 11px;
+}
+
+.avis-commentaire {
+    color: #5f6368;
+    font-size: 14px;
+    line-height: 1.7;
+    flex-grow: 1;
+}
+
+.carte-menu {
+    background-color: var(--background-card);
+    border-radius: var(--radius-card-avis);
+    box-shadow: 0px 2px 8px 0px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.carte-menu-body {
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 8px;
+}
+
+.carte-menu-body .btn {
+    margin-top: auto;
+}
+
+.carte-menu-body p.description-menu {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: 63px;
+}
+
+.carte-menu-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    flex-shrink: 0;
+    display: block;
+}
+
+.carte-menu-image-placeholder {
+    background-color: var(--background-soft);
+    height: 200px;
+}
+
+.form-label {
+    font-family: var(--font-body);
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.bloc-filtres {
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-card-avis);
+    padding: var(--spacing-md);
+}
+
+#carouselMenu .carousel-item img {
+    width: 100%;
+    height: 700px;
+    object-fit: cover;
+    object-position: center;
+}
+
+@media (min-width: 768px) {
+    .colonne-composition-menu {
+        padding-left: 150px;
+    }
+}
+
+.carte-dashboard {
+    display: block;
+    background-color: var(--background-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-card-avis);
+    padding: var(--spacing-md);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.carte-dashboard:hover {
+    box-shadow: 0px 4px 12px 0px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+.btn-outline-primary {
+    color: var(--primary-brand-hover);
+    border-color: var(--primary-brand-hover);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-brand-hover);
+    border-color: var(--primary-brand-hover);
+    color: white;
+}
+
+.btn-outline-danger {
+    color: var(--status-danger);
+    border-color: var(--status-danger);
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--status-danger);
+    border-color: var(--status-danger);
+    color: white;
+}
+
+.formulaire-espace {
+    background-color: var(--background-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-card-avis);
+    padding: var(--spacing-lg);
+}
+
+.formulaire-espace .form-group,
+.formulaire-espace div[class*="form-"] {
+    margin-bottom: var(--spacing-md) !important;
+}
+
+.formulaire-espace label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--text-primary);
+}
+
+.carte-contenu {
+    background-color: var(--background-card);
+    border: 1px solid var(--border-soft);
+    border-radius: var(--radius-card-avis);
+    padding: var(--spacing-md);
+}
+.btn-outline-warning {
+    color: #856404;
+    border-color: var(--status-warning);
+}
+
+.btn-outline-warning:hover {
+    background-color: var(--status-warning);
+    border-color: var(--status-warning);
+    color: white;
+}
+
+

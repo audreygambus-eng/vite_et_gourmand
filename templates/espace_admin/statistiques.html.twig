@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_admin') }}" class="btn btn-outline-primary mb-4">← Retour à l'espace admin</a>
+
+    <p class="label-eyebrow">STATISTIQUES</p>
+    <h1>Résultats par <span style="color: var(--primary-brand);">menu</span></h1>
+
+    <form method="get" class="row g-3 mb-4 mt-3 bloc-filtres">
+        <div class="col-md-4">
+            <label for="dateDebut" class="form-label">Date de début</label>
+            <input type="date" name="dateDebut" id="dateDebut" class="form-control" value="{{ dateDebut }}">
+        </div>
+        <div class="col-md-4">
+            <label for="dateFin" class="form-label">Date de fin</label>
+            <input type="date" name="dateFin" id="dateFin" class="form-control" value="{{ dateFin }}">
+        </div>
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">Filtrer</button>
+        </div>
+    </form>
+
+    {% if resultats is empty %}
+        <p style="color: var(--text-secondary);">Aucune donnée statistique n'est disponible pour le moment.</p>
+    {% else %}
+        <div class="carte-contenu mb-4 text-center">
+            <p class="caption-meta">Chiffre d'affaires total</p>
+            <p style="font-size: 32px; font-weight: 700; color: var(--primary-brand);">{{ caTotal }} €</p>
+        </div>
+
+        <div style="max-width: 400px; margin: 0 auto;" class="mb-5">
+            <canvas id="graphiqueCommandes"></canvas>
+        </div>
+
+        <div class="table-responsive" style="background-color: var(--background-card); border-radius: var(--radius-card-avis); border: 1px solid var(--border-soft); padding: var(--spacing-md);">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="caption-meta" style="text-transform: uppercase;">Menu</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Nombre de commandes</th>
+                        <th class="caption-meta" style="text-transform: uppercase;">Chiffre d'affaires</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for resultat in resultats %}
+                        <tr>
+                            <td style="font-weight: 500;">{{ resultat._id }}</td>
+                            <td style="color: var(--text-secondary);">{{ resultat.nombreCommandes }}</td>
+                            <td style="color: var(--primary-brand); font-weight: 700;">{{ resultat.chiffreAffaires }} €</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+        {% if resultats is not empty %}
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const ctx = document.getElementById('graphiqueCommandes').getContext('2d');
+
+                    new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: [{% for resultat in resultats %}'{{ resultat._id }}',{% endfor %}],
+                            datasets: [{
+                                label: 'Nombre de commandes',
+                                data: [{% for resultat in resultats %}{{ resultat.nombreCommandes }},{% endfor %}],
+                                backgroundColor: [
+                                    '#C94E1A',
+                                    '#E8784A',
+                                    '#7A5A40',
+                                    '#FCBF1C',
+                                    '#3A6A2A',
+                                ],
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                        }
+                    });
+                });
+            </script>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier les horaires - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_employe_horaires') }}" class="btn btn-outline-primary mb-4">← Retour aux horaires</a>
+
+    <h1>Modifier les horaires du {{ horaire.jour }}</h1>
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form, {attr: {class: 'formulaire-espace'}}) }}
+        {{ form_row(form.jour) }}
+        {{ form_row(form.heureOuverture) }}
+        {{ form_row(form.heureFermeture) }}
+
+        <button type="submit" class="btn btn-primary mt-3">Enregistrer les modifications.</button>
+    {{ form_end(form) }}
+{% endblock %}

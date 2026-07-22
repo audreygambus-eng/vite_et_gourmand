@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une image - {{ menu.titre }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_employe_menu_modifier', {id: menu.id}) }}" class="btn btn-outline-primary mb-4">← Retour au menu</a>
+
+    <p class="label-eyebrow">GESTION DES IMAGES</p>
+    <h1>Ajouter une image pour <span style="color: var(--primary-brand);">{{ menu.titre }}</span></h1>
+
+    {{ form_errors(form) }}
+
+    {{ form_start(form, {attr: {enctype: 'multipart/form-data', class: 'formulaire-espace mt-4'}}) }}
+        {{ form_row(form.fichier) }}
+
+        <button type="submit" class="btn btn-primary mt-3">Ajouter l'image</button>
+    {{ form_end(form) }}
+{% endblock %}

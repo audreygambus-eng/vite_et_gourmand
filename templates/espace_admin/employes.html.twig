@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des employés - Vite & Gourmand{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_espace_admin') }}" class="btn btn-outline-primary mb-4">← Retour à l'espace admin</a>
+
+    <p class="label-eyebrow">GESTION</p>
+    <h1>Les <span style="color: var(--primary-brand);">employés</span></h1>
+
+    <a href="{{ path('app_espace_admin_employe_creer') }}" class="btn btn-primary mt-3 mb-4">Créer un compte employé</a>
+
+    <div class="table-responsive" style="background-color: var(--background-card); border-radius: var(--radius-card-avis); border: 1px solid var(--border-soft); padding: var(--spacing-md);">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th class="caption-meta" style="text-transform: uppercase;">Nom</th>
+                    <th class="caption-meta" style="text-transform: uppercase;">Prénom</th>
+                    <th class="caption-meta" style="text-transform: uppercase;">Email</th>
+                    <th class="caption-meta" style="text-transform: uppercase;">Statut</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employe in employes %}
+                    <tr>
+                        <td style="font-weight: 500;">{{ employe.nom }}</td>
+                        <td style="color: var(--text-secondary);">{{ employe.prenom }}</td>
+                        <td style="color: var(--text-secondary);">{{ employe.email }}</td>
+                        <td>
+                            {% if employe.actif %}
+                                <span class="badge-confirme">Actif</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Désactivé</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form method="post" action="{{ path('app_espace_admin_employe_toggle', {id: employe.id}) }}" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-warning">
+                                    {% if employe.actif %}Désactiver{% else %}Réactiver{% endif %}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

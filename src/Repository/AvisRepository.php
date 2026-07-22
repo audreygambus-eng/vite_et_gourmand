@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Avis;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<Avis>
+ */
+class AvisRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Avis::class);
+    }
+
+       /**
+        * @return Avis[] Returns an array of Avis objects (avis en attente de validation)
+        */
+       public function findEnAttente(): array
+       {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.valide = :valide')
+                ->setParameter('valide', false)
+                ->orderBy('a.dateCreation', 'DESC')
+                ->getQuery()
+                ->getResult()
+            ;
+       }
+       
+       /**
+        * @return Avis[] Returns an array of Avis objects (avis validés, antéchronologiques)
+        */
+       public function findValides(): array
+       {
+           return $this->createQueryBuilder('a')
+               ->andWhere('a.valide = :valide')
+               ->setParameter('valide', true)
+               ->orderBy('a.dateCreation', 'DESC')
+               ->setMaxResults(6)
+               ->getQuery()
+               ->getResult()
+           ;
+       }
+
+       public function existePourCommande(int $commandeId): bool
+       {
+            return $this->createQueryBuilder('a')
+                ->andWhere('a.commande = :commandeId')
+                ->setParameter('commandeId', $commandeId)
+                ->getQuery()
+                ->getOneOrNullResult () !== null;
+       }
+}

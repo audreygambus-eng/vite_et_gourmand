@@ -1106,6 +1106,11 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *             filter?: scalar|Param|null, // Default: "({uid_key}={user_identifier})"
  *             password_attribute?: scalar|Param|null, // Default: null
  *         },
+ *         mongodb?: array{
+ *             class?: scalar|Param|null, // The full entity class name of your user class.
+ *             property?: scalar|Param|null, // Default: null
+ *             manager_name?: scalar|Param|null, // Default: null
+ *         },
  *     }>,
  *     firewalls?: array<string, array{ // Default: []
  *         pattern?: scalar|Param|null,
@@ -1511,6 +1516,281 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     generate_final_classes?: bool|Param, // Default: true
  *     generate_final_entities?: bool|Param, // Default: false
  * }
+ * @psalm-type SymfonycastsResetPasswordConfig = array{
+ *     request_password_repository?: scalar|Param|null, // A class that implements ResetPasswordRequestRepositoryInterface - usually your ResetPasswordRequestRepository.
+ *     lifetime?: int|Param, // The length of time in seconds that a password reset request is valid for after it is created. // Default: 3600
+ *     throttle_limit?: int|Param, // Another password reset cannot be made faster than this throttle time in seconds. // Default: 3600
+ *     enable_garbage_collection?: bool|Param, // Enable/Disable automatic garbage collection. // Default: true
+ * }
+ * @psalm-type VichUploaderConfig = array{
+ *     default_filename_attribute_suffix?: scalar|Param|null, // Default: "_name"
+ *     db_driver?: scalar|Param|null,
+ *     storage?: scalar|Param|null, // Default: "file_system"
+ *     use_flysystem_to_resolve_uri?: bool|Param, // Default: false
+ *     twig?: scalar|Param|null, // twig requires templating // Default: true
+ *     form?: scalar|Param|null, // Default: true
+ *     metadata?: array{
+ *         cache?: scalar|Param|null, // Default: "file"
+ *         type?: scalar|Param|null, // Default: "attribute"
+ *         file_cache?: array{
+ *             dir?: scalar|Param|null, // Default: "%kernel.cache_dir%/vich_uploader"
+ *         },
+ *         auto_detection?: bool|Param, // Default: true
+ *         directories?: list<array{ // Default: []
+ *             path?: scalar|Param|null,
+ *             namespace_prefix?: scalar|Param|null, // Default: ""
+ *         }>,
+ *     },
+ *     mappings?: array<string, array{ // Default: []
+ *         uri_prefix?: scalar|Param|null, // Default: "/uploads"
+ *         upload_destination?: scalar|Param|null, // Default: null
+ *         namer?: string|array{
+ *             service?: scalar|Param|null, // Default: null
+ *             options?: mixed, // Default: null
+ *         },
+ *         directory_namer?: string|array{
+ *             service?: scalar|Param|null, // Default: null
+ *             options?: mixed, // Default: null
+ *         },
+ *         delete_on_remove?: scalar|Param|null, // Default: true
+ *         erase_fields?: scalar|Param|null, // Default: true
+ *         delete_on_update?: scalar|Param|null, // Default: true
+ *         inject_on_load?: scalar|Param|null, // Default: false
+ *         namer_keep_extension?: scalar|Param|null, // Default: false
+ *         db_driver?: scalar|Param|null, // Default: null
+ *     }>,
+ * }
+ * @psalm-type DoctrineMongodbConfig = array{
+ *     document_managers?: array<string, array{ // Default: []
+ *         connection?: scalar|Param|null,
+ *         database?: scalar|Param|null,
+ *         logging?: bool|Param, // Default: "%kernel.debug%"
+ *         profiler?: bool|array{
+ *             enabled?: bool|Param, // Default: "%kernel.debug%"
+ *             pretty?: bool|Param, // Default: "%kernel.debug%"
+ *         },
+ *         default_document_repository_class?: scalar|Param|null, // Default: "Doctrine\\ODM\\MongoDB\\Repository\\DocumentRepository"
+ *         default_gridfs_repository_class?: scalar|Param|null, // Default: "Doctrine\\ODM\\MongoDB\\Repository\\DefaultGridFSRepository"
+ *         repository_factory?: scalar|Param|null, // Default: "doctrine_mongodb.odm.container_repository_factory"
+ *         persistent_collection_factory?: scalar|Param|null, // Default: null
+ *         auto_mapping?: bool|Param, // Default: false
+ *         filters?: array<string, string|array{ // Default: []
+ *             class?: scalar|Param|null,
+ *             enabled?: bool|Param, // Default: false
+ *             parameters?: array<string, mixed>,
+ *         }>,
+ *         metadata_cache_driver?: string|array{
+ *             type?: scalar|Param|null, // Default: "array"
+ *             class?: scalar|Param|null,
+ *             host?: scalar|Param|null,
+ *             port?: int|Param,
+ *             instance_class?: scalar|Param|null,
+ *             id?: scalar|Param|null,
+ *             namespace?: scalar|Param|null,
+ *         },
+ *         use_transactional_flush?: bool|Param, // Default: false
+ *         mappings?: array<string, bool|string|array{ // Default: []
+ *             mapping?: scalar|Param|null, // Default: true
+ *             type?: scalar|Param|null,
+ *             dir?: scalar|Param|null,
+ *             prefix?: scalar|Param|null,
+ *             alias?: scalar|Param|null,
+ *             is_bundle?: bool|Param,
+ *         }>,
+ *     }>,
+ *     connections?: array<string, array{ // Default: []
+ *         server?: scalar|Param|null,
+ *         options?: array{
+ *             authMechanism?: "SCRAM-SHA-1"|"SCRAM-SHA-256"|"MONGODB-CR"|"MONGODB-X509"|"PLAIN"|"GSSAPI"|Param,
+ *             connectTimeoutMS?: int|Param,
+ *             db?: scalar|Param|null,
+ *             authSource?: scalar|Param|null,
+ *             journal?: bool|Param,
+ *             password?: scalar|Param|null,
+ *             readPreference?: "primary"|"primaryPreferred"|"secondary"|"secondaryPreferred"|"nearest"|Param,
+ *             readPreferenceTags?: list<array<string, scalar|Param|null>>,
+ *             replicaSet?: scalar|Param|null,
+ *             socketTimeoutMS?: int|Param,
+ *             ssl?: bool|Param,
+ *             tls?: bool|Param,
+ *             tlsAllowInvalidCertificates?: bool|Param,
+ *             tlsAllowInvalidHostnames?: bool|Param,
+ *             tlsCAFile?: scalar|Param|null,
+ *             tlsCertificateKeyFile?: scalar|Param|null,
+ *             tlsCertificateKeyFilePassword?: scalar|Param|null,
+ *             tlsDisableCertificateRevocationCheck?: bool|Param,
+ *             tlsDisableOCSPEndpointCheck?: bool|Param,
+ *             tlsInsecure?: bool|Param,
+ *             username?: scalar|Param|null,
+ *             retryReads?: bool|Param,
+ *             retryWrites?: bool|Param,
+ *             w?: scalar|Param|null,
+ *             wTimeoutMS?: int|Param,
+ *         },
+ *         driver_options?: array{
+ *             context?: scalar|Param|null, // Default: null
+ *         },
+ *     }>,
+ *     resolve_target_documents?: array<string, scalar|Param|null>,
+ *     types?: array<string, string|array{ // Default: []
+ *         class?: scalar|Param|null,
+ *     }>,
+ *     proxy_namespace?: scalar|Param|null, // Default: "MongoDBODMProxies"
+ *     proxy_dir?: scalar|Param|null, // Default: "%kernel.cache_dir%/doctrine/odm/mongodb/Proxies"
+ *     enable_lazy_ghost_objects?: bool|Param, // Default: true
+ *     auto_generate_proxy_classes?: scalar|Param|null, // Default: 3
+ *     hydrator_namespace?: scalar|Param|null, // Default: "Hydrators"
+ *     hydrator_dir?: scalar|Param|null, // Default: "%kernel.cache_dir%/doctrine/odm/mongodb/Hydrators"
+ *     auto_generate_hydrator_classes?: scalar|Param|null, // Default: 0
+ *     persistent_collection_namespace?: scalar|Param|null, // Default: "PersistentCollections"
+ *     persistent_collection_dir?: scalar|Param|null, // Default: "%kernel.cache_dir%/doctrine/odm/mongodb/PersistentCollections"
+ *     auto_generate_persistent_collection_classes?: scalar|Param|null, // Default: 0
+ *     default_document_manager?: scalar|Param|null,
+ *     default_connection?: scalar|Param|null,
+ *     default_database?: scalar|Param|null, // Default: "default"
+ *     default_commit_options?: array{
+ *         j?: bool|Param,
+ *         timeout?: int|Param,
+ *         w?: scalar|Param|null,
+ *         wtimeout?: int|Param,
+ *     },
+ *     controller_resolver?: bool|array{
+ *         enabled?: bool|Param, // Default: true
+ *         auto_mapping?: bool|Param, // Set to false to disable using route placeholders as lookup criteria when the object id doesn't match the argument name // Default: true
+ *     },
+ * }
+ * @psalm-type FlysystemConfig = array{
+ *     storages?: array<string, array{ // Default: []
+ *         adapter?: scalar|Param|null, // DEPRECATED: Use the new config format instead (e.g. "local:" instead of "adapter: local")
+ *         options?: list<mixed>,
+ *         asyncaws?: array{
+ *             client?: scalar|Param|null, // The AsyncAws S3 client service name
+ *             bucket?: scalar|Param|null, // The name of the AWS S3 bucket
+ *             prefix?: scalar|Param|null, // Optional path prefix to prepend to all object keys // Default: ""
+ *         },
+ *         aws?: array{
+ *             client?: scalar|Param|null, // The AWS S3 client service name
+ *             bucket?: scalar|Param|null, // The name of the AWS S3 bucket
+ *             prefix?: scalar|Param|null, // Optional path prefix to prepend to all object keys // Default: ""
+ *             options?: list<mixed>,
+ *             streamReads?: bool|Param, // Whether to use streaming for file reads // Default: true
+ *         },
+ *         azure?: array{
+ *             client?: scalar|Param|null, // The Azure Blob Storage client service name
+ *             container?: scalar|Param|null, // The name of the Azure Blob Storage container
+ *             prefix?: scalar|Param|null, // Optional path prefix to prepend to all blob names // Default: ""
+ *         },
+ *         ftp?: array{
+ *             host?: scalar|Param|null, // FTP host
+ *             username?: scalar|Param|null, // FTP username
+ *             password?: scalar|Param|null, // FTP password
+ *             port?: int|Param, // FTP port number // Default: 21
+ *             root?: scalar|Param|null, // FTP root directory // Default: ""
+ *             passive?: bool|Param, // Use passive mode // Default: true
+ *             ssl?: bool|Param, // Use SSL/TLS encryption // Default: false
+ *             timeout?: int|Param, // Connection timeout in seconds // Default: 90
+ *             ignore_passive_address?: scalar|Param|null, // Ignore passive address // Default: null
+ *             utf8?: bool|Param, // Enable UTF8 mode // Default: false
+ *             transfer_mode?: scalar|Param|null, // Transfer mode (FTP_ASCII or FTP_BINARY constante on ftp extension) // Default: null
+ *             system_type?: null|"windows"|"unix"|Param, // FTP system type // Default: null
+ *             timestamps_on_unix_listings_enabled?: bool|Param, // Enable timestamps on Unix listings // Default: false
+ *             recurse_manually?: bool|Param, // Recurse directories manually // Default: true
+ *             use_raw_list_options?: bool|Param|null, // Use raw list options // Default: null
+ *             connectivityChecker?: scalar|Param|null, // Connectivity checker service name // Default: null
+ *             permissions?: array{ // Unix permissions configuration for files and directories
+ *                 file?: array{ // File permissions
+ *                     public?: int|Param, // Public file permissions // Default: 420
+ *                     private?: int|Param, // Private file permissions // Default: 384
+ *                 },
+ *                 dir?: array{ // Directory permissions
+ *                     public?: int|Param, // Public directory permissions // Default: 493
+ *                     private?: int|Param, // Private directory permissions // Default: 448
+ *                 },
+ *             },
+ *         },
+ *         gcloud?: array{
+ *             client?: scalar|Param|null, // The Google Cloud Storage client service name
+ *             bucket?: scalar|Param|null, // The name of the Google Cloud Storage bucket
+ *             prefix?: scalar|Param|null, // Optional path prefix to prepend to all object keys // Default: ""
+ *             visibility_handler?: scalar|Param|null, // Optional visibility handler service name // Default: null
+ *             streamReads?: bool|Param, // Whether to use streaming for file reads // Default: false
+ *         },
+ *         gridfs?: array{
+ *             bucket?: scalar|Param|null, // GridFS bucket service name (if using an existing bucket service) // Default: null
+ *             prefix?: scalar|Param|null, // Optional path prefix to prepend to all file names // Default: ""
+ *             database?: scalar|Param|null, // MongoDB database name // Default: null
+ *             doctrine_connection?: scalar|Param|null, // Doctrine MongoDB connection name (mutually exclusive with mongodb_uri)
+ *             mongodb_uri?: scalar|Param|null, // MongoDB connection URI (mutually exclusive with doctrine_connection)
+ *             mongodb_uri_options?: list<mixed>,
+ *             mongodb_driver_options?: list<mixed>,
+ *         },
+ *         lazy?: array{ // Lazy adapter for runtime storage selection
+ *             source?: scalar|Param|null, // The service name of the storage to use at runtime
+ *         },
+ *         local?: array{
+ *             directory?: scalar|Param|null, // Directory path for local storage
+ *             lock?: int|Param, // Lock flags for file operations // Default: 0
+ *             skip_links?: bool|Param, // Whether to skip symbolic links // Default: false
+ *             lazy_root_creation?: bool|Param, // Whether to create the root directory lazily // Default: false
+ *             permissions?: array{ // Unix permissions configuration for files and directories
+ *                 file?: array{ // File permissions
+ *                     public?: int|Param, // Public file permissions // Default: 420
+ *                     private?: int|Param, // Private file permissions // Default: 384
+ *                 },
+ *                 dir?: array{ // Directory permissions
+ *                     public?: int|Param, // Public directory permissions // Default: 493
+ *                     private?: int|Param, // Private directory permissions // Default: 448
+ *                 },
+ *             },
+ *         },
+ *         memory?: array<mixed>,
+ *         sftp?: array{
+ *             host?: scalar|Param|null, // SFTP host
+ *             username?: scalar|Param|null, // SFTP username
+ *             password?: scalar|Param|null, // SFTP password (optional if using private key) // Default: null
+ *             privateKey?: scalar|Param|null, // Path to private key file or private key content // Default: null
+ *             passphrase?: scalar|Param|null, // Private key passphrase // Default: null
+ *             port?: int|Param, // SFTP port number // Default: 22
+ *             timeout?: int|Param, // Connection timeout in seconds // Default: 90
+ *             hostFingerprint?: scalar|Param|null, // Host fingerprint for verification // Default: null
+ *             connectivityChecker?: scalar|Param|null, // Connectivity checker service name // Default: null
+ *             preferredAlgorithms?: list<mixed>,
+ *             root?: scalar|Param|null, // SFTP root directory // Default: ""
+ *             permissions?: array{ // Unix permissions configuration for files and directories
+ *                 file?: array{ // File permissions
+ *                     public?: int|Param, // Public file permissions // Default: 420
+ *                     private?: int|Param, // Private file permissions // Default: 384
+ *                 },
+ *                 dir?: array{ // Directory permissions
+ *                     public?: int|Param, // Public directory permissions // Default: 493
+ *                     private?: int|Param, // Private directory permissions // Default: 448
+ *                 },
+ *             },
+ *         },
+ *         webdav?: array{
+ *             client?: scalar|Param|null, // The WebDAV client service name
+ *             prefix?: scalar|Param|null, // Optional path prefix to prepend to all paths // Default: ""
+ *             visibility_handling?: "throw"|"ignore"|Param, // How to handle visibility operations // Default: "throw"
+ *             manual_copy?: bool|Param, // Whether to handle copy operations manually // Default: false
+ *             manual_move?: bool|Param, // Whether to handle move operations manually // Default: false
+ *         },
+ *         bunnycdn?: array{
+ *             client?: scalar|Param|null, // The BunnyCDN client service name
+ *             pull_zone?: scalar|Param|null, // The BunnyCDN pull zone name // Default: ""
+ *         },
+ *         service?: scalar|Param|null, // Reference to a custom adapter service (alternative to registered adapter types)
+ *         visibility?: scalar|Param|null, // Default visibility for files // Default: null
+ *         directory_visibility?: scalar|Param|null, // Default visibility for directories // Default: null
+ *         retain_visibility?: scalar|Param|null, // Keeps the original file visibility (public/private) when copying or moving. // Default: null
+ *         case_sensitive?: bool|Param, // Deprecated: The "case_sensitive" option is deprecated and will be removed in 4.0. // Default: true
+ *         disable_asserts?: bool|Param, // Deprecated: The "disable_asserts" option is deprecated and will be removed in 4.0. // Default: false
+ *         public_url?: list<scalar|Param|null>,
+ *         path_normalizer?: scalar|Param|null, // Path normalizer service name (should implement League\Flysystem\PathNormalizer) // Default: null
+ *         public_url_generator?: scalar|Param|null, // For adapter that do not provide public URLs or override adapter capabilities and public_url option, a public URL generator service name can be configured in the main Filesystem configuration (should implement League\Flysystem\PublicUrlGenerator) // Default: null
+ *         temporary_url_generator?: scalar|Param|null, // For adapter that do not provide public URLs or override adapter capabilities, a temporary URL generator service name can be configured in the main Filesystem configuration (should implement League\Flysystem\TemporaryUrlGenerator) // Default: null
+ *         read_only?: bool|Param, // Converts a file system to read-only // Default: false
+ *     }>,
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1524,6 +1804,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *     twig_extra?: TwigExtraConfig,
  *     security?: SecurityConfig,
  *     monolog?: MonologConfig,
+ *     symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
+ *     vich_uploader?: VichUploaderConfig,
+ *     doctrine_mongodb?: DoctrineMongodbConfig,
+ *     flysystem?: FlysystemConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1540,6 +1824,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
  *         maker?: MakerConfig,
+ *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
+ *         vich_uploader?: VichUploaderConfig,
+ *         doctrine_mongodb?: DoctrineMongodbConfig,
+ *         flysystem?: FlysystemConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1554,6 +1842,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
+ *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
+ *         vich_uploader?: VichUploaderConfig,
+ *         doctrine_mongodb?: DoctrineMongodbConfig,
+ *         flysystem?: FlysystemConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1569,6 +1861,10 @@ use Symfony\Component\Config\Loader\ParamConfigurator as Param;
  *         twig_extra?: TwigExtraConfig,
  *         security?: SecurityConfig,
  *         monolog?: MonologConfig,
+ *         symfonycasts_reset_password?: SymfonycastsResetPasswordConfig,
+ *         vich_uploader?: VichUploaderConfig,
+ *         doctrine_mongodb?: DoctrineMongodbConfig,
+ *         flysystem?: FlysystemConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,
