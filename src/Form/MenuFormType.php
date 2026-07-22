@@ -56,7 +56,7 @@ class MenuFormType extends AbstractType
                 'choice_label' => 'titre',
                 'multiple' => true,
                 'expanded' => true,
-                'required' => false
+                'required' => true
             ])
         ;
     }
