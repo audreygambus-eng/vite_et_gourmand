@@ -186,7 +186,7 @@ class AppFixtures extends Fixture
 
         $menu4 = new Menu();
         $menu4->setTitre('Menu Vegan');
-        $menu4->setDescription('Un menu Un menu que tout le monde pourra manger.');
+        $menu4->setDescription('Un menu que tout le monde pourra manger.');
         $menu4->setConditions('Commande à effectuer 3 jours avant la prestation.');
         $menu4->setDelaiMinimumJours(3);
         $menu4->setNbPersonnesMin(6);
