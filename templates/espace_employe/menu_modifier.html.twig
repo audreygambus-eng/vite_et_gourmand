@@ -35,7 +35,7 @@
         <div class="row">
             {% for image in menu.images %}
                 <div class="col-md-3 mb-3">
-                    <img src="{{ asset('uploads/menus/' ~ image.url) }}" class="img-fluid rounded mb-2" alt="Visuel du menu {{ menu.titre }}">
+                    <img src="{{ vich_uploader_asset(image, 'fichier') }}" class="img-fluid rounded mb-2" alt="Visuel du menu {{ menu.titre }}">
                     <form method="post" action="{{ path('app_espace_employe_image_supprimer', {id: image.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette image ?');">
                         <button type="submit" class="btn btn-sm btn-danger w-100">Supprimer</button>
                     </form>

@@ -68,7 +68,7 @@
             <div class="carousel-inner">
                 {% for image in menu.images %}
                     <div class="carousel-item {% if loop.first %}active{% endif %}">
-                        <img src="{{ asset('uploads/menus/' ~ image.url) }}" class="d-block w-100" alt="{{ menu.titre }}">
+                        <img src="{{ vich_uploader_asset(image, 'fichier') }}" class="d-block w-100" alt="{{ menu.titre }}">
                     </div>
                 {% endfor %}
             </div>

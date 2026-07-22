@@ -47,7 +47,7 @@
                 <div class="col-md-4 mb-4">
                         <div class="carte-menu h-100">
                             {% if menu.images is not empty %}
-                                <img src="{{ asset('uploads/menus/' ~ menu.images|first.url) }}" class="carte-menu-image" alt="{{ menu.titre }}">
+                                <img src="{{ vich_uploader_asset(menu.images|first, 'fichier') }}" class="carte-menu-image" alt="{{ menu.titre }}">
                             {% else %}
                                 <div class="carte-menu-image carte-menu-image-placeholder"></div>
                             {% endif %}

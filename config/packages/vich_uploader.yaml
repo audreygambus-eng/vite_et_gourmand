@@ -1,8 +1,10 @@
 vich_uploader:
     db_driver: orm
+    storage: flysystem
+    use_flysystem_to_resolve_uri: true
 
     mappings:
         menu_images:
-            uri_prefix: /uploads/menus
-            upload_destination: '%kernel.project_dir%/public/uploads/menus'
+            uri_prefix: ''
+            upload_destination: cloudinary.storage
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
