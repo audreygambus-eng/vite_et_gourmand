@@ -96,6 +96,7 @@ class Plat
     {
         if (!$this->menus->contains($menu)) {
             $this->menus->add($menu);
+            $menu->addPlat($this);
         }
 
         return $this;

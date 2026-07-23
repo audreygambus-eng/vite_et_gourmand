@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\MenuRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -55,6 +56,10 @@ class Menu
      * @var Collection<int, Plat>
      */
     #[ORM\ManyToMany(targetEntity: Plat::class, inversedBy: 'menus')]
+    #[Assert\Count(
+    min: 1,
+    minMessage: 'Le menu doit contenir au moins un plat.'
+    )]
     private Collection $plats;
 
     #[ORM\Column]
