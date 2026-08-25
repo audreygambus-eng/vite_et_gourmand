@@ -17,9 +17,12 @@ class CommandeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $nbPersonnesMin = $options['nb_personnes_min'];
+
         $builder
             ->add('datePrestation', DateType::class, [
                 'widget' => 'single_text',
+                'attr' => ['min' => (new \DateTime())->format('Y-m-d')],
                 'constraints' => [
                     new NotBlank(message: 'Veuillez renseigner la date souhaitée pour la prestation.'),
                 ],
@@ -57,5 +60,6 @@ class CommandeFormType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Commande::class,
         ]);
+        $resolver->setRequired('nb_personnes_min');
     }
 }

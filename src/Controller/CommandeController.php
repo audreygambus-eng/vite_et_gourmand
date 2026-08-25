@@ -38,7 +38,9 @@ class CommandeController extends AbstractController
         }
 
         $commande = new Commande();
-        $form = $this->createForm(CommandeFormType::class, $commande);
+        $form = $this->createForm(CommandeFormType::class, $commande, [
+                'nb_personnes_min' => $menu->getNbPersonnesMin(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
