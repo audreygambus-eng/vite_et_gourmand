@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use App\Form\PasswordConstraints;
 
 class RegistrationFormType extends AbstractType
 {
@@ -54,7 +55,10 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
-                'attr' => ['autocomplete' => 'new-password'],
+                'attr' => array_merge(
+                    ['autocomplete' => 'new-password'],
+                    PasswordConstraints::getHtmlAttributes()
+                ),
                 'constraints' => [
                     new NotBlank(
                         message: 'Veuillez choisir un mot de passe',

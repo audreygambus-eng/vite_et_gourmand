@@ -13,6 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Regex;
+use App\Form\PasswordConstraints;
 
 class EmployeFormType extends AbstractType
 {
@@ -34,6 +35,10 @@ class EmployeFormType extends AbstractType
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe de l\'employé',
                 'mapped' => false,
+                'attr' => array_merge(
+                    ['autocomplete' => 'new-password'],
+                    PasswordConstraints::getHtmlAttributes(),
+                ),
                 'constraints' => [
                     new NotBlank(message: 'Veuillez définir un mot de passe'),
                     new Length(min: 10, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères'),

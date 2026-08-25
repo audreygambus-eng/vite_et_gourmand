@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
 use Symfony\Component\Validator\Constraints\PasswordStrength;
+use App\Form\PasswordConstraints;
 
 class ChangePasswordFormType extends AbstractType
 {
@@ -25,6 +26,10 @@ class ChangePasswordFormType extends AbstractType
                     ],
                 ],
                 'first_options' => [
+                    'attr' => array_merge(
+                        ['autocomplete' => 'new-password'],
+                        PasswordConstraints::getHtmlAttributes()
+                    ),
                     'constraints' => [
                         new NotBlank(
                             message: 'Veuillez entrer un mot de passe',
