@@ -241,4 +241,60 @@ L'application est alors accessible sur `https://localhost:8000`.
 
 
 Placez le projet dans votre dossier `htdocs`, puis accédez à l'application via :
+http://localhost/vite_et_gourmand/vite_et_gourmand/public/index.php
 
+
+Assurez-vous que le fichier `public/.htaccess` est bien présent (nécessaire pour le routage des URLs).
+
+### Option C — Docker (alternative complète)
+
+Une configuration Docker est également disponible, incluant l'application, MySQL et MongoDB.
+
+**Prérequis** : Docker Desktop installé et démarré.
+
+```bash
+docker compose up --build
+```
+
+L'application est accessible sur `http://localhost:8080`.
+
+Exécutez ensuite les migrations et fixtures à l'intérieur du conteneur :
+
+```bash
+docker compose exec app php bin/console doctrine:migrations:migrate
+docker compose exec app php bin/console doctrine:fixtures:load
+```
+
+Pour arrêter les conteneurs :
+
+```bash
+docker compose down
+```
+
+---
+
+## 9. Vérifier l'installation
+
+Rendez-vous sur l'URL de l'application (selon l'option choisie à l'étape 8) et vérifiez que :
+- La page d'accueil s'affiche correctement avec le catalogue de menus
+- La connexion fonctionne avec l'un des comptes de test ci-dessus
+- Le graphique de statistiques s'affiche dans l'espace administrateur (confirmant la connexion MongoDB)
+
+---
+
+## 10. Dépannage courant
+
+| Problème | Solution |
+|---|---|
+| Erreur de connexion MySQL | Vérifiez `DATABASE_URL` dans `.env.local` et que le service MySQL est démarré |
+| Erreur de connexion MongoDB | Vérifiez que le service MongoDB est démarré et que l'extension PHP `mongodb` est activée (`php -m \| findstr mongodb`) |
+| Page blanche / erreur 500 | Consultez les logs : `var/log/dev.log` |
+| Images non affichées | Vérifiez que les identifiants Cloudinary sont bien configurés dans `.env.local` (`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`) — ou que le dossier `public/uploads/` existe et est accessible en écriture si vous utilisez le stockage local par défaut |
+| Emails non envoyés | Vérifiez la configuration `MAILER_DSN` (un compte Mailtrap gratuit peut être créé pour les tests) |
+| Docker Desktop ne démarre pas | Vérifiez que la virtualisation est activée dans le BIOS, et que Docker Desktop est bien lancé avant `docker compose up` |
+
+---
+
+## 👤 Auteure
+
+Audrey Gambus — Projet réalisé dans le cadre de la certification DWWM (Développeur Web et Web Mobile).
