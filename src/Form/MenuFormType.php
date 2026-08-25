@@ -33,13 +33,19 @@ class MenuFormType extends AbstractType
                 'required' => false,
             ])
             ->add('nbPersonnesMin', IntegerType::class,[
+                'attr' => ['min' => 1],
                 'constraints' => [new Positive(message: "Le nombre de personnes doit être un nombre positif.")]
             ])
             ->add('prixBase', NumberType::class,[
+                'attr' => ['min' => 0, 'step' => 0.01],
                 'constraints' => [new Positive(message: 'Le prix renseigné doit être positif')],
             ])
-            ->add('stockDisponible', IntegerType::class)
-            ->add('delaiMinimumJours', IntegerType::class)
+            ->add('stockDisponible', IntegerType::class, [
+                'attr' => ['min' => 0],
+            ])
+            ->add('delaiMinimumJours', IntegerType::class, [
+                'attr' => ['min' => 0],
+            ])
             ->add('actif', CheckboxType::class,[
                 'required' => false,
             ])
