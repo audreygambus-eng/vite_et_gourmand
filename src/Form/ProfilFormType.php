@@ -27,7 +27,11 @@ class ProfilFormType extends AbstractType
             ])
             ->add('telephone', TelType::class,[
                 'required' => false,
-                'attr' => ['placeholder' => 'exemple : 06 11 93 66 17'],
+                'attr' => [
+                    'placeholder' => 'exemple : 06 11 93 66 17',
+                    'pattern' => '0[1-9]([ .]?[0-9]{2}){4}',
+                    'title' => 'Format attendu : 06 11 93 66 17',
+                ],
             ])
             ->add('adresse', TextType::class,[
                 'required' => false,
@@ -39,7 +43,12 @@ class ProfilFormType extends AbstractType
             ])
             ->add('codePostal', TextType::class,[
                 'required' => false,
-                'attr' => ['placeholder' => 'exemple : 33000'],
+                'attr' => [
+                    'placeholder' => 'exemple : 33000',
+                    'pattern' => '[0-9]{5}',
+                    'title' => 'Le code postal doit contenir 5 chiffres',
+                    'maxlength' => 5,
+                ],
             ])
             ->add('pays', TextType::class,[
                 'required' => false,
