@@ -25,7 +25,7 @@ class MenuController extends AbstractController
 
     // Route API qui retourne du JSON et qui est appelée par le JS côté client
     #[Route('/menu/filter', name: 'app_menu_filter', methods: ['GET'])]
-    public function filter(Request $request, MenuRepository $menuRepository) : JsonResponse
+    public function filter(Request $request, MenuRepository $menuRepository, \Vich\UploaderBundle\Storage\StorageInterface $storage) : JsonResponse
     {
         // Validation des paramètres
         $prixMax = $request->query->get('prixMax');
@@ -52,12 +52,16 @@ class MenuController extends AbstractController
 
         $data = [];
         foreach ($menus as $menu){
+            $premiereImage = $menu->getImages()->first();
+            $urlImage = $premiereImage ? $storage->resolveUri($premiereImage, 'fichier') : null;
+
             $data[] = [
                 'id' => $menu->getId(),
                 'titre' => $menu->getTitre(),
                 'description' => $menu->getDescription(),
                 'nbPersonnesMin' => $menu->getNbPersonnesMin(),
                 'prixBase' => $menu->getPrixBase(),
+                'image' => $urlImage,
             ];
         }
 

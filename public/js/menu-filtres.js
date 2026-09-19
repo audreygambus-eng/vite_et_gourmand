@@ -52,6 +52,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     const cardBody = document.createElement('div');
                     cardBody.className = 'carte-menu-body';
 
+                    // Ajout de l'image du menu
+                    if (menu.image) {
+                        const image = document.createElement('img');
+                        image.src = menu.image;
+                        image.className = 'carte-menu-image';
+                        image.alt = menu.titre;
+                        card.appendChild(image);
+                    }
+
                     const titre = document.createElement('h3');
                     titre.className = 'card-title-dark';
                     titre.textContent = menu.titre;
