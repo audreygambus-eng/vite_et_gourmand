@@ -20,6 +20,11 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 
 class CommandeController extends AbstractController
 {
+    private const SEUIL_PERSONNES_SUPPLEMENTAIRES = 5;
+    private const TAUX_REDUCTION_GROUPE = 0.9;
+    private const FRAIS_LIVRAISON_HORS_BORDEAUX = 5.00;
+    private const VILLE_LIVRAISON_GRATUITE = 'bordeaux';
+
     #[Route('/commande/nouvelle/{menuId}', name: 'app_commande_nouvelle')]
     public function nouvelle(int $menuId, MenuRepository $menuRepository, Request $request, HoraireRepository $horaireRepository): Response
     {
@@ -130,15 +135,15 @@ class CommandeController extends AbstractController
         $reductionAppliquee = false;
 
         // Si le nombre de personnes dépasse le minimum de 5 ou plus, une réduction de 10% est appliquée
-        if ($donnees['nbPersonnes'] >= $menu->getNbPersonnesMin() + 5) {
-            $prixMenu = $prixMenu * 0.9;
+        if ($donnees['nbPersonnes'] >= $menu->getNbPersonnesMin() + self::SEUIL_PERSONNES_SUPPLEMENTAIRES) {
+            $prixMenu = $prixMenu * self::TAUX_REDUCTION_GROUPE;
             $reductionAppliquee = true;
         }
 
         // Livraison gratuite à Bordeaux, sinon un forfait s'applique
         $prixLivraison = 0;
-        if (strtolower($donnees['villeLivraison']) !== 'bordeaux') {
-            $prixLivraison = 5.00;
+        if (strtolower($donnees['villeLivraison']) !== self::VILLE_LIVRAISON_GRATUITE) {
+            $prixLivraison = self::FRAIS_LIVRAISON_HORS_BORDEAUX;
         }
 
         $prixTotal = $prixMenu + $prixLivraison;
@@ -201,13 +206,13 @@ class CommandeController extends AbstractController
 
         // Recalcul du prix pour vérifier les données transmises côté client
         $prixMenu = $menu->getPrixBase() * $donnees['nbPersonnes'];
-        if ($donnees['nbPersonnes'] >= $menu->getNbPersonnesMin() + 5) {
-            $prixMenu = $prixMenu * 0.9;
+        if ($donnees['nbPersonnes'] >= $menu->getNbPersonnesMin() + self::SEUIL_PERSONNES_SUPPLEMENTAIRES) {
+            $prixMenu = $prixMenu * self::TAUX_REDUCTION_GROUPE;
         }
 
         $prixLivraison = 0;
-        if (strtolower($donnees['villeLivraison']) !== 'bordeaux') {
-            $prixLivraison = 5.00;
+        if (strtolower($donnees['villeLivraison']) !== self::VILLE_LIVRAISON_GRATUITE) {
+            $prixLivraison = self::FRAIS_LIVRAISON_HORS_BORDEAUX;
         }
 
         $prixTotal = $prixMenu + $prixLivraison;
