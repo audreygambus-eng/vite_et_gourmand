@@ -7,11 +7,6 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
-use Symfony\Component\Validator\Constraints\PasswordStrength;
-use App\Form\PasswordConstraints;
 
 class ChangePasswordFormType extends AbstractType
 {
@@ -30,23 +25,7 @@ class ChangePasswordFormType extends AbstractType
                         ['autocomplete' => 'new-password'],
                         PasswordConstraints::getHtmlAttributes()
                     ),
-                    'constraints' => [
-                        new NotBlank(
-                            message: 'Veuillez entrer un mot de passe',
-                        ),
-                        new Length(
-                            min: 10,
-                            minMessage: 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
-                            // max length allowed by Symfony for security reasons
-                            max: 4096,
-                        ),
-                        new PasswordStrength(
-                            message: 'Votre mot de passe est trop faible. Veuillez utiliser un mot de passe plus fort.',
-                        ),
-                        new NotCompromisedPassword(
-                            message: 'Ce mot de passe a été exposé lors d\'une fuite de données. Veuillez en choisir un autre.',
-                        ),
-                    ],
+                    'constraints' => PasswordConstraints::getConstraints(),
                     'label' => 'Nouveau mot de passe',
                 ],
                 'second_options' => [

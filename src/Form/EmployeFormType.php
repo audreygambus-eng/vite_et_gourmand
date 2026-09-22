@@ -10,10 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
-use App\Form\PasswordConstraints;
 
 class EmployeFormType extends AbstractType
 {
@@ -26,9 +23,8 @@ class EmployeFormType extends AbstractType
             ->add('prenom', TextType::class, [
                 'constraints' => [new NotBlank(message: 'Veuillez renseigner un prénom')],
             ])
-            ->add('email', EmailType::class, [
-                'constraints' => [new NotBlank(message: 'Veuillez renseigner une adresse mail')],
-            ])
+            ->add('email', EmailType::class)
+            
             ->add('telephone', TelType::class, [
                 'required' => false,
                 'attr' => [
@@ -44,14 +40,7 @@ class EmployeFormType extends AbstractType
                     ['autocomplete' => 'new-password'],
                     PasswordConstraints::getHtmlAttributes(),
                 ),
-                'constraints' => [
-                    new NotBlank(message: 'Veuillez définir un mot de passe'),
-                    new Length(min: 10, minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères'),
-                    new Regex(
-                        pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/',
-                        message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial'
-                    ),
-                ],
+                'constraints' => PasswordConstraints::getConstraints(),
             ])
         ;
     }
