@@ -83,7 +83,7 @@ class Image
         $this->fichier = $fichier;
 
         if (null !== $fichier) {
-            $this->updateAt = new \DateTimeImmutable();
+            $this->updatedAt = new \DateTimeImmutable();
         }
     }
     public function getFichier(): ?File
