@@ -396,12 +396,16 @@ class EspaceEmployeController extends AbstractController
 
     #[Route('/espace/employe/images/{id}/supprimer', name: 'app_espace_employe_image_supprimer', methods: ['POST'])]
     #[IsGranted('ROLE_EMPLOYE')]
-    public function imageSupprimer(int $id, ImageRepository $imageRepository, EntityManagerInterface $entityManager): Response
+    public function imageSupprimer(int $id, ImageRepository $imageRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('supprimer-image-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+
         $image = $imageRepository->find($id);
 
         if (!$image) {
-        throw $this->createNotFoundException('Cette image n\'existe pas.');
+            throw $this->createNotFoundException('Cette image n\'existe pas.');
         }
 
         $menuId = $image->getMenu()->getId();

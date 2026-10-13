@@ -37,6 +37,7 @@
                 <div class="col-md-3 mb-3">
                     <img src="{{ vich_uploader_asset(image, 'fichier') }}" class="img-fluid rounded mb-2" alt="Visuel du menu {{ menu.titre }}">
                     <form method="post" action="{{ path('app_espace_employe_image_supprimer', {id: image.id}) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette image ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('supprimer-image-' ~ image.id) }}">
                         <button type="submit" class="btn btn-sm btn-danger w-100">Supprimer</button>
                     </form>
                 </div>
