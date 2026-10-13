@@ -321,8 +321,12 @@ class EspaceEmployeController extends AbstractController
 
     #[Route('/espace/employe/avis/{id}/valider', name: 'app_espace_employe_avis_valider', methods: ['POST'])]
     #[IsGranted('ROLE_EMPLOYE')]
-    public function avisValider(int $id, AvisRepository $avisRepository, EntityManagerInterface $entityManager): Response
+    public function avisValider(int $id, AvisRepository $avisRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('valider-avis-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+        
         $avis = $avisRepository->find($id);
 
         if (!$avis){
