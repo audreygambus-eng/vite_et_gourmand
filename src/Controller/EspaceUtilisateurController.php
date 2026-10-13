@@ -72,7 +72,9 @@ class EspaceUtilisateurController extends AbstractController
             return $this->redirectToRoute('app_espace_utilisateur_commande_detail', ['id' => $id]);
         }
 
-        $form = $this->createForm(CommandeFormType::class, $commande);
+        $form = $this->createForm(CommandeFormType::class, $commande, [
+            'nb_personnes_min' => $commande->getMenu()->getNbPersonnesMin(),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
