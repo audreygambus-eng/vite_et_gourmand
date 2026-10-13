@@ -25,6 +25,7 @@
                     <div class="mt-3 pt-3" style="border-top: 1px solid var(--border-soft);">
                         <a href="{{ path('app_espace_utilisateur_commande_modifier', {id: commande.id})}}" class="btn btn-primary">Modifier</a>
                         <form method="post" action="{{ path('app_espace_utilisateur_commande_annuler', {id: commande.id}) }}" class="d-inline" onsubmit="return confirm('Êtes-vous sûre de vouloir annuler cette commande ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('annuler-commande-utilisateur-' ~ commande.id) }}">
                             <button type="submit" class="btn btn-danger">Annuler la commande</button>
                         </form>
                     </div>

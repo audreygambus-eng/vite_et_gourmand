@@ -155,8 +155,11 @@ class EspaceUtilisateurController extends AbstractController
     #[Route('/espace/utilisateur/commande/{id}/annuler', name: 'app_espace_utilisateur_commande_annuler', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
 
-    public function commandeAnnuler(int $id, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
+    public function commandeAnnuler(int $id, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager,Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('annuler-commande-utilisateur-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
         $commande = $commandeRepository->find($id);
 
         if (!$commande) {
