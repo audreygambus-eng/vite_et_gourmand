@@ -27,6 +27,7 @@
                         <td>
                             <a href="{{ path('app_espace_employe_plat_modifier', {id: plat.id}) }}" class="btn btn-sm btn-outline-primary">Modifier</a>
                             <form method="post" action="{{ path('app_espace_employe_plat_supprimer', {id: plat.id}) }}" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment supprimer ce plat ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('supprimer-plat-' ~ plat.id) }}">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Supprimer</button>
                             </form>
                         </td>

@@ -128,8 +128,12 @@ class EspaceEmployeController extends AbstractController
 
     #[Route('/espace/employe/plats/{id}/supprimer', name: 'app_espace_employe_plat_supprimer', methods: ['POST'])]
     #[IsGranted('ROLE_EMPLOYE')]
-    public function platSupprimer(int $id, PlatRepository $platRepository, EntityManagerInterface $entityManager): Response
+    public function platSupprimer(int $id, PlatRepository $platRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('supprimer-plat-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+
         $plat = $platRepository->find($id);
 
         if(!$plat){
