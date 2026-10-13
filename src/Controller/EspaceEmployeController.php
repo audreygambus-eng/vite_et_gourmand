@@ -70,15 +70,19 @@ class EspaceEmployeController extends AbstractController
 
     #[Route('/espace/employe/menus/{id}/supprimer', name: 'app_espace_employe_menu_supprimer', methods: ['POST'])]
     #[IsGranted('ROLE_EMPLOYE')]
-    public function menuSupprimer(int $id, MenuRepository $menuRepository, EntityManagerInterface $entityManager): Response
+    public function menuSupprimer(int $id, MenuRepository $menuRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('supprimer-menu-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+
         $menu = $menuRepository->find($id);
 
         if (!$menu){
             throw $this->createNotFoundException('Ce menu n\'existe pas.');
         }
 
-        // Supression du catalogue uniquement, pour que le menu reste accessible en base et réactivable, si besoin
+        // Suppression du catalogue uniquement, pour que le menu reste accessible en base et réactivable, si besoin
         $menu->setActif(false);
         $entityManager->flush();
 
