@@ -164,6 +164,9 @@ class CommandeController extends AbstractController
     #[IsGranted('ROLE_USER')]
     public function confirmer(Request $request, MenuRepository $menuRepository, EntityManagerInterface $entityManager, MailerInterface $mailer, HoraireRepository $horaireRepository, DocumentManager $documentManager): Response
     {
+        if (!$this->isCsrfTokenValid('confirmer-commande', $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
         $donnees = $request->getSession()->get('commande_en_cours');
 
         if (!$donnees) {
