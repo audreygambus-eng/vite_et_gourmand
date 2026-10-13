@@ -216,6 +216,10 @@ class EspaceEmployeController extends AbstractController
     #[IsGranted('ROLE_EMPLOYE')]
     public function commandeStatut(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
+        if (!$this->isCsrfTokenValid('statut-commande-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+        
         $commande = $commandeRepository->find($id);
 
         if(!$commande) {

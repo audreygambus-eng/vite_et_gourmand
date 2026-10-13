@@ -62,6 +62,7 @@
             <div class="carte-contenu mb-4">
                 <h3 class="card-title-dark mb-3">Mettre à jour le statut</h3>
                 <form method="post" action="{{ path('app_espace_employe_commande_statut', {id: commande.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('statut-commande-' ~ commande.id) }}">
                     <label for="statut-select" class="form-label">Nouveau statut</label>
                     {% set dernierStatut = commande.statutHistoriques is not empty ? commande.statutHistoriques|last.statut : null %}
                     <select name="statut" id="statut-select" class="form-select mb-3">
