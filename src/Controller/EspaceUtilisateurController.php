@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\TarifsCommande;
 use App\Entity\Avis;
 use App\Form\AvisFormType;
 use App\Repository\AvisRepository;
@@ -114,13 +115,13 @@ class EspaceUtilisateurController extends AbstractController
             }
 
             $prixMenu = $menu->getPrixBase() * $commande->getNbPersonnes();
-            if ($commande->getNbPersonnes() >= $menu->getNbPersonnesMin() + 5) {
-                $prixMenu = $prixMenu * 0.9;
+            if ($commande->getNbPersonnes() >= $menu->getNbPersonnesMin() + TarifsCommande::SEUIL_PERSONNES_SUPPLEMENTAIRES) {
+                $prixMenu = $prixMenu * TarifsCommande::TAUX_REDUCTION_GROUPE;
             }
 
             $prixLivraison = 0;
-            if (strtolower($commande->getVilleLivraison()) !== 'bordeaux') {
-                $prixLivraison = 5.00;
+            if (strtolower($commande->getVilleLivraison()) !== TarifsCommande::VILLE_LIVRAISON_GRATUITE) {
+                $prixLivraison = TarifsCommande::FRAIS_LIVRAISON_HORS_BORDEAUX;
             }
 
             $commande->setPrixMenu((string) $prixMenu);
