@@ -31,6 +31,7 @@
                             <button type="submit" class="btn btn-sm btn-success">Valider</button>
                         </form>
                         <form method="post" action="{{ path('app_espace_employe_avis_refuser', {id: avis.id}) }}" class="d-inline" onsubmit="return confirm('Voulez-vous vraiment refuser cet avis ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('refuser-avis-' ~ avis.id) }}">
                             <button type="submit" class="btn btn-sm btn-danger">Refuser</button>
                         </form>
                     </div>

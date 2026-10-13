@@ -326,7 +326,7 @@ class EspaceEmployeController extends AbstractController
         if (!$this->isCsrfTokenValid('valider-avis-' . $id, $request->getPayload()->getString('_token'))) {
             throw $this->createAccessDeniedException('Jeton CSRF invalide.');
         }
-        
+
         $avis = $avisRepository->find($id);
 
         if (!$avis){
@@ -342,8 +342,12 @@ class EspaceEmployeController extends AbstractController
 
     #[Route('/espace/employe/avis/{id}/refuser', name: 'app_espace_employe_avis_refuser', methods: ['POST'])]
     #[IsGranted('ROLE_EMPLOYE')]
-    public function avisRefuser(int $id, AvisRepository $avisRepository, EntityManagerInterface $entityManager): Response
+    public function avisRefuser(int $id, AvisRepository $avisRepository, EntityManagerInterface $entityManager,Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('refuser-avis-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+
         $avis = $avisRepository->find($id);
 
         if (!$avis){
