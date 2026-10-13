@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use App\Document\StatistiqueCommande;
 use Doctrine\ODM\MongoDB\DocumentManager;
 
@@ -116,6 +117,7 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/commande/recapitulatif', name: 'app_commande_recapitulatif')]
+    #[IsGranted('ROLE_USER')]
     public function recapitulatif(Request $request, MenuRepository $menuRepository): Response
     {
         $donnees = $request->getSession()->get('commande_en_cours');
@@ -159,6 +161,7 @@ class CommandeController extends AbstractController
     }
 
     #[Route('/commande/confirmer', name: 'app_commande_confirmer', methods: ['POST'])]
+    #[IsGranted('ROLE_USER')]
     public function confirmer(Request $request, MenuRepository $menuRepository, EntityManagerInterface $entityManager, MailerInterface $mailer, HoraireRepository $horaireRepository, DocumentManager $documentManager): Response
     {
         $donnees = $request->getSession()->get('commande_en_cours');
