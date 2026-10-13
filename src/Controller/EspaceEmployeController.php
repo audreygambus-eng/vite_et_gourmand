@@ -342,7 +342,7 @@ class EspaceEmployeController extends AbstractController
 
     #[Route('/espace/employe/avis/{id}/refuser', name: 'app_espace_employe_avis_refuser', methods: ['POST'])]
     #[IsGranted('ROLE_EMPLOYE')]
-    public function avisRefuser(int $id, AvisRepository $avisRepository, EntityManagerInterface $entityManager,Request $request): Response
+    public function avisRefuser(int $id, AvisRepository $avisRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
         if (!$this->isCsrfTokenValid('refuser-avis-' . $id, $request->getPayload()->getString('_token'))) {
             throw $this->createAccessDeniedException('Jeton CSRF invalide.');
@@ -365,6 +365,10 @@ class EspaceEmployeController extends AbstractController
     #[IsGranted('ROLE_EMPLOYE')]
     public function commandeMateriel(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isCsrfTokenValid('materiel-commande-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+
         $commande = $commandeRepository->find($id);
 
         if (!$commande) {

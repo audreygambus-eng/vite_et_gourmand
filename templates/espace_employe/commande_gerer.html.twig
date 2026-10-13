@@ -32,6 +32,7 @@
                     <div class="mt-3 pt-3" style="border-top: 1px solid var(--border-soft);">
                         <h3 class="card-title-dark" style="font-size: 16px;">Décision sur le prêt de matériel</h3>
                         <form method="post" action="{{ path('app_espace_employe_commande_materiel', {id: commande.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('materiel-commande-' ~ commande.id) }}">
                             <label for="materielAccorde-select" class="form-label">Décision</label>
                             <select name="materielAccorde" id="materielAccorde-select" class="form-select mb-2">
                                 <option value="1" {% if commande.materielAccorde == true %}selected{% endif %}>Accordé</option>
