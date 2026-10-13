@@ -91,8 +91,11 @@ class EspaceAdminController extends AbstractController
 
     #[Route('/espace/admin/employes/{id}/toggle', name: 'app_espace_admin_employe_toggle', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function employeToggle(int $id, UtilisateurRepository $utilisateurRepository, EntityManagerInterface $entityManager): Response
+    public function employeToggle(int $id, UtilisateurRepository $utilisateurRepository, EntityManagerInterface $entityManager, Request $request): Response
     {
+        if (!$this->isCsrfTokenValid('toggle-employe-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
         $employe = $utilisateurRepository->find($id);
 
         if (!$employe) {

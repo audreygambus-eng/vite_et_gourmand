@@ -36,6 +36,7 @@
                         </td>
                         <td>
                             <form method="post" action="{{ path('app_espace_admin_employe_toggle', {id: employe.id}) }}" class="d-inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('toggle-employe-' ~ employe.id) }}">
                                 <button type="submit" class="btn btn-sm btn-outline-warning">
                                     {% if employe.actif %}Désactiver{% else %}Réactiver{% endif %}
                                 </button>
