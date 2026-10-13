@@ -219,7 +219,7 @@ class EspaceEmployeController extends AbstractController
         if (!$this->isCsrfTokenValid('statut-commande-' . $id, $request->getPayload()->getString('_token'))) {
             throw $this->createAccessDeniedException('Jeton CSRF invalide.');
         }
-        
+
         $commande = $commandeRepository->find($id);
 
         if(!$commande) {
@@ -280,6 +280,10 @@ class EspaceEmployeController extends AbstractController
     #[IsGranted('ROLE_EMPLOYE')]
     public function commandeAnnuler(int $id, Request $request, CommandeRepository $commandeRepository, EntityManagerInterface $entityManager): Response
     {
+        if (!$this->isCsrfTokenValid('annuler-commande-employe-' . $id, $request->getPayload()->getString('_token'))) {
+            throw $this->createAccessDeniedException('Jeton CSRF invalide.');
+        }
+
         $commande = $commandeRepository->find($id);
 
     if (!$commande) {

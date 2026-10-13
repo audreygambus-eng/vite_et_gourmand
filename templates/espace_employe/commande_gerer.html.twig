@@ -81,6 +81,7 @@
             <div class="carte-contenu">
                 <h3 class="card-title-dark mb-3" style="color: var(--status-danger);">Annuler la commande</h3>
                 <form method="post" action="{{ path('app_espace_employe_commande_annuler', {id: commande.id}) }}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('annuler-commande-employe-' ~ commande.id) }}">
                     <div class="mb-3">
                         <label for="modeContact" class="form-label">Mode de contact utilisé</label>
                         <select name="modeContact" id="modeContact" class="form-select">
