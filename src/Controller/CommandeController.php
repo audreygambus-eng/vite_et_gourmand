@@ -261,7 +261,7 @@ class CommandeController extends AbstractController
             $documentManager->flush();
 
         } catch (\Exception $e) {
-            // Erreur tracée sans blocage de la validation de commande, statistiques non bloquantes
+            // Échec ignoré volontairement : statistiques non bloquantes, non journalisé
         }
         } catch (\Exception $e) {
             $this->addFlash('error', 'Une erreur est survenue lors de la commande.');
@@ -284,7 +284,7 @@ class CommandeController extends AbstractController
                 ]);
             $mailer->send($email);
         } catch (\Exception $e) {
-            // Erreur tracée sans blocage de validation de commande
+            // Échec ignoré volontairement, non journalisé
         }
 
         $this->addFlash('success', 'Merci ! Votre commande a bien été enregistrée. Vous allez recevoir un mail de confirmation.');
