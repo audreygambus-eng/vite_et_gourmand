@@ -76,7 +76,7 @@ class EspaceAdminController extends AbstractController
                     ]);
                 $mailer->send($email);
             } catch (\Exception $e) {
-                // Erreur tracée sans blocage de création de compte
+                // Échec ignoré volontairement, sans blocage de création de compte
             }
 
             $this->addFlash('success', 'Le compte employé a bien été créé.');

@@ -142,7 +142,7 @@ class EspaceUtilisateurController extends AbstractController
                     ]);
                 $mailer->send($email);
                 } catch (\Exception $e) {
-                    // Erreur tracée sans blocage de validation de commande
+                    // Échec ignoré volontairement, sans blocage de validation de commande
                 }
 
             $this->addFlash('success', 'Votre commande a bien été modifiée');

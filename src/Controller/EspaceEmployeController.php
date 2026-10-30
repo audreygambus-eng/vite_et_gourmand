@@ -250,7 +250,7 @@ class EspaceEmployeController extends AbstractController
 
                 $mailer->send($email);
             } catch (\Exception $e){
-                // Erreur tracée sans blocage de changement de statut
+                // Échec ignoré volontairement, sans blocage de changement de statut
             }
         }
 
