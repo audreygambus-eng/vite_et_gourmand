@@ -2,6 +2,8 @@
 
 Ce document décrit la démarche à suivre pour installer et exécuter l'application **Vite & Gourmand** sur votre machine locale.
 
+Application en ligne : https://vite-et-gourmand-audrey-a706996bf03a.herokuapp.com/
+
 ---
 
 ## 1. Prérequis
@@ -100,7 +102,7 @@ Confirmez avec `yes` : cette commande **purge la base** puis la remplit avec des
 | Employé | employe@vite-et-gourmand.com | Employe@1234! |
 | Utilisateur | user@example.com | User@1234! |
 
-Ces mots de passe sont volontairement simples et réservés à la démonstration. Tout mot de passe créé depuis l'application (inscription, réinitialisation, création d'employé) est soumis aux règles de robustesse.
+Ces comptes sont créés par les fixtures, en local. Les mots de passe associés sont volontairement simples car réservés à la démonstration. En production, les mots de passe administrateur et employé sont différents. Tout mot de passe créé depuis l'application (inscription, réinitialisation, création d'employé) est soumis aux règles de robustesse.
 
 ---
 
